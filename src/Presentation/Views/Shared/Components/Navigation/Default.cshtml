@@ -1,0 +1,88 @@
+﻿﻿@using Nika1337.Library.ApplicationCore.Entities
+
+
+@model IEnumerable<NavigationMenuItem>
+
+
+
+@functions {
+    private string RenderMenu(IEnumerable<NavigationMenuItem> items)
+    {
+        var sb = new System.Text.StringBuilder();
+
+        foreach (var item in items)
+        {
+            if (item.ChildNavigationMenuItems.Any())
+            {
+                sb.AppendLine($@"
+                    <li class='nav-item dropdown'>
+                        <a class='nav-link dropdown-toggle' href='{item.Route}' role='button' aria-expanded='false'>
+                    {item.Name}
+                        </a>
+                        <ul class='dropdown-menu dropdown-menu-dark dropdown-menu-end'>
+                {RenderSubMenu(item.ChildNavigationMenuItems)}
+                        </ul>
+                    </li>");
+            }
+            else
+            {
+                sb.AppendLine($@"
+                    <li>
+                        <a class='dropdown-item nav-link' href='{item.Route}'>{item.Name}</a>
+                    </li>");
+            }
+        }
+
+        return sb.ToString();
+    }
+    private string RenderSubMenu(IEnumerable<NavigationMenuItem> items)
+    {
+        var sb = new System.Text.StringBuilder();
+
+        foreach (var item in items)
+        {
+            if (item.ChildNavigationMenuItems.Any())
+            {
+                sb.AppendLine($@"
+                    <li class='dropdown-submenu'>
+                        <a class='dropdown-item dropdown-toggle' href='{item.Route}'>
+                    {item.Name}
+                        </a>
+                        <ul class='dropdown-menu dropdown-menu-dark dropdown-menu-end'>
+                {RenderSubMenu(item.ChildNavigationMenuItems)}
+                        </ul>
+                    </li>");
+            }
+            else
+            {
+                sb.AppendLine($@"
+                    <li>
+                        <a class='dropdown-item' href='{item.Route}'>{item.Name}</a>
+                    </li>");
+            }
+        }
+
+        return sb.ToString();
+    }
+}
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Library Management</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                @if (Model != null)
+                {
+                    @Html.Raw(RenderMenu(Model))
+                }
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                @await Html.PartialAsync("_LoginPartial")
+            </ul>
+        </div>
+    </div>
+</nav>

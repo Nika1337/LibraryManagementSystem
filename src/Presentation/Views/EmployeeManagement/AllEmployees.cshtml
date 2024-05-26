@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Nika1337.Library.Presentation.Models.EmployeeViewModel>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="d-flex justify-content-center vh-100 m-5">
+    <div class="container" style="width: fit-content">
+        <h2 class="text-center m-3">@ViewData["Title"]</h2>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-success">Register New Employee</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center text-nowrap">First Name</th>
+                    <th class="text-center text-nowrap">Last Name</th>
+                    <th class="text-center text-nowrap">Username</th>
+                    <th class="text-center text-nowrap">Email</th>
+                    <th class="text-center text-nowrap">Phone Number</th>
+                    <th class="text-center text-nowrap">Date of Birth</th>
+                    <th class="text-center text-nowrap">Start Date</th>
+                    <th class="text-center text-nowrap">Termination Date</th>
+                    <th class="text-center text-nowrap">Roles</th>
+                    <th class="text-center text-nowrap">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td class="text-center text-nowrap">@employee.FirstName</td>
+                        <td class="text-center text-nowrap">@employee.LastName</td>
+                        <td class="text-center text-nowrap">@employee.Username</td>
+                        <td class="text-center text-nowrap">@employee.Email</td>
+                        <td class="text-center text-nowrap">@employee.PhoneNumber</td>
+                        <td class="text-center text-nowrap">@employee.DateOfBirth.ToShortDateString()</td>
+                        <td class="text-center text-nowrap">@employee.StartDate.ToShortDateString()</td>
+                        <td class="text-center text-nowrap">@employee.TerminationDate?.ToShortDateString()</td>
+                        <td class="text-center text-nowrap">
+                            <div class="dropdown">
+                                <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownRoles" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Roles
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownRoles">
+                                    @foreach (var role in employee.Roles)
+                                    {
+                                        <li><a class="dropdown-item">@role</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="text-center text-nowrap">
+                            <div class="d-flex justify-content-end flex-nowrap">
+                                <a asp-action="EditEmployee" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-primary btn-sm m-1">Edit</a>
+                                <a asp-action="ViewEmployeeActivity" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-secondary btn-sm m-1">View Activity</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+        padding: 0.75rem;
+    }
+</style>

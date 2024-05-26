@@ -1,0 +1,74 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LibraryManagement.styles.css" asp-append-version="true" />
+   
+    <style>
+        .input-group .input-group-append .btn {
+            border-left: none;
+        }
+    </style>
+    <style>
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        @await Component.InvokeAsync("Navigation")
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        // Show dropdown on hover
+        $('.nav-item.dropdown').hover(function () {
+            $(this).children('.dropdown-menu').addClass('show');
+        }, function () {
+            $(this).children('.dropdown-menu').removeClass('show');
+        });
+
+        // Show nested dropdown on hover
+        $('.dropdown-submenu').hover(function () {
+            $(this).children('.dropdown-menu').addClass('show');
+        }, function () {
+            $(this).children('.dropdown-menu').removeClass('show');
+        });
+
+        // Handle click to navigate
+        $('a.nav-link, a.dropdown-item').click(function (event) {
+            var targetUrl = $(this).attr('href');
+            if (targetUrl && targetUrl !== '#' && targetUrl !== 'undefined') {
+                window.location.href = targetUrl;
+            }
+        });
+    });
+</script>

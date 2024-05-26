@@ -1,0 +1,140 @@
+﻿@model Nika1337.Library.Presentation.Models.EmployeeAccount.EmployeeProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+    List<SelectListItem> genders = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Male", Value = "Male" },
+        new SelectListItem { Text = "Female", Value = "Female" },
+        new SelectListItem { Text = "Other", Value = "Other" }
+    };
+}
+
+<div class="container pt-5">
+    <form asp-action="EmployeeProfile" asp-controller="EmployeeAccount" method="post" class="needs-validation">
+        <div class="row">
+            <!-- Account Info Card - 1/3 width -->
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <h5 class="card-header">Account Info</h5>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label"></label>
+                            <input asp-for="Username" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Gender" class="form-label"></label>
+                            <select asp-for="Gender" class="form-control" required>
+                                <option value="">Select Gender</option>
+                                @foreach (var gender in genders)
+                                {
+                                    <option value="@gender.Value">@gender.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Card - 1/3 width -->
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <h5 class="card-header">Address</h5>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Country" class="form-label"></label>
+                            <input asp-for="Country" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="State" class="form-label"></label>
+                            <input asp-for="State" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="City" class="form-label"></label>
+                            <input asp-for="City" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Street" class="form-label"></label>
+                            <input asp-for="Street" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PostalCode" class="form-label"></label>
+                            <input asp-for="PostalCode" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Read Only Info Card - 1/3 width -->
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <h5 class="card-header">Read Only Info</h5>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="DateOfBirth" class="form-label"></label>
+                            <input asp-for="DateOfBirth" class="form-control" type="date" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdNumber" class="form-label"></label>
+                            <input asp-for="IdNumber" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Salary" class="form-label"></label>
+                            <input asp-for="Salary" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="StartDate" class="form-label"></label>
+                            <input asp-for="StartDate" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-dark mt-3">Update Profile</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}
