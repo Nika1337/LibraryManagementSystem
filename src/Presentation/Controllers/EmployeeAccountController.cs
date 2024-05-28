@@ -16,16 +16,13 @@ public class EmployeeAccountController : Controller
 {
     private readonly IEmployeeAuthenticationService _employeeAuthenticationService;
     private readonly IEmployeeService _employeeService;
-    private readonly IAppLogger<EmployeeAccountController> _logger;
 
     public EmployeeAccountController(
         IEmployeeAuthenticationService employeeAuthenticationService,
-        IEmployeeService employeeService,
-        IAppLogger<EmployeeAccountController> logger)
+        IEmployeeService employeeService)
     {
         _employeeAuthenticationService = employeeAuthenticationService;
         _employeeService = employeeService;
-        _logger = logger;
     }
 
     [AllowAnonymous]
@@ -74,20 +71,19 @@ public class EmployeeAccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SignOut()
+    public new async Task<IActionResult> SignOut()
     {
-        base.SignOut();
         await _employeeAuthenticationService.SignOutAsync();
 
         return RedirectToAction("SigIn");
     }
 
     [HttpGet]
-    public async Task<IActionResult> EmployeeProfile()
+    public async Task<IActionResult> Profile()
     {
         var employee = await _employeeService.GetEmployeeAsync(User);
 
-        var model = new EmployeeProfileViewModel
+        var model = new EmployeePersonalProfileViewModel
         {
             FirstName = employee.FirstName,
             LastName = employee.LastName,
@@ -109,8 +105,13 @@ public class EmployeeAccountController : Controller
         return View(model);
     }
     [HttpPost]
-    public async Task<IActionResult> EmployeeProfile(EmployeeProfileViewModel model)
+    public async Task<IActionResult> Profile(EmployeePersonalProfileViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
         var employee = await _employeeService.GetEmployeeAsync(User);
 
         employee.FirstName = model.FirstName;
@@ -129,10 +130,118 @@ public class EmployeeAccountController : Controller
 
         var username = User?.Identity?.Name ?? throw new ApplicationException("Current User's name is null");
 
-        await _employeeService.UpdateEmployee(username, employee);
+        try
+        {
+            await _employeeService.UpdateEmployee(username, employee);
+        } catch (DuplicateException)
+        {
+            model.ErrorMessage = $"Username '{model.Username}' is taken";
+            return View(model);
+        }
+        
 
-        _logger.LogInformation("Employee with Username {0} updated their profile", username);
 
         return View(model);
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult ForgotPassword()
+    {
+        var model = new ForgotPasswordViewModel();
+
+        return View(model);
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+    {
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
+        var controllerName = nameof(EmployeeAccountController).Replace("Controller", "");
+        var actionName = nameof(ResetPassword);
+
+        var resetPasswordUrl = $"{baseUrl}/{controllerName}/{actionName}";
+
+        await _employeeAuthenticationService.ForgotPasswordAsync(model.Email, resetPasswordUrl);
+
+        return RedirectToAction(nameof(EmailSuccesfullySent));
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult EmailSuccesfullySent()
+    {
+        return View();
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult ResetPassword(string token, string username)
+    {
+        var model = new ResetPasswordViewModel
+        {
+            Token = token,
+            Username = username
+        };
+
+        return View(model);
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            await _employeeAuthenticationService.ResetPasswordAsync(model.Username, model.Token, model.NewPassword);
+        }
+        catch(PasswordStructureValidationException ex)
+        {
+            model.ErrorMessage = ex.Message;
+            return View(model);
+        }
+
+        return RedirectToAction(nameof(SignIn));
+    }
+
+    [HttpGet]
+    public IActionResult ChangePassword()
+    {
+        var model = new ChangePasswordViewModel();
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var employee = await _employeeService.GetEmployeeAsync(User);
+
+        try
+        {
+            await _employeeAuthenticationService.ChangePasswordAsync(employee.Username, model.CurrentPassword, model.NewPassword);
+        } catch (PasswordIncorrectException)
+        {
+            model.ErrorMessage = "Current password is incorrect";
+            return View(model);
+        } catch(PasswordStructureValidationException ex)
+        { 
+            model.ErrorMessage = ex.Message;
+            return View(model);
+        }
+
+        return RedirectToAction(nameof(Profile));
     }
 }

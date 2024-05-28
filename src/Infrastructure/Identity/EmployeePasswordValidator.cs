@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Infrastructure.Identity;
 
 
-public class EmployeePasswordValidator : IPasswordValidator<IdentityEmployee>
+internal class EmployeePasswordValidator : IPasswordValidator<IdentityEmployee>
 {
     public Task<IdentityResult> ValidateAsync(UserManager<IdentityEmployee> manager, IdentityEmployee user, string? password)
     {

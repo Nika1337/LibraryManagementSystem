@@ -13,6 +13,5 @@ public record EmployeeViewModel
     public required DateTime DateOfBirth { get; set; }
     public required string IdNumber { get; set; }
     public DateTime StartDate { get; set; }
-    public DateTime? TerminationDate { get; set; }
-    public List<string> Roles { get; set; } = [];
+    public required bool IsActive { get; set; }
 }

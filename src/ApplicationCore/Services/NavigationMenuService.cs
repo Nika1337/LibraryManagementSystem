@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Identity.Services;
 
-public class NavigationMenuService(IEmployeeService employeeService) : INavigationMenuService
+public class NavigationMenuService : INavigationMenuService
 {
-    private readonly IEmployeeService _employeeService = employeeService;
+    private readonly IEmployeeService _employeeService;
+
+    public NavigationMenuService(IEmployeeService employeeService)
+    {
+        _employeeService = employeeService;
+    }
 
     public async Task<ICollection<NavigationMenuItem>> GetPermittedNavigationMenuItemsFor(string userName)
     {

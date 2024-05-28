@@ -9,5 +9,4 @@ public class ForgotPasswordViewModel
     [EmailAddress]
     [DisplayName("Email")]
     public string Email { get; set; }
-    public bool WasEmailSent { get; set; }
 }

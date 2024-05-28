@@ -5,6 +5,7 @@ namespace Nika1337.Library.Presentation.Validation.Password;
 
 public class PasswordRequiresUppercaseAttribute : ValidationAttribute
 {
+    public string GetErrorMessage() => "Password must contain at least one uppercase letter ('A'-'Z').";
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
         var password = value as string;
@@ -13,6 +14,6 @@ public class PasswordRequiresUppercaseAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        return new ValidationResult("Password must contain at least one uppercase letter ('A'-'Z').");
+        return new ValidationResult(GetErrorMessage());
     }
 }

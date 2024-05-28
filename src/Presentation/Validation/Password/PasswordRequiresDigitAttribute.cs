@@ -5,6 +5,7 @@ namespace Nika1337.Library.Presentation.Validation.Password;
 
 public class PasswordRequiresDigitAttribute : ValidationAttribute
 {
+    public string GetErrorMessage() => "Password must contain at least one digit ('0'-'9').";
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
         var password = value as string;
@@ -13,6 +14,6 @@ public class PasswordRequiresDigitAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        return new ValidationResult("Password must contain at least one digit ('0'-'9').");
+        return new ValidationResult(GetErrorMessage());
     }
 }

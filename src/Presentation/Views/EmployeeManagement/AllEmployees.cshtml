@@ -4,74 +4,134 @@
     ViewData["Title"] = "Employees";
 }
 
-<div class="d-flex justify-content-center vh-100 m-5">
-    <div class="container" style="width: fit-content">
-        <h2 class="text-center m-3">@ViewData["Title"]</h2>
+<div class="container mt-5">
+    <h2 class="text-center m-3">@ViewData["Title"]</h2>
 
-        <div class="d-flex justify-content-end mb-3">
-            <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-success">Register New Employee</a>
+    <div class="row">
+        <div class="col-12 mb-4 d-flex justify-content-end">
+            <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-success btn-lg shadow-sm register-btn">
+                Register New Employee
+            </a>
         </div>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th class="text-center text-nowrap">First Name</th>
-                    <th class="text-center text-nowrap">Last Name</th>
-                    <th class="text-center text-nowrap">Username</th>
-                    <th class="text-center text-nowrap">Email</th>
-                    <th class="text-center text-nowrap">Phone Number</th>
-                    <th class="text-center text-nowrap">Date of Birth</th>
-                    <th class="text-center text-nowrap">Start Date</th>
-                    <th class="text-center text-nowrap">Termination Date</th>
-                    <th class="text-center text-nowrap">Roles</th>
-                    <th class="text-center text-nowrap">Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var employee in Model)
-                {
-                    <tr>
-                        <td class="text-center text-nowrap">@employee.FirstName</td>
-                        <td class="text-center text-nowrap">@employee.LastName</td>
-                        <td class="text-center text-nowrap">@employee.Username</td>
-                        <td class="text-center text-nowrap">@employee.Email</td>
-                        <td class="text-center text-nowrap">@employee.PhoneNumber</td>
-                        <td class="text-center text-nowrap">@employee.DateOfBirth.ToShortDateString()</td>
-                        <td class="text-center text-nowrap">@employee.StartDate.ToShortDateString()</td>
-                        <td class="text-center text-nowrap">@employee.TerminationDate?.ToShortDateString()</td>
-                        <td class="text-center text-nowrap">
-                            <div class="dropdown">
-                                <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownRoles" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Roles
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownRoles">
-                                    @foreach (var role in employee.Roles)
-                                    {
-                                        <li><a class="dropdown-item">@role</a></li>
-                                    }
-                                </ul>
+        @foreach (var employee in Model)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card h-100 shadow-sm d-flex flex-column">
+                    <div class="card-header d-flex justify-content-between align-items-center text-white">
+                        <span class="employee-name">@employee.FirstName @employee.LastName</span>
+                        @if (employee.IsActive)
+                        {
+                            <span class="badge bg-success badge-sm">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger badge-sm">Terminated</span>
+                        }
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="property">
+                            <span class="text-muted">Username:</span>
+                            <span>@employee.Username</span>
+                        </div>
+                        <div class="property">
+                            <span class="text-muted">Email:</span>
+                            <span>@(employee.Email ?? "NaN")</span>
+                        </div>
+                        <div class="property">
+                            <span class="text-muted">Phone Number:</span>
+                            <span>@(employee.PhoneNumber ?? "NaN")</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="property">
+                                <span class="text-muted">Date of Birth:</span>
+                                <span>@employee.DateOfBirth.ToShortDateString()</span>
                             </div>
-                        </td>
-                        <td class="text-center text-nowrap">
-                            <div class="d-flex justify-content-end flex-nowrap">
-                                <a asp-action="EditEmployee" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-primary btn-sm m-1">Edit</a>
-                                <a asp-action="ViewEmployeeActivity" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-secondary btn-sm m-1">View Activity</a>
+                            <div class="property">
+                                <span class="text-muted">Start Date:</span>
+                                <span>@employee.StartDate.ToShortDateString()</span>
                             </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </div>
+                        <div class="mt-auto">
+                            <a asp-action="Profile" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-dark btn-sm btn-block">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
 <style>
-    .table td, .table th {
-        vertical-align: middle;
-        padding: 0.75rem;
+    .card {
+        min-height: 100%;
+        border-radius: 10px;
+    }
+
+    .card-header {
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .employee-name {
+        color: black;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 250px;
+        display: block;
+    }
+
+    .badge {
+        margin-left: 10px;
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    .badge-sm {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    .property {
+        margin-bottom: 10px;
+    }
+
+    .property span {
+        display: block;
+    }
+
+    .text-muted {
+        color: #6c757d;
+        font-size: 0.8rem;
+    }
+
+    .btn-block {
+        width: 100%;
+    }
+
+    .container {
+        margin-top: 30px;
+    }
+
+    .card {
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+    .register-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
     }
 </style>

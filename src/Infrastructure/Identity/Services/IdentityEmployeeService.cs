@@ -13,20 +13,17 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Identity.Services;
 
-public class IdentityEmployeeService : IEmployeeService
+internal class IdentityEmployeeService : IEmployeeService
 {
     private readonly RoleManager<IdentityEmployeeRole> _roleManager;
     private readonly UserManager<IdentityEmployee> _userManager;
-    private readonly IAppLogger<IdentityEmployeeService> _logger;
 
     public IdentityEmployeeService(
         RoleManager<IdentityEmployeeRole> roleManager,
-        UserManager<IdentityEmployee> userManager,
-        IAppLogger<IdentityEmployeeService> appLogger)
+        UserManager<IdentityEmployee> userManager)
     {
         _roleManager = roleManager;
         _userManager = userManager;
-        _logger = appLogger;
     }
 
     public Task<IEnumerable<EmployeeRole>> GetAllEmployeeRolesAsync()
@@ -79,6 +76,11 @@ public class IdentityEmployeeService : IEmployeeService
     public async Task UpdateEmployee(string oldUsername, Employee employee)
     {
         var identityEmployee = await _userManager.FindByNameAsync(oldUsername) ?? throw new EmployeeNotFoundException(oldUsername);
+
+        if (oldUsername != employee.Username && await _userManager.FindByNameAsync(employee.Username) is not null)
+        {
+            throw new DuplicateException($"Employee with username '{employee.Username}' already exists");
+        }
 
         identityEmployee.FirstName = employee.FirstName;
         identityEmployee.LastName = employee.LastName;

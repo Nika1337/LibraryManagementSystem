@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mailjet.Client;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Nika1337.Library.ApplicationCore.Abstractions;
+using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.ApplicationCore.Services;
 using Nika1337.Library.Infrastructure.Data;
 using Nika1337.Library.Infrastructure.Identity;
 using Nika1337.Library.Infrastructure.Identity.Entities;
@@ -30,6 +34,7 @@ public static class Dependencies
         services.AddIdentity<IdentityEmployee, IdentityEmployeeRole>(o =>
         {
             o.Stores.MaxLengthForKeys = 128;
+            o.User.RequireUniqueEmail = true;
         })
             .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders()
@@ -60,8 +65,22 @@ public static class Dependencies
         services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
         services.AddScoped<IEmployeeAuthenticationService, IdentityEmployeeAuthenticationService>();
         services.AddScoped<IEmployeeService, IdentityEmployeeService>();
+
+        services.AddScoped<IMailjetClient>(provider =>
+        {
+            var apiKey = configuration["MailjetConfiguration:MailjetApiKey"];
+            var secretKey = configuration["MailjetConfiguration:MailjetSecretKey"];
+            return new MailjetClient(apiKey, secretKey);
+        });
+
         services.AddTransient<IEmailSender, MailJetEmailSender>();
-        services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+        
+        services.AddScoped<IEmailService, EmailService>();
+
+        services.AddScoped<IRepository<EmailTemplate>, IdentityEfRepository<EmailTemplate>>();
+        services.AddScoped<IReadRepository<EmailTemplate>, IdentityEfRepository<EmailTemplate>>();
+
+        services.AddScoped(typeof(IRepository<>), typeof(LibraryEfRepository<>));
+        services.AddScoped(typeof(IReadRepository<>), typeof(LibraryEfRepository<>));
     }
 }

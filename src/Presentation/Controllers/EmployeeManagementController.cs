@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models;
 using System;
 using System.Collections.Generic;
@@ -15,15 +15,12 @@ namespace Nika1337.Library.Presentation.Controllers;
 [Route("[controller]/[action]")]
 public class EmployeeManagementController : Controller
 {
-    private readonly IAppLogger<EmployeeManagementController> _logger;
     private readonly IEmployeeAuthenticationService _employeeAuthenticationService;
     private readonly IEmployeeService _employeeService;
     public EmployeeManagementController(
-        IAppLogger<EmployeeManagementController> logger,
         IEmployeeAuthenticationService employeeAuthenticationService,
         IEmployeeService employeeService)
     {
-        _logger = logger;
         _employeeAuthenticationService = employeeAuthenticationService;
         _employeeService = employeeService;
     }
@@ -31,14 +28,14 @@ public class EmployeeManagementController : Controller
     [HttpGet]
     public async Task<IActionResult> RegisterEmployee()
     {
-        var avaliableRoleSelectListItems = await GetAvaliableRoleSelectListItems();
+        var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
 
-        var viewModel = new EmployeeRegistrationViewModel
+        var model = new EmployeeRegistrationViewModel
         {
-            AvailableRoles = avaliableRoleSelectListItems
+            AvailableRoles = avaliableRoleNames
         };
 
-        return View(viewModel);
+        return View(model);
     }
 
     [HttpPost]
@@ -66,21 +63,19 @@ public class EmployeeManagementController : Controller
 
         await _employeeAuthenticationService.RegisterEmployee(employee);
 
-        _logger.LogInformation("New employee has been registered");
-
         return RedirectToAction("AllEmployees");
     }
 
     [HttpGet("{username}")]
-    public async Task<IActionResult> EditEmployee(string username)
+    public async Task<IActionResult> Profile(string username)
     {
         var employee = await _employeeService.GetEmployeeAsync(username);
 
-        var avaliableRoleSelectListItems = await GetAvaliableRoleSelectListItems();
+        var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
 
         var selectedRoles = employee.Roles.Select(role => role.Name);
 
-        var model = new EmployeeEditViewModel {
+        var model = new EmployeeProfileViewModel {
             FirstName = employee.FirstName,
             LastName = employee.LastName,
             NewUsername = employee.Username,
@@ -90,20 +85,28 @@ public class EmployeeManagementController : Controller
             StartDate = employee.StartDate,
             TerminationDate = employee.TerminationDate,
             SelectedRoles = selectedRoles.ToList(),
-            AvailableRoles = avaliableRoleSelectListItems
+            AvailableRoles = avaliableRoleNames,
+            Country = employee.Address?.Country,
+            State = employee.Address?.State,
+            City = employee.Address?.City,
+            Street = employee.Address?.Street,
+            PostalCode = employee.Address?.PostalCode,
+            Gender = employee.Gender,
+            Email = employee.Email,
+            PhoneNumber = employee.PhoneNumber
         };
 
         return View(model);
     }
 
     [HttpPost("{username}")]
-    public async Task<IActionResult> EditEmployee(string username, EmployeeEditViewModel model)
+    public async Task<IActionResult> Profile(string username, EmployeeProfileViewModel model)
     {
         if (!ModelState.IsValid)
         {
             return View(model);
         }
-
+        Console.WriteLine($"{username} want to change to {model.NewUsername}");
         var existingEmployee = await _employeeService.GetEmployeeAsync(username);
 
         var selectedRoles = await _employeeService.GetEmployeeRolesByRoleNames(model.SelectedRoles);
@@ -116,9 +119,14 @@ public class EmployeeManagementController : Controller
         existingEmployee.Salary = model.Salary;
         existingEmployee.Roles = selectedRoles.ToArray();
 
-        await _employeeService.UpdateEmployee(username, existingEmployee);
-
-        _logger.LogInformation("Employee with Username {0} has been updated by {1}", existingEmployee.Username, User?.Identity?.Name ?? "Unknown HR Manager");
+        try
+        {
+            await _employeeService.UpdateEmployee(username, existingEmployee);
+        } catch(DuplicateException)
+        {
+            model.ErrorMessage = $"Username '{model.NewUsername}' is taken";
+            return View(model);
+        }
 
         return RedirectToAction("AllEmployees");
     }
@@ -132,7 +140,6 @@ public class EmployeeManagementController : Controller
         existingEmployee.TerminationDate = existingEmployee.TerminationDate == null ? DateTime.UtcNow : null;
         await _employeeService.UpdateEmployee(username, existingEmployee);
 
-        _logger.LogInformation("Employee with Username {0} has been terminated", username);
 
         return Ok();
     }
@@ -154,20 +161,15 @@ public class EmployeeManagementController : Controller
                 PhoneNumber = employee.PhoneNumber,
                 Email = employee.Email,
                 StartDate = employee.StartDate,
-                TerminationDate = employee.TerminationDate,
-                Roles = employee.Roles.Select(role => role.Name).ToList()
+                IsActive = employee.TerminationDate is null
             });
 
         return View(model);
     }
 
-    private async Task<List<SelectListItem>> GetAvaliableRoleSelectListItems()
+    private async Task<List<string>> GetAvaliableRoleSelectListItems()
     {
         var avaliableRoles = await _employeeService.GetAllEmployeeRolesAsync();
-        return avaliableRoles.Select(role => new SelectListItem
-        {
-            Value = role.Name,
-            Text = role.Name
-        }).ToList();
+        return avaliableRoles.Select(role => role.Name).ToList();
     }
 }

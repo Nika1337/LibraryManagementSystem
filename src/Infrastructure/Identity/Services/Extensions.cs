@@ -12,10 +12,11 @@ internal static class Extensions
 {
     internal static Employee ToEmployee(this IdentityEmployee identityEmployee, ICollection<EmployeeRole> roles)
     {
-        var employee = new Employee { 
+        var employee = new Employee
+        {
             FirstName = identityEmployee.FirstName,
             LastName = identityEmployee.LastName,
-            Username = identityEmployee.UserName,
+            Username = identityEmployee.UserName!,
             IdNumber = identityEmployee.IdNumber,
             DateOfBirth = identityEmployee.DateOfBirth,
             Salary = identityEmployee.Salary,
@@ -37,7 +38,6 @@ internal static class Extensions
         RoleManager<IdentityEmployeeRole> roleManager)
     {
         var identityEmployeeRoleNames = await userManager.GetRolesAsync(identityEmployee);
-
         var identityEmployeeRoles = roleManager.Roles
             .Include(role => role.NavigationMenuItems)
             .Where(role => identityEmployeeRoleNames.Contains(role.Name!));
@@ -81,7 +81,8 @@ internal static class Extensions
 
     internal static IdentityEmployeeRole ToIdentityEmployeeRole(this EmployeeRole employeeRole)
     {
-        var identityEmployeeRole = new IdentityEmployeeRole {
+        var identityEmployeeRole = new IdentityEmployeeRole
+        {
             Name = employeeRole.Name,
             NavigationMenuItems = employeeRole.PermittedNavigationMenuItems
         };

@@ -14,12 +14,14 @@
                         <div class="form-group">
                             <label asp-for="FirstName"></label>
                             <input asp-for="FirstName" class="form-control" required>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-group">
                             <label asp-for="LastName"></label>
                             <input asp-for="LastName" class="form-control" required>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -30,6 +32,7 @@
                         <div class="form-group">
                             <label asp-for="Username"></label>
                             <input asp-for="Username" class="form-control" required>
+                            <span asp-validation-for="Username" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -37,6 +40,7 @@
                         <div class="form-group">
                             <label asp-for="IdNumber"></label>
                             <input asp-for="IdNumber" class="form-control" required>
+                            <span asp-validation-for="IdNumber" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -47,6 +51,7 @@
                         <div class="form-group">
                             <label asp-for="DateOfBirth"></label>
                             <input asp-for="DateOfBirth" class="form-control" type="date" required>
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -54,6 +59,7 @@
                         <div class="form-group">
                             <label asp-for="Salary"></label>
                             <input asp-for="Salary" class="form-control" required>
+                            <span asp-validation-for="Salary" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -67,10 +73,12 @@
                                 @foreach (var role in Model.AvailableRoles)
                                 {
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="@role.Value" name="SelectedRoles" value="@role.Value">
-                                        <label class="form-check-label" for="@role.Value">@role.Text</label>
+                                        <input type="hidden" asp-for="AvailableRoles" value="@role">
+                                        <input class="form-check-input" type="checkbox" id="@role" name="SelectedRoles" value="@role" @(Model.SelectedRoles.Contains(role) ? "checked" : "")>
+                                        <label class="form-check-label" for="@role">@role</label>
                                     </div>
                                 }
+                                <span asp-validation-for="SelectedRoles" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -86,19 +94,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                var form = document.getElementsByClassName('needs-validation')[0];
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            }, false);
-        })();
-    </script>
 }

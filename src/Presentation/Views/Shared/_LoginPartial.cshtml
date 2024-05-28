@@ -4,15 +4,10 @@
 @if (Context?.User?.Identity?.IsAuthenticated == true)
 {
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" asp-controller="EmployeeAccount" asp-action="EmployeeProfile">
+        <a class="nav-link dropdown-toggle" asp-controller="EmployeeAccount" asp-action="Profile">
             @Context?.User?.Identity?.Name
         </a>
         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-start">
-            <li>
-                <a class="dropdown-item" asp-controller="EmployeeAccount" asp-action="EmployeeProfile">
-                    Profile
-                </a>
-            </li>
             <li>
                 <a class="dropdown-item" asp-controller="EmployeeAccount" asp-action="ChangePassword">
                     Change Password
@@ -23,9 +18,10 @@
                     Change Email
                 </a>
             </li>
+            <li><hr class="dropdown-divider"></li>
             <li>
                 <form asp-controller="EmployeeAccount" asp-action="SignOut" method="post" class="form-inline">
-                    <button type="submit" class="btn btn-link dropdown-item">Sign Out</button>
+                    <button type="submit" class="btn btn-link dropdown-item" style="color: red;">Sign Out</button>
                 </form>
             </li>
         </ul>

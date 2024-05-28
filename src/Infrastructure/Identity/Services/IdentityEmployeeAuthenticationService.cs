@@ -2,32 +2,35 @@
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
+using Nika1337.Library.Infrastructure.Identity;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Nika1337.Library.Infrastructure.Identity.Services;
 
 
-public class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationService
+internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationService
 {
     private static readonly string _temporaryPassword = "AppleOrange.1234";
     private readonly SignInManager<IdentityEmployee> _signInManager;
     private readonly UserManager<IdentityEmployee> _userManager;
     private readonly RoleManager<IdentityEmployeeRole> _roleManager;
-    private readonly IAppLogger<IdentityEmployeeAuthenticationService> _appLogger;
+    private readonly IEmailService _emailService;
 
     public IdentityEmployeeAuthenticationService(
         SignInManager<IdentityEmployee> signInManager,
         UserManager<IdentityEmployee> userManager,
         RoleManager<IdentityEmployeeRole> roleManager,
-        IAppLogger<IdentityEmployeeAuthenticationService> appLogger)
+        IEmailService emailService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _roleManager = roleManager;
-        _appLogger = appLogger;
+        _emailService = emailService;
     }
 
     public async Task RegisterEmployee(Employee employee)
@@ -44,7 +47,8 @@ public class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationServ
         var identityEmployeeRoles = _roleManager.Roles.Where(role => identityEmployeeRoleNames.Contains(role.Name));
 
 
-        var identityEmployee = new IdentityEmployee {
+        var identityEmployee = new IdentityEmployee
+        {
             FirstName = employee.FirstName,
             LastName = employee.LastName,
             UserName = employee.Username,
@@ -58,10 +62,6 @@ public class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationServ
 
         if (!registrationResult.Succeeded)
         {
-            foreach (var item in registrationResult.Errors)
-            {
-                _appLogger.LogWarning(item.Description);
-            }
             throw new ApplicationException($"Unable to register employee with username '{identityEmployee.UserName}'");
         }
 
@@ -69,10 +69,6 @@ public class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationServ
 
         if (!roleAdditionResult.Succeeded)
         {
-            foreach (var item in roleAdditionResult.Errors)
-            {
-                _appLogger.LogWarning(item.Description);
-            }
             throw new ApplicationException($"Unable to Add roles to employee with username '{identityEmployee.UserName}'");
         }
     }
@@ -150,5 +146,23 @@ public class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationServ
     public async Task SignOutAsync()
     {
         await _signInManager.SignOutAsync();
+    }
+
+    public async Task ForgotPasswordAsync(string email, string resetPasswordUrl)
+    {
+        var identityEmployee = await _userManager.FindByEmailAsync(email);
+
+        if (identityEmployee == null)
+        {
+            return;
+        }
+
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(identityEmployee);
+
+        var encodedToken = HttpUtility.UrlEncode(resetToken);
+
+        var resetPasswordHref = $"{resetPasswordUrl}?token={resetToken}&username={identityEmployee.UserName}";
+
+        await _emailService.SendEmailAsync(email, "Forgot Password", new { Href = resetPasswordHref });
     }
 }

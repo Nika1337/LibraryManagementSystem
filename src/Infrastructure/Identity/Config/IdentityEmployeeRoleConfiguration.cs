@@ -24,8 +24,8 @@ internal class IdentityEmployeeRoleConfiguration : IEntityTypeConfiguration<Iden
             new IdentityEmployeeRole
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR"
+                Name = "Operations Manager",
+                NormalizedName = "OPERATIONS MANAGER"
             },
             []
         },

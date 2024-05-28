@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Nika1337.Library.Infrastructure.Identity.Entities;
 
-public class IdentityEmployee : IdentityUser
+internal class IdentityEmployee : IdentityUser
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }

@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Identity;
 
-public class OptionalEmailUserValidator<TUser> : UserValidator<TUser> where TUser : class
+internal class OptionalEmailUserValidator<TUser> : UserValidator<TUser> where TUser : class
 {
     public OptionalEmailUserValidator(IdentityErrorDescriber errors) : base(errors)
     {
