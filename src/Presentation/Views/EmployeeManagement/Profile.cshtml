@@ -1,4 +1,4 @@
-﻿@model Nika1337.Library.Presentation.Models.EmployeeProfileViewModel
+﻿@model Nika1337.Library.Presentation.Models.EmployeeManagement.EmployeeProfileViewModel
 @{
     ViewData["Title"] = "Edit Employee";
     var username = (string)ViewContext.RouteData.Values["username"];
@@ -6,7 +6,7 @@
     var actionButtonClass = Model.TerminationDate == null ? "btn-danger" : "btn-warning";
 }
 
-<div class="container pt-5">
+<div class="container-fluid pt-5">
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
         <div class="d-flex flex-column align-items-center">

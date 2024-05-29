@@ -4,6 +4,7 @@ using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models;
+using Nika1337.Library.Presentation.Models.EmployeeManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;

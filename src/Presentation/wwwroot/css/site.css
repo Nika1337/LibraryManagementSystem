@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.btn-primary {
+    border-color: darkgoldenrod;
+    background-color: darkgoldenrod;
+}

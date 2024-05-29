@@ -76,6 +76,8 @@ public static class Dependencies
         services.AddTransient<IEmailSender, MailJetEmailSender>();
         
         services.AddScoped<IEmailService, EmailService>();
+        
+        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 
         services.AddScoped<IRepository<EmailTemplate>, IdentityEfRepository<EmailTemplate>>();
         services.AddScoped<IReadRepository<EmailTemplate>, IdentityEfRepository<EmailTemplate>>();

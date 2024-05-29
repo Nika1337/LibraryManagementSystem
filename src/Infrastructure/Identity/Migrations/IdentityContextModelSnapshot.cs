@@ -39,17 +39,17 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            IdentityEmployeeRoleId = "ae28ed92-f864-4fff-8a2b-9bde35f51793",
+                            IdentityEmployeeRoleId = "1e6d39a6-f97b-4557-8d85-98804bf86d43",
                             NavigationMenuItemsId = 1
                         },
                         new
                         {
-                            IdentityEmployeeRoleId = "ae28ed92-f864-4fff-8a2b-9bde35f51793",
+                            IdentityEmployeeRoleId = "1e6d39a6-f97b-4557-8d85-98804bf86d43",
                             NavigationMenuItemsId = 2
                         },
                         new
                         {
-                            IdentityEmployeeRoleId = "ae28ed92-f864-4fff-8a2b-9bde35f51793",
+                            IdentityEmployeeRoleId = "1e6d39a6-f97b-4557-8d85-98804bf86d43",
                             NavigationMenuItemsId = 3
                         });
                 });
@@ -166,17 +166,33 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.EmailTemplate", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BriefDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FromEmail")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -377,31 +393,31 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ae28ed92-f864-4fff-8a2b-9bde35f51793",
+                            Id = "1e6d39a6-f97b-4557-8d85-98804bf86d43",
                             Name = "Human Resources Manager",
                             NormalizedName = "HUMAN RESOURCES MANAGER"
                         },
                         new
                         {
-                            Id = "628cfb77-839d-4b02-b8a1-d476ad3a632b",
+                            Id = "86e1364a-9779-446d-b486-c86f8984c40f",
                             Name = "Operations Manager",
                             NormalizedName = "OPERATIONS MANAGER"
                         },
                         new
                         {
-                            Id = "e6f08673-90d1-445f-a129-a251409059af",
+                            Id = "61b34157-227a-4f0c-b771-b9ec4f6098e4",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
-                            Id = "4fd566f2-a166-4d32-9514-af55bd4dbf3b",
+                            Id = "5f0e97c0-14af-4fd5-891a-5b2492a579eb",
                             Name = "Core Librarian",
                             NormalizedName = "CORE LIBRARIAN"
                         },
                         new
                         {
-                            Id = "f4ebfc16-cd84-47f8-8d9a-07e258ec7f39",
+                            Id = "0c5928ec-c34b-4f00-995b-605dd3a92084",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
                         });

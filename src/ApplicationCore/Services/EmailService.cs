@@ -1,9 +1,9 @@
 ﻿using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
-using Nika1337.Library.ApplicationCore.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -12,14 +12,14 @@ namespace Nika1337.Library.ApplicationCore.Services;
 public class EmailService : IEmailService
 {
     private readonly IEmailSender _emailSender;
-    private readonly IRepository<EmailTemplate> _emailTemplateRepository;
+    private readonly IEmailTemplateService _emailTemplateService;
 
     public EmailService(
         IEmailSender emailSender,
-        IRepository<EmailTemplate> emailTemplateRepository)
+        IEmailTemplateService emailTemplateService)
     {
         _emailSender = emailSender;
-        _emailTemplateRepository = emailTemplateRepository;
+        _emailTemplateService = emailTemplateService;
     }
 
     public async Task SendEmailAsync(string toEmail, string templateName, object templateContent)
@@ -33,8 +33,7 @@ public class EmailService : IEmailService
 
     private async Task<EmailTemplate> GetTemplate(string templateName)
     {
-        return await _emailTemplateRepository.SingleOrDefaultAsync(new EmailTemplateSpecification(templateName)) ?? 
-            throw new ApplicationException($"No Email Template with name '{templateName}' exists");
+        return await _emailTemplateService.GetEmailTemplateByNameAsync(templateName);
     }
 
     private static string FormatEmailBody(EmailTemplate template, object templateContent)
@@ -51,7 +50,15 @@ public class EmailService : IEmailService
 
         var propertyDict = properties.ToDictionary(p => p.Name, p => p);
 
+        var placeholderValues = ExtractPlaceholderValues(matches, propertyDict, templateContent);
 
+        var body = ReplacePlaceholderValues(template.Body, placeholderValues);
+
+        return body;
+    }
+
+    private static Dictionary<string, string> ExtractPlaceholderValues(IEnumerable<Match> matches, Dictionary<string, PropertyInfo> properties, object templateContent)
+    {
         // Create a dictionary to hold placeholder-value pairs
         var placeholderValues = new Dictionary<string, string>();
 
@@ -61,7 +68,7 @@ public class EmailService : IEmailService
             var placeholder = match.Groups[1].Value;
 
 
-            if (propertyDict.TryGetValue(placeholder, out var propertyInfo))
+            if (properties.TryGetValue(placeholder, out var propertyInfo))
             {
                 // Get value of property in templateContent
                 var value = (string)propertyInfo.GetValue(templateContent)!;
@@ -72,15 +79,16 @@ public class EmailService : IEmailService
                 throw new ArgumentException($"The placeholder '{placeholder}' does not have a corresponding property in the provided content.");
             }
         }
+        return placeholderValues;
+    }
 
-
-        // Replace placeholders in the body
-        var body = template.Body;
+    private static string ReplacePlaceholderValues(string body, Dictionary<string, string> placeholderValues)
+    {
+        var modifiedBody = body;
         foreach (var kvp in placeholderValues)
         {
-            body = body.Replace(kvp.Key, kvp.Value);
+            modifiedBody = modifiedBody.Replace(kvp.Key, kvp.Value);
         }
-
-        return body;
+        return modifiedBody;
     }
 }
