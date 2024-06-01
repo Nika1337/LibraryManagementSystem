@@ -1,18 +1,38 @@
 ﻿
 
 using System;
+using System.ComponentModel;
 
 namespace Nika1337.Library.Presentation.Models.Operations;
 
 public class DetailedEmailTemplateViewModel
 {
     public required int Id { get; set; }
+
+    [DisplayName("Name")]
     public required string Name { get; set; }
+
+    [DisplayName("Brief Description")]
     public required string BriefDescription { get; set; }
+
+    [DisplayName("Subject")]
     public required string Subject { get; set; }
+
+    [DisplayName("From Email")]
     public required string FromEmail { get; set; }
+
+    [DisplayName("Separator")]
+    public required string Separator { get; set; }
+
+    [DisplayName("Body")]
     public required string Body { get; set; }
-    public required DateTime CreatedDate { get; set; }
+
+    [DisplayName("Creation Date")]
+    public required DateTime CreationDate { get; set; }
+
+    [DisplayName("Last Updated Date")]
     public required DateTime LastUpdatedDate {  get; set; }
+
+    [DisplayName("Deleted Date")]
     public required DateTime? DeletedDate {  get; set; }
 }

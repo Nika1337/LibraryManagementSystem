@@ -6,14 +6,12 @@
 
 <div class="container-fluid p-5">
     <h2 class="text-center m-3">@ViewData["Title"]</h2>
-
+    <div class="fab-container">
+        <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-primary btn-lg shadow-sm fab">
+            Register Employee
+        </a>
+    </div>
     <div class="row">
-        <div class="col-12 mb-4 d-flex justify-content-end">
-            <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-primary btn-lg shadow-sm register-btn">
-                Register Employee
-            </a>
-        </div>
-
         @foreach (var employee in Model)
         {
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4">
@@ -66,7 +64,8 @@
     <partial name="_ValidationScriptsPartial" />
 }
 
-<style>
+@section Styles {
+    <style>
     .card {
         min-height: 100%;
         border-radius: 10px;
@@ -128,10 +127,4 @@
         transform: scale(1.02);
     }
 
-    .register-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-</style>
+</style>}

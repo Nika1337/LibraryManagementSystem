@@ -150,9 +150,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 d-flex flex-column justify-content-end align-items-end mb-3">
-                                <button type="submit" class="btn btn-dark w-100 mb-2" style="min-height: 45px;">Save Changes</button>
-                                <button type="button" class="btn @actionButtonClass w-100" style="min-height: 45px;" data-bs-toggle="modal" data-bs-target="#actionModal">@userAction</button>
+                            <div class="d-flex align-items-end justify-content-end fab-container">
+                               <div class="d-flex flex-column">
+                                    <button type="submit" class="btn btn-primary fab mb-2">Save Changes</button>
+                                    <button type="button" class="btn @actionButtonClass fab" data-bs-toggle="modal" data-bs-target="#actionModal">@userAction</button>
+                               </div>
                             </div>
                         </div>
                     </form>
@@ -168,7 +170,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Confirm Termination</h5>
+                <h5 class="modal-title" id="actionModalLabel">Confirm @userAction</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -191,8 +193,8 @@
             document.getElementById('confirmAction').addEventListener('click', function () {
                 var username = '@username';
                 var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-                fetch(`/EmployeeManagement/ToggleTerminateEmployee/${username}`, {
-                    method: 'DELETE',
+                fetch(`/EmployeeManagement/@(userAction)Employee/${username}`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'RequestVerificationToken': token

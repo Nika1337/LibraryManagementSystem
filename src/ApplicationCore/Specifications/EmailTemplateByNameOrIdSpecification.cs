@@ -8,11 +8,11 @@ public class EmailTemplateByNameOrIdSpecification : SingleResultSpecification<Em
     public EmailTemplateByNameOrIdSpecification(string templateName)
     {
         Query
-            .Where(et => et.Name == templateName && et.DeletedDate == null);
+            .Where(et => et.Name == templateName);
     }
     public EmailTemplateByNameOrIdSpecification(int templateId)
     {
         Query
-            .Where(et => et.Id == templateId && et.DeletedDate == null);
+            .Where(et => et.Id == templateId);
     }
 }

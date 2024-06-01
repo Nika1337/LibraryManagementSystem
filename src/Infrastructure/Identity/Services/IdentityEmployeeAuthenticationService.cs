@@ -122,6 +122,40 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
             throw new ApplicationException($"Unable to change password of employee with username '{username}'");
         }
     }
+
+
+    public async Task ChangeEmailAsync(string username, string email, string confirmEmailUrl)
+    {
+        var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+
+        var changeEmailResult =  await _userManager.SetEmailAsync(existingEmployee, email);
+
+        if (!changeEmailResult.Succeeded)
+        {
+            throw new ApplicationException($"Unable to set emailfor employee with username '{username}'");
+        }
+
+        var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(existingEmployee);
+
+        var encodedToken = HttpUtility.UrlEncode(emailConfirmationToken);
+
+        var confirmEmailHref = $"{confirmEmailUrl}?username={username}&token={encodedToken}";
+
+        await _emailService.SendEmailAsync(email, "Confirm Email", new { Href = confirmEmailHref });
+    }
+    
+    public async Task ConfirmEmailAsync(string username, string token)
+    {
+        var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+
+        var changeEmailResult = await _userManager.ConfirmEmailAsync(existingEmployee, token);
+
+        if (!changeEmailResult.Succeeded)
+        {
+            throw new ApplicationException($"Unable to confirm email for employee with username '{username}'");
+        }
+    }
+
     public async Task ResetPasswordAsync(string username, string token, string newPassword)
     {
         var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
@@ -161,8 +195,9 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         var encodedToken = HttpUtility.UrlEncode(resetToken);
 
-        var resetPasswordHref = $"{resetPasswordUrl}?token={resetToken}&username={identityEmployee.UserName}";
+        var resetPasswordHref = $"{resetPasswordUrl}?token={encodedToken}&username={identityEmployee.UserName}";
 
-        await _emailService.SendEmailAsync(email, "Forgot Password", new { Href = resetPasswordHref });
+        await _emailService.SendEmailAsync(email, "Reset Password", new { Href = resetPasswordHref });
     }
+
 }

@@ -132,13 +132,27 @@ public class EmployeeManagementController : Controller
         return RedirectToAction("AllEmployees");
     }
 
-    [HttpDelete("{username}")]
+    [HttpPost("{username}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ToggleTerminateEmployee(string username)
+    public async Task<IActionResult> TerminateEmployee(string username)
     {
         var existingEmployee = await _employeeService.GetEmployeeAsync(username);
 
-        existingEmployee.TerminationDate = existingEmployee.TerminationDate == null ? DateTime.UtcNow : null;
+        existingEmployee.TerminationDate = DateTime.UtcNow;
+
+        await _employeeService.UpdateEmployee(username, existingEmployee);
+
+        return Ok();
+    }
+
+    [HttpPost("{username}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RenewEmployee(string username)
+    {
+        var existingEmployee = await _employeeService.GetEmployeeAsync(username);
+
+        existingEmployee.StartDate = DateTime.UtcNow;
+        existingEmployee.TerminationDate = existingEmployee.TerminationDate = null;
         await _employeeService.UpdateEmployee(username, existingEmployee);
 
 

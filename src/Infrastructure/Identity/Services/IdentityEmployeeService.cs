@@ -92,6 +92,7 @@ internal class IdentityEmployeeService : IEmployeeService
         identityEmployee.PhoneNumber = employee.PhoneNumber;
         identityEmployee.Email = employee.Email;
         identityEmployee.Address = employee.Address;
+        identityEmployee.StartDate = employee.StartDate;
         identityEmployee.TerminationDate = employee.TerminationDate;
 
         var updateResult = await _userManager.UpdateAsync(identityEmployee);

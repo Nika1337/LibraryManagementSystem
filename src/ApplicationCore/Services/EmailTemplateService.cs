@@ -42,6 +42,17 @@ public class EmailTemplateService : IEmailTemplateService
 
     public async Task UpdateEmailTemplateAsync(EmailTemplate emailTemplate)
     {
+        var specification = new EmailTemplateByNameOrIdSpecification(emailTemplate.Name);
+
+        var existingTemplatesWithSameName = await _repository.SingleOrDefaultAsync(specification);
+
+        if (existingTemplatesWithSameName is not null && existingTemplatesWithSameName.Id != emailTemplate.Id)
+        {
+            throw new DuplicateException($"Email template with name '{emailTemplate.Name}' already exists");
+        }
+
+
+        emailTemplate.LastUpdatedDate = DateTime.UtcNow;
         await _repository.UpdateAsync(emailTemplate);
     }
     public async Task DeleteEmailTemplateAsync(int templateId)
@@ -53,4 +64,12 @@ public class EmailTemplateService : IEmailTemplateService
         await _repository.UpdateAsync(emailTemplate);
     }
 
+    public async Task RenewEmailTemplateAsync(int templateId)
+    {
+        var emailTemplate = await GetEmailTemplateByIdAsync(templateId);
+
+        emailTemplate.DeletedDate = null;
+
+        await _repository.UpdateAsync(emailTemplate);
+    }
 }

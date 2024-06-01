@@ -25,9 +25,11 @@ public class NavigationViewComponent : ViewComponent
         var software = new NavigationMenuItem { Id = 5, Name = "Software", Route = "/software" };
         var hardware = new NavigationMenuItem { Id = 6, Name = "Hardware", Route = "/hardware" };
 
+        hardware.ChildNavigationMenuItems.Add(home);
         // Adding nested items to "Products"
         products.ChildNavigationMenuItems.Add(software);
         products.ChildNavigationMenuItems.Add(hardware);
+   
 
         // Building the menu structure
         menuItems.Add(home);

@@ -8,26 +8,9 @@
 
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LibraryManagement.styles.css" asp-append-version="true" />
-   
-    <style>
-        .input-group .input-group-append .btn {
-            border-left: none;
-        }
-    </style>
-    <style>
-
-        .dropdown-submenu {
-            position: relative;
-        }
-
-        .dropdown-submenu .dropdown-menu {
-            top: 0;
-            left: 100%;
-            margin-top: -1px;
-        }
-    </style>
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>

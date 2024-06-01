@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Nika1337.Library.Presentation.Models;
-using Nika1337.Library.Presentation.Models.EmployeeAccount;
-using System.Diagnostics;
 
 namespace Web.Controllers;
 
@@ -15,9 +12,24 @@ public class HomeController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+    [Route("Home/Error")]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
+        return View(feature?.Error);
+    }
+
+    [AllowAnonymous]
+    [Route("Home/AccessDenied")]
+    public IActionResult AccessDenied()
+    {
+        return View();
+    }
+
+    [Route("Home/StatusCode")]
+    public IActionResult StatusCode(int code)
+    {
+        return View(code);
     }
 }

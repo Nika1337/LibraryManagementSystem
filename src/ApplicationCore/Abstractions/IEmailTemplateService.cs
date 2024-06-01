@@ -11,4 +11,5 @@ public interface IEmailTemplateService
     Task<EmailTemplate> GetEmailTemplateByNameAsync(string templateName);
     Task UpdateEmailTemplateAsync(EmailTemplate emailTemplate);
     Task DeleteEmailTemplateAsync(int templateId);
+    Task RenewEmailTemplateAsync(int templateId);
 }

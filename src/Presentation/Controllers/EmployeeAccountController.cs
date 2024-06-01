@@ -166,12 +166,12 @@ public class EmployeeAccountController : Controller
 
         await _employeeAuthenticationService.ForgotPasswordAsync(model.Email, resetPasswordUrl);
 
-        return RedirectToAction(nameof(EmailSuccesfullySent));
+        return RedirectToAction(nameof(EmailSuccessfullySent));
     }
 
     [AllowAnonymous]
     [HttpGet]
-    public IActionResult EmailSuccesfullySent()
+    public IActionResult EmailSuccessfullySent()
     {
         return View();
     }
@@ -243,5 +243,47 @@ public class EmployeeAccountController : Controller
         }
 
         return RedirectToAction(nameof(Profile));
+    }
+
+    [HttpGet]
+    public IActionResult ChangeEmail()
+    {
+        var model = new ChangeEmailViewModel();
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+        var controllerName = nameof(EmployeeAccountController).Replace("Controller", "");
+        var actionName = nameof(ConfirmEmail);
+        var resetPasswordUrl = $"{baseUrl}/{controllerName}/{actionName}";
+
+        var existingEmployee = await _employeeService.GetEmployeeAsync(User);
+
+        await _employeeAuthenticationService.ChangeEmailAsync(existingEmployee.Username, model.Email, resetPasswordUrl);
+
+        return RedirectToAction(nameof(EmailSuccessfullySent));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmEmail(string username, string token)
+    {
+        await _employeeAuthenticationService.ConfirmEmailAsync(username, token);
+
+        return RedirectToAction(nameof(EmailSuccessfullyConfirmed));
+    }
+
+    [HttpGet]
+    public IActionResult EmailSuccessfullyConfirmed()
+    {
+        return View();
     }
 }
