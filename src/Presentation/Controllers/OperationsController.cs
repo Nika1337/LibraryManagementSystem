@@ -41,8 +41,6 @@ public class OperationsController : Controller
                 FromEmail = selectedEmailTemplate.FromEmail,
                 Separator = selectedEmailTemplate.Separator,
                 Body = selectedEmailTemplate.Body,
-                CreationDate = selectedEmailTemplate.CreationDate,
-                LastUpdatedDate = selectedEmailTemplate.LastUpdatedDate,
                 DeletedDate = selectedEmailTemplate.DeletedDate
             };
 

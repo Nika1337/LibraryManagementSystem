@@ -127,31 +127,19 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="form-group mb-3">
-                            <label asp-for="SelectedEmailTemplate.CreationDate" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.CreationDate" class="form-control" readonly />
-                            <span asp-validation-for="SelectedEmailTemplate.CreationDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="form-group mb-3">
-                            <label asp-for="SelectedEmailTemplate.LastUpdatedDate" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.LastUpdatedDate" class="form-control" readonly />
-                            <span asp-validation-for="SelectedEmailTemplate.LastUpdatedDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="form-group mb-3">
                             <label asp-for="SelectedEmailTemplate.DeletedDate" class="form-label"></label>
                             <input asp-for="SelectedEmailTemplate.DeletedDate" class="form-control" readonly />
-                            <span asp-validation-for="SelectedEmailTemplate.LastUpdatedDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-group mb-3" style="width: fit-content">
+                            <label asp-for="SelectedEmailTemplate.Separator" class="form-label"></label>
+                            <input asp-for="SelectedEmailTemplate.Separator" class="form-control" />
+                            <span asp-validation-for="SelectedEmailTemplate.Separator" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
-                <div class="form-group mb-3" style="width: fit-content">
-                    <label asp-for="SelectedEmailTemplate.Separator" class="form-label"></label>
-                    <input asp-for="SelectedEmailTemplate.Separator" class="form-control" />
-                    <span asp-validation-for="SelectedEmailTemplate.Separator" class="text-danger"></span>
-                </div>
+                
                 <div class="form-group" style="margin-bottom: 10rem">
                     <label asp-for="SelectedEmailTemplate.Body" class="form-label"></label>
                     <textarea asp-for="SelectedEmailTemplate.Body" class="form-control" id="tinymce-editor"></textarea>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nika1337.Library.Infrastructure.Identity;
 
@@ -11,9 +12,11 @@ using Nika1337.Library.Infrastructure.Identity;
 namespace Nika1337.Library.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20240602100508_IdentityAuditLog")]
+    partial class IdentityAuditLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,17 +42,17 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            IdentityEmployeeRoleId = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
+                            IdentityEmployeeRoleId = "ee5da5ff-1ffb-477c-8c9a-3d786ba2d267",
                             NavigationMenuItemsId = 1
                         },
                         new
                         {
-                            IdentityEmployeeRoleId = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
+                            IdentityEmployeeRoleId = "ee5da5ff-1ffb-477c-8c9a-3d786ba2d267",
                             NavigationMenuItemsId = 2
                         },
                         new
                         {
-                            IdentityEmployeeRoleId = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
+                            IdentityEmployeeRoleId = "ee5da5ff-1ffb-477c-8c9a-3d786ba2d267",
                             NavigationMenuItemsId = 3
                         });
                 });
@@ -176,15 +179,14 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ApplicationName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Changes")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EntityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedRowId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -429,31 +431,31 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
+                            Id = "ee5da5ff-1ffb-477c-8c9a-3d786ba2d267",
                             Name = "Human Resources Manager",
                             NormalizedName = "HUMAN RESOURCES MANAGER"
                         },
                         new
                         {
-                            Id = "4324e0c3-d867-4a17-bba4-119d720842fa",
+                            Id = "267f391c-b6ef-42f9-8983-e55f83820f92",
                             Name = "Operations Manager",
                             NormalizedName = "OPERATIONS MANAGER"
                         },
                         new
                         {
-                            Id = "b9f6fba0-5150-4fe2-858d-5ebdee02ee48",
+                            Id = "e0a4606c-aef2-482c-86ce-a2b4f8ec0329",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
-                            Id = "87bdf5b5-9a75-4376-b885-d378ae26a31b",
+                            Id = "2caff74f-728d-4867-a235-b58ffc254dd0",
                             Name = "Core Librarian",
                             NormalizedName = "CORE LIBRARIAN"
                         },
                         new
                         {
-                            Id = "7af55564-3ae2-4739-90b6-aff18d865887",
+                            Id = "38425523-d8e2-433e-9e48-c025794e9d9f",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
                         });

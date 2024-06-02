@@ -79,8 +79,6 @@ public static class Dependencies
         
         services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 
-        services.AddScoped<IRepository<EmailTemplate>, IdentityEfRepository<EmailTemplate>>();
-        services.AddScoped<IReadRepository<EmailTemplate>, IdentityEfRepository<EmailTemplate>>();
 
         services.AddScoped(typeof(IRepository<>), typeof(LibraryEfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(LibraryEfRepository<>));

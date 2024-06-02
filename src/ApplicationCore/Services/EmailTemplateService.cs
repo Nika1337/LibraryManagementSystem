@@ -52,7 +52,6 @@ public class EmailTemplateService : IEmailTemplateService
         }
 
 
-        emailTemplate.LastUpdatedDate = DateTime.UtcNow;
         await _repository.UpdateAsync(emailTemplate);
     }
     public async Task DeleteEmailTemplateAsync(int templateId)

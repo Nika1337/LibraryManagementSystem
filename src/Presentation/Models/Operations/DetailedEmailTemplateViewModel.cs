@@ -27,12 +27,6 @@ public class DetailedEmailTemplateViewModel
     [DisplayName("Body")]
     public required string Body { get; set; }
 
-    [DisplayName("Creation Date")]
-    public required DateTime CreationDate { get; set; }
-
-    [DisplayName("Last Updated Date")]
-    public required DateTime LastUpdatedDate {  get; set; }
-
     [DisplayName("Deleted Date")]
     public required DateTime? DeletedDate {  get; set; }
 }
