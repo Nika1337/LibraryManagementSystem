@@ -65,10 +65,10 @@ public class EmployeeManagementController : Controller
 
         try
         {
-
             await _employeeAuthenticationService.RegisterEmployee(employee);
         } catch(DuplicateException)
         {
+            model.ErrorMessage = $"Username '{model.NewUsername}' is taken";
             return View(model);
         }
 
