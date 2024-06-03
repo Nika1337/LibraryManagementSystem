@@ -81,7 +81,7 @@ public class EmployeeAccountController : Controller
     [HttpGet]
     public async Task<IActionResult> Profile()
     {
-        var employee = await _employeeService.GetEmployeeAsync(User);
+        var employee = await _employeeService.GetDetailedEmployeeAsync(User);
 
         var model = new EmployeePersonalProfileViewModel
         {
@@ -112,7 +112,7 @@ public class EmployeeAccountController : Controller
             return View(model);
         }
 
-        var employee = await _employeeService.GetEmployeeAsync(User);
+        var employee = await _employeeService.GetDetailedEmployeeAsync(User);
 
         employee.FirstName = model.FirstName;
         employee.LastName = model.LastName;
@@ -132,7 +132,7 @@ public class EmployeeAccountController : Controller
 
         try
         {
-            await _employeeService.UpdateEmployee(username, employee);
+            await _employeeService.UpdateDetailedEmployee(username, employee);
         } catch (DuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";
@@ -227,7 +227,7 @@ public class EmployeeAccountController : Controller
             return View(model);
         }
 
-        var employee = await _employeeService.GetEmployeeAsync(User);
+        var employee = await _employeeService.GetDetailedEmployeeAsync(User);
 
         try
         {
@@ -266,7 +266,7 @@ public class EmployeeAccountController : Controller
         var actionName = nameof(ConfirmEmail);
         var resetPasswordUrl = $"{baseUrl}/{controllerName}/{actionName}";
 
-        var existingEmployee = await _employeeService.GetEmployeeAsync(User);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(User);
 
         await _employeeAuthenticationService.ChangeEmailAsync(existingEmployee.Username, model.Email, resetPasswordUrl);
 

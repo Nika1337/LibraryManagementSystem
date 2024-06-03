@@ -51,7 +51,7 @@ public class NavigationViewComponent : ViewComponent
         {
             return View(Enumerable.Empty<NavigationMenuItem>());
         }
-        var employee = await _employeeService.GetEmployeeAsync(UserClaimsPrincipal!);
+        var employee = await _employeeService.GetDetailedEmployeeAsync(UserClaimsPrincipal!);
         IEnumerable<NavigationMenuItem> navigationMenuItems = await _navigationMenuService.GetPermittedNavigationMenuItemsFor(employee.Username);
         //navigationMenuItems = GenerateSampleData();
         return View(navigationMenuItems);

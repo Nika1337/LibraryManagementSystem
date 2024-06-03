@@ -5,12 +5,49 @@
 }
 
 <div class="container-fluid p-5">
-    <h2 class="text-center m-3">@ViewData["Title"]</h2>
-    <div class="fab-container">
-        <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-primary btn-lg shadow-sm fab">
-            Register Employee
-        </a>
+
+    <div class="row justify-content-between">
+        <div class="col-md-6" style="width: fit-content">
+            <div class="dropdown mb-4" style="width: fit-content">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 200px">
+                    @(
+                        ViewData["SortedBy"] switch
+                        {
+                            "username" => "Username: A - Z",
+                            "usernameDesc" => "Username: Z - A",
+                            "firstName" => "First name: A - Z",
+                            "firstNameDesc" => "First name: Z - A",
+                            "lastName" => "Last name: A - Z",
+                            "lastNameDesc" => "Last name: Z - A",
+                            "startDate" => "Start Date: Ascending",
+                            "startDateDesc" => "Start Date: Descending",
+                            _ => "Sort"
+                        }
+                    )
+                </button>
+                <ul class="dropdown-menu" style="width: fit-content">
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="username" asp-route-searchTerm="@ViewData["SearchTerm"]">Username: A - Z</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="usernameDesc" asp-route-searchTerm="@ViewData["SearchTerm"]">Username: Z - A</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="firstName" asp-route-searchTerm="@ViewData["SearchTerm"]">First name: A - Z</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="firstNameDesc" asp-route-searchTerm="@ViewData["SearchTerm"]">First name: Z - A</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="lastName" asp-route-searchTerm="@ViewData["SearchTerm"]">Last name: A - Z</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="lastNameDesc" asp-route-searchTerm="@ViewData["SearchTerm"]">Last name: Z - A</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="startDate" asp-route-searchTerm="@ViewData["SearchTerm"]">Start Date: Normal</a></li>
+                    <li><a class="dropdown-item" asp-controller="EmployeeManagement" asp-action="AllEmployees" asp-route-sortedBy="startDateDesc" asp-route-searchTerm="@ViewData["SearchTerm"]">Start Date: Reverse</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6" style="width: fit-content">
+            <form method="get" asp-controller="EmployeeManagement" asp-action="AllEmployees" style="width: fit-content">
+                <div class="input-group mb-4" style="min-width: 200px; width: fit-content">
+                    <input type="hidden" name="sortedBy" value="@ViewData["SortedBy"]" />
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Search employees..." value="@ViewData["SearchTerm"]">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
     </div>
+
     <div class="row">
         @foreach (var employee in Model)
         {
@@ -58,6 +95,13 @@
             </div>
         }
     </div>
+
+
+    <div class="fab-container">
+        <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-primary btn-lg shadow-sm fab">
+            Register Employee
+        </a>
+    </div>
 </div>
 
 @section Scripts {
@@ -66,65 +110,65 @@
 
 @section Styles {
     <style>
-    .card {
-        min-height: 100%;
-        border-radius: 10px;
-    }
+        .card {
+            min-height: 100%;
+            border-radius: 10px;
+        }
 
-    .card-header {
-        font-size: 1.2rem;
-        font-weight: bold;
-        padding: 10px;
-        border-radius: 10px 10px 0 0;
-    }
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+        }
 
-    .employee-name {
-        color: black;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 250px;
-        display: block;
-    }
+        .employee-name {
+            color: black;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+            display: block;
+        }
 
-    .badge {
-        margin-left: 10px;
-        font-size: 0.75rem;
-        padding: 4px 8px;
-    }
+        .badge {
+            margin-left: 10px;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+        }
 
-    .badge-sm {
-        font-size: 0.75rem;
-        padding: 4px 8px;
-    }
+        .badge-sm {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+        }
 
-    .property {
-        margin-bottom: 10px;
-    }
+        .property {
+            margin-bottom: 10px;
+        }
 
-    .property span {
-        display: block;
-    }
+        .property span {
+            display: block;
+        }
 
-    .text-muted {
-        color: #6c757d;
-        font-size: 0.8rem;
-    }
+        .text-muted {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
 
-    .btn-block {
-        width: 100%;
-    }
+        .btn-block {
+            width: 100%;
+        }
 
-    .container {
-        margin-top: 30px;
-    }
+        .container {
+            margin-top: 30px;
+        }
 
-    .card {
-        transition: transform 0.2s;
-    }
+        .card {
+            transition: transform 0.2s;
+        }
 
-    .card:hover {
-        transform: scale(1.02);
-    }
-
-</style>}
+        .card:hover {
+            transform: scale(1.02);
+        }
+    </style>
+}

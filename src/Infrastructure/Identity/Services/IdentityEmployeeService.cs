@@ -7,7 +7,9 @@ using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -34,6 +36,7 @@ internal class IdentityEmployeeService : IEmployeeService
 
         var employeeRoles = identityEmployeeRoles.ToEmployeeRoles();
 
+
         return Task.FromResult(employeeRoles);
     }
 
@@ -48,15 +51,55 @@ internal class IdentityEmployeeService : IEmployeeService
         return Task.FromResult(employeeRoles);
     }
 
-    public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
+    public IEnumerable<Employee> GetAllEmployees<TKey>(
+        Expression<Func<Employee, TKey>>? keySelector,
+        bool isAscending,
+        string searchTerm,
+        bool shouldIncludeTerminated)
     {
-        var identityEmployees = _userManager.Users.AsEnumerable();
-        var employees = await identityEmployees.ToEmployees(_userManager, _roleManager);
+        var employees =
+            _userManager.Users
+            .Select(
+                identityEmployee => new Employee
+                {
+                    FirstName = identityEmployee.FirstName,
+                    LastName = identityEmployee.LastName,
+                    Username = identityEmployee.UserName!,
+                    IdNumber = identityEmployee.IdNumber,
+                    DateOfBirth = identityEmployee.DateOfBirth,
+                    StartDate = identityEmployee.StartDate,
+                    PhoneNumber = identityEmployee.PhoneNumber,
+                    Email = identityEmployee.Email,
+                    IsActive = identityEmployee.TerminationDate == null
+                }
+            );
+
+        if (!shouldIncludeTerminated)
+        {
+            employees = employees.Where(e => e.IsActive);
+        }
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            employees = employees
+                .Where(e => 
+                    e.FirstName.Contains(searchTerm) ||
+                    e.LastName.Contains(searchTerm) ||
+                    e.Username.Contains(searchTerm)
+                );
+
+        }
+
+        if (keySelector is not null)
+        {
+            employees = isAscending ? employees.OrderBy(keySelector) : employees.OrderByDescending(keySelector);
+        }
+
 
         return employees;
     }
 
-    public async Task<Employee> GetEmployeeAsync(string username)
+    public async Task<DetailedEmployee> GetDetailedEmployeeAsync(string username)
     {
         var identityEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
 
@@ -65,7 +108,7 @@ internal class IdentityEmployeeService : IEmployeeService
         return employee;
     }
 
-    public async Task<Employee> GetEmployeeAsync(ClaimsPrincipal principal)
+    public async Task<DetailedEmployee> GetDetailedEmployeeAsync(ClaimsPrincipal principal)
     {
         var identityEmployee = await _userManager.GetUserAsync(principal) ?? throw new EmployeeNotFoundException(principal);
 
@@ -73,7 +116,7 @@ internal class IdentityEmployeeService : IEmployeeService
         return employee;
     }
 
-    public async Task UpdateEmployee(string oldUsername, Employee employee)
+    public async Task UpdateDetailedEmployee(string oldUsername, DetailedEmployee employee)
     {
         var identityEmployee = await _userManager.FindByNameAsync(oldUsername) ?? throw new EmployeeNotFoundException(oldUsername);
 

@@ -1,7 +1,9 @@
 ﻿
 
 using Nika1337.Library.ApplicationCore.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -11,8 +13,12 @@ public interface IEmployeeService
 {
     Task<IEnumerable<EmployeeRole>> GetAllEmployeeRolesAsync();
     Task<IEnumerable<EmployeeRole>> GetEmployeeRolesByRoleNames(IEnumerable<string> roleNames);
-    Task<Employee> GetEmployeeAsync(string username);
-    Task<Employee> GetEmployeeAsync(ClaimsPrincipal principal);
-    Task<IEnumerable<Employee>> GetAllEmployeesAsync();
-    Task UpdateEmployee(string oldUsername, Employee employee);
+    Task<DetailedEmployee> GetDetailedEmployeeAsync(string username);
+    Task<DetailedEmployee> GetDetailedEmployeeAsync(ClaimsPrincipal principal);
+    IEnumerable<Employee> GetAllEmployees<TKey>(
+        Expression<Func<Employee, TKey>>? keySelector,
+        bool isAscending,
+        string searchTerm,
+        bool shouldIncludeTerminated);
+    Task UpdateDetailedEmployee(string oldUsername, DetailedEmployee employee);
 }

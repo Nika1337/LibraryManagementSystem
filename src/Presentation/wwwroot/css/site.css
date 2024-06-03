@@ -21,11 +21,6 @@ body {
   margin-bottom: 60px;
 }
 
-.btn-primary {
-    border-color: darkgoldenrod;
-    background-color: darkgoldenrod;
-}
-
 .fab-container {
     position: fixed;
     bottom: 30px;
@@ -43,7 +38,6 @@ body {
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-
 .dropdown-item {
     z-index: 10000;
 }
@@ -57,8 +51,9 @@ body {
     position: relative
 }
 
-    .dropdown-submenu .dropdown-menu {
-        top: 0;
-        left: 100%;
-        margin-top: -1px;
-    }
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+

@@ -5,7 +5,7 @@ namespace Nika1337.Library.ApplicationCore.Abstractions;
 
 public interface IEmployeeAuthenticationService
 {
-    Task RegisterEmployee(Employee employee);
+    Task RegisterEmployee(DetailedEmployee employee);
     Task PasswordSignInAsync(string username, string password);
     Task ResetPasswordAsync(string username, string token, string newPassword);
     Task ForgotPasswordAsync(string email, string resetPasswordUrl);

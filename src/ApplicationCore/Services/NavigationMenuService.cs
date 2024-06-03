@@ -18,11 +18,11 @@ public class NavigationMenuService : INavigationMenuService
 
     public async Task<ICollection<NavigationMenuItem>> GetPermittedNavigationMenuItemsFor(string userName)
     {
-        var identityEmployee = await _employeeService.GetEmployeeAsync(userName) ?? throw new EmployeeNotFoundException(userName);
+        var identityEmployee = await _employeeService.GetDetailedEmployeeAsync(userName) ?? throw new EmployeeNotFoundException(userName);
 
         return GetPermittedNavigationMenuItemsFor(identityEmployee);
     }
-    private static NavigationMenuItem[] GetPermittedNavigationMenuItemsFor(Employee employee)
+    private static NavigationMenuItem[] GetPermittedNavigationMenuItemsFor(DetailedEmployee employee)
     {
         var unfilteredNavigationMenuItems = GetUnfilteredNavigationMenuItemsFor(employee);
         var filteredNavigationMenuItems = FilterNonAccessibleChildren(unfilteredNavigationMenuItems);
@@ -30,7 +30,7 @@ public class NavigationMenuService : INavigationMenuService
         return filteredNavigationMenuItems;
     }
 
-    private static NavigationMenuItem[] GetUnfilteredNavigationMenuItemsFor(Employee employee)
+    private static NavigationMenuItem[] GetUnfilteredNavigationMenuItemsFor(DetailedEmployee employee)
     {
         return employee.Roles
             .SelectMany(role => role.PermittedNavigationMenuItems).ToArray();

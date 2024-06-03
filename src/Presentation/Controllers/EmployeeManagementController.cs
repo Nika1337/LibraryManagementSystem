@@ -8,6 +8,7 @@ using Nika1337.Library.Presentation.Models.EmployeeManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
@@ -49,7 +50,7 @@ public class EmployeeManagementController : Controller
 
         var selectedRoles = await _employeeService.GetEmployeeRolesByRoleNames(model.SelectedRoles);
 
-        var employee = new Employee
+        var employee = new DetailedEmployee
         {
             FirstName = model.FirstName,
             LastName = model.LastName,
@@ -62,7 +63,14 @@ public class EmployeeManagementController : Controller
         };
 
 
-        await _employeeAuthenticationService.RegisterEmployee(employee);
+        try
+        {
+
+            await _employeeAuthenticationService.RegisterEmployee(employee);
+        } catch(DuplicateException)
+        {
+            return View(model);
+        }
 
         return RedirectToAction("AllEmployees");
     }
@@ -70,7 +78,7 @@ public class EmployeeManagementController : Controller
     [HttpGet("{username}")]
     public async Task<IActionResult> Profile(string username)
     {
-        var employee = await _employeeService.GetEmployeeAsync(username);
+        var employee = await _employeeService.GetDetailedEmployeeAsync(username);
 
         var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
 
@@ -107,8 +115,8 @@ public class EmployeeManagementController : Controller
         {
             return View(model);
         }
-        Console.WriteLine($"{username} want to change to {model.NewUsername}");
-        var existingEmployee = await _employeeService.GetEmployeeAsync(username);
+
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(username);
 
         var selectedRoles = await _employeeService.GetEmployeeRolesByRoleNames(model.SelectedRoles);
 
@@ -122,8 +130,8 @@ public class EmployeeManagementController : Controller
 
         try
         {
-            await _employeeService.UpdateEmployee(username, existingEmployee);
-        } catch(DuplicateException)
+            await _employeeService.UpdateDetailedEmployee(username, existingEmployee);
+        } catch (DuplicateException)
         {
             model.ErrorMessage = $"Username '{model.NewUsername}' is taken";
             return View(model);
@@ -136,11 +144,11 @@ public class EmployeeManagementController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> TerminateEmployee(string username)
     {
-        var existingEmployee = await _employeeService.GetEmployeeAsync(username);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(username);
 
         existingEmployee.TerminationDate = DateTime.UtcNow;
 
-        await _employeeService.UpdateEmployee(username, existingEmployee);
+        await _employeeService.UpdateDetailedEmployee(username, existingEmployee);
 
         return Ok();
     }
@@ -149,11 +157,11 @@ public class EmployeeManagementController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RenewEmployee(string username)
     {
-        var existingEmployee = await _employeeService.GetEmployeeAsync(username);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(username);
 
         existingEmployee.StartDate = DateTime.UtcNow;
         existingEmployee.TerminationDate = existingEmployee.TerminationDate = null;
-        await _employeeService.UpdateEmployee(username, existingEmployee);
+        await _employeeService.UpdateDetailedEmployee(username, existingEmployee);
 
 
         return Ok();
@@ -161,9 +169,60 @@ public class EmployeeManagementController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> AllEmployees()
+    public IActionResult AllEmployees(
+        [FromQuery] string? sortedBy,
+        [FromQuery] string? searchTerm,
+        [FromQuery] bool shouldIncludeTerminated = true)
     {
-        var allEmployees = await _employeeService.GetAllEmployeesAsync();
+        Expression<Func<Employee, object>>? keySelector = null;
+        bool isAscending = false;
+
+        ViewData["SortedBy"] = sortedBy;
+        ViewData["SearchTerm"] = searchTerm;
+
+        switch (sortedBy)
+        {
+            case null:
+                keySelector = null;
+                isAscending = true;
+                break;
+            case "username":
+                keySelector = e => e.Username;
+                isAscending = true;
+                break;
+            case "usernameDesc":
+                keySelector = e => e.Username;
+                isAscending = false;
+                break;
+            case "firstName":
+                keySelector = e => e.FirstName;
+                isAscending = true;
+                break;
+            case "firstNameDesc":
+                keySelector = e => e.FirstName;
+                isAscending = false;
+                break;
+            case "lastName":
+                keySelector = e => e.LastName;
+                isAscending = true;
+                break;
+            case "lastNameDesc":
+                keySelector = e => e.LastName;
+                isAscending = false;
+                break;
+            case "startDate":
+                keySelector = e => e.StartDate;
+                isAscending = true;
+                break;
+            case "startDateDesc":
+                keySelector = e => e.StartDate;
+                isAscending = false;
+                break;
+            default:
+                throw new ApplicationException("Invalid sorted by argument");
+        }
+
+        var allEmployees = _employeeService.GetAllEmployees(keySelector, isAscending, searchTerm ?? "", shouldIncludeTerminated);
 
         var model = allEmployees.Select(
             employee => new EmployeeViewModel
@@ -176,7 +235,7 @@ public class EmployeeManagementController : Controller
                 PhoneNumber = employee.PhoneNumber,
                 Email = employee.Email,
                 StartDate = employee.StartDate,
-                IsActive = employee.TerminationDate is null
+                IsActive = employee.IsActive
             });
 
         return View(model);

@@ -33,7 +33,7 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
         _emailService = emailService;
     }
 
-    public async Task RegisterEmployee(Employee employee)
+    public async Task RegisterEmployee(DetailedEmployee employee)
     {
         var identityEmployeeWithSameUsername = await _userManager.FindByNameAsync(employee.Username);
 
