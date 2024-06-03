@@ -27,7 +27,7 @@ public class EmployeeRegistrationViewModel
     [Display(Name = "Date of Birth")]
     [DataType(DataType.Date)]
     [CustomValidation(typeof(DateValidator), nameof(DateValidator.ValidateDateOfBirth))]
-    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; } = DateTime.Now;
 
     [Required(ErrorMessage = "ID Number is required.")]
     [Display(Name = "ID Number")]
@@ -46,4 +46,6 @@ public class EmployeeRegistrationViewModel
     public List<string> SelectedRoles { get; set; } = [];
 
     public List<string> AvailableRoles { get; set; } = [];
+
+    public string? ErrorMessage {  get; set; }
 }

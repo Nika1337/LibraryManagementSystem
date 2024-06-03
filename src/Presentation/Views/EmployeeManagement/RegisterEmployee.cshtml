@@ -4,8 +4,16 @@
     ViewData["Title"] = "Register Employee";
 }
 
-<div class="container-fluid d-flex justify-content-center align-items-start pt-5">
-    <div class="card" style="width: 100%; max-width: 1000px; margin: 5rem;">
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center pt-5">
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+    <div class="card" style="width: 100%; max-width: 1000px;">
         <h5 class="card-header">@ViewData["Title"]</h5>
         <div class="card-body">
             <form asp-action="RegisterEmployee" asp-controller="EmployeeManagement" method="post" class="needs-validation" novalidate>

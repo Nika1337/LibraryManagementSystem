@@ -68,7 +68,7 @@ public class EmployeeManagementController : Controller
             await _employeeAuthenticationService.RegisterEmployee(employee);
         } catch(DuplicateException)
         {
-            model.ErrorMessage = $"Username '{model.NewUsername}' is taken";
+            model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);
         }
 

@@ -52,8 +52,8 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseStatusCodePagesWithReExecute("/Home/StatusCode", "?code={0}");
+    app.UseExceptionHandler("/Home/SomethingWentWrong");
+    app.UseStatusCodePagesWithReExecute("/Home/Error");
     app.UseHsts();
 }
 
