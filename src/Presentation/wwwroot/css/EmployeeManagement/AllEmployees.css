@@ -1,0 +1,75 @@
+.card {
+    min-height: 100%;
+    border-radius: 10px;
+}
+
+.card-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.employee-name {
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    display: block;
+}
+
+.property {
+    margin-bottom: 10px;
+}
+
+.property span {
+    display: block;
+}
+
+.text-muted {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.toggle-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.toggle-icon.selected {
+    color: #784EF1;
+}
+
+.myfab-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.myfab {
+    min-width: 150px;
+    height: 60px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+}

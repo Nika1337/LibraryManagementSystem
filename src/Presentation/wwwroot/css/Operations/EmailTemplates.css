@@ -1,0 +1,26 @@
+
+.offcanvas {
+    width: 100%;
+}
+
+@@media (min-width: 992px) {
+    .offcanvas {
+        width: 300px;
+    }
+}
+
+.list-group-item {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.offcanvas-body .list-group {
+    width: 100%;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #784EF1;
+    border-color: #784EF1;
+}

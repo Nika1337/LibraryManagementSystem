@@ -50,6 +50,12 @@
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\Operations\" />
+    <Folder Include="wwwroot\js\EmployeeManagement\" />
+    <Folder Include="wwwroot\js\Operations\" />
+  </ItemGroup>
+
 
 
 </Project>

@@ -89,17 +89,17 @@
             </div>
             <form asp-controller="Operations" asp-action="EmailTemplates" asp-route-itemid="@Model.SelectedEmailTemplate.Id" method="post">
                 <input type="hidden" asp-for="SelectedEmailTemplate.Id" />
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="SelectedEmailTemplate.Name" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.Name" class="form-control" />
+                            <input asp-for="SelectedEmailTemplate.Name" class="form-control" readonly/>
                             <span asp-validation-for="SelectedEmailTemplate.Name" class="text-danger"></span>
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="SelectedEmailTemplate.Subject" class="form-label"></label>
                             <input asp-for="SelectedEmailTemplate.Subject" class="form-control" />
                             <span asp-validation-for="SelectedEmailTemplate.Subject" class="text-danger"></span>
@@ -107,16 +107,16 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="SelectedEmailTemplate.FromEmail" class="form-label"></label>
                             <input asp-for="SelectedEmailTemplate.FromEmail" class="form-control" />
                             <span asp-validation-for="SelectedEmailTemplate.FromEmail" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="form-group mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="SelectedEmailTemplate.BriefDescription" class="form-label"></label>
                             <input asp-for="SelectedEmailTemplate.BriefDescription" class="form-control" />
                             <span asp-validation-for="SelectedEmailTemplate.BriefDescription" class="text-danger"></span>
@@ -124,15 +124,15 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="form-group mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label asp-for="SelectedEmailTemplate.DeletedDate" class="form-label"></label>
                             <input asp-for="SelectedEmailTemplate.DeletedDate" class="form-control" readonly />
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="form-group mb-3" style="width: fit-content">
+                    <div class="col-md-6">
+                        <div class="form-group" >
                             <label asp-for="SelectedEmailTemplate.Separator" class="form-label"></label>
                             <input asp-for="SelectedEmailTemplate.Separator" class="form-control" />
                             <span asp-validation-for="SelectedEmailTemplate.Separator" class="text-danger"></span>
@@ -160,99 +160,19 @@
     </div>
 </div>
 
+@await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Email Template"));
 
-
-<!-- Action Confirmation Modal -->
-<div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Confirm Termination</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to @userAction this email template?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn @actionButtonClass" id="confirmAction">@userAction</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section Scripts {
     <script src="https://cdn.tiny.cloud/1/wkssty2otjmc1ux36i1xy7pdmzh2eijw8m6ogi2ll9v810e6/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="~/js/Shared/ActionModal.js"></script>
+    <script src="~/js/Operations/EmailTemplates.js"></script>
     <script>
-        tinymce.init({
-            selector: '#tinymce-editor',
-            plugins: [
-                'advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview', 'anchor', 'pagebreak',
-                'searchreplace', 'wordcount', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media',
-                'table', 'emoticons', 'help'
-            ],
-            toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
-                'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
-                'forecolor backcolor emoticons | help',
-            menubar: 'favs file edit view insert format tools table help',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
-            height: 800,
-            resize: true,
-        });
-
-        (function () {
-            'use strict';
-
-            document.getElementById('confirmAction').addEventListener('click', function () {
-                var id = @Model.SelectedEmailTemplate?.Id;
-
-                var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-
-                fetch(`/Operations/@(userAction)EmailTemplate/${id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': token
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                            window.location.href = `/Operations/EmailTemplates/${id}`;
-                    } else {
-                        alert('An error occurred while trying to @userAction the template.');
-                    }
-                });
-            });
-        })();
-
+        var id = @Model.SelectedEmailTemplate.Id;
+        var userAction = "@userAction";
     </script>
 }
 
 @section Styles {
-    <style>
-        .offcanvas {
-            width: 100%;
-        }
-
-        @@media (min-width: 992px) {
-            .offcanvas {
-                width: 300px;
-            }
-        }
-
-        .list-group-item {
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .offcanvas-body .list-group {
-            width: 100%;
-        }
-
-        .list-group-item.active {
-            z-index: 2;
-            color: #fff;
-            background-color: #784EF1;
-            border-color: #784EF1;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/Operations/EmailTemplates.css" asp-append-version="true" />
 }

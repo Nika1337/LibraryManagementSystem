@@ -43,24 +43,8 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Shared/passwordToggle.js"></script>
     <script>
-        (function () {
-            'use strict';
-
-            var togglePasswordButton = document.getElementById('togglePassword');
-            var passwordInput = document.getElementById('password');
-
-            togglePasswordButton.addEventListener('click', function () {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    togglePasswordButton.textContent = 'Hide';
-                } else {
-                    passwordInput.type = 'password';
-                    togglePasswordButton.textContent = 'Show';
-                }
-            });
-
-            
-        })();
+        togglePasswordVisibility('password', 'togglePassword');
     </script>
 }

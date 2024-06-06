@@ -19,7 +19,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.LoginPath = "/EmployeeAccount/SignIn";
     options.LogoutPath = "/EmployeeAccount/SignOut";
-    options.AccessDeniedPath = "/Home/AccessDenied";
+    options.AccessDeniedPath = "/Shared/AccessDenied";
 });
 
 builder.Services.AddAuthentication()
@@ -52,8 +52,8 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/SomethingWentWrong");
-    app.UseStatusCodePagesWithReExecute("/Home/Error");
+    app.UseExceptionHandler("/Shared/SomethingWentWrong");
+    app.UseStatusCodePagesWithReExecute("/Shared/Error");
     app.UseHsts();
 }
 
