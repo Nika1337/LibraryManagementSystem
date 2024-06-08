@@ -70,7 +70,7 @@ public class EmployeeAccountController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    [HttpPost]
+    [HttpGet]
     public new async Task<IActionResult> SignOut()
     {
         await _employeeAuthenticationService.SignOutAsync();

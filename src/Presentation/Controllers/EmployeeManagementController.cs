@@ -172,7 +172,7 @@ public class EmployeeManagementController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> AllEmployeesAsync()
+    public async Task<IActionResult> AllEmployees()
     {
 
         var allEmployees = await _employeeService.GetAllEmployees();
