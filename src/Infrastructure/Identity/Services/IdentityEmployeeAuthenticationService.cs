@@ -192,7 +192,7 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         var encodedToken = HttpUtility.UrlEncode(resetToken);
 
-        var resetPasswordHref = $"{resetPasswordUrl}?id={identityEmployee.UserName}&token={encodedToken}";
+        var resetPasswordHref = $"{resetPasswordUrl}?id={identityEmployee.Id}&token={encodedToken}";
 
         await _emailService.SendEmailAsync(email, 1, new { Href = resetPasswordHref });
     }

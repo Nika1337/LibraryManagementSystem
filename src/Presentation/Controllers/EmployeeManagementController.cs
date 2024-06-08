@@ -111,15 +111,15 @@ public class EmployeeManagementController : Controller
         return View(model);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Profile(EmployeeProfileViewModel model)
+    [HttpPost("{id}")]
+    public async Task<IActionResult> Profile(string id, EmployeeProfileViewModel model)
     {
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(model.Id);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(id);
 
         var selectedRoles = model.SelectedRoles.Select(roleName => new EmployeeRole { Name = roleName });
 

@@ -25,6 +25,6 @@ public class ResetPasswordViewModel
     public string RepeatPassword { get; set; } = string.Empty;
 
     public required string Token { get; set; }
-    public required string Username { get; set; }
+    public required string Id { get; set; }
     public string? ErrorMessage { get; set; }
 }

@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Exceptions;
-using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Operations;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,29 +11,26 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 
 [Authorize(Roles = "Operations Manager")]
-[Route("EmailTemplates")]
-public class OperationsController : Controller
+[Route("Operations/EmailTemplates")]
+public class EmailTemplatesController : Controller
 {
     private readonly IEmailTemplateService _emailTemplateService;
 
-    public OperationsController(IEmailTemplateService emailTemplateService)
+    public EmailTemplatesController(IEmailTemplateService emailTemplateService)
     {
         _emailTemplateService = emailTemplateService;
     }
 
-    [HttpGet("{id?}")]
-    public async Task<IActionResult> EmailTemplates([FromRoute] int? id)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> EmailTemplates(int id)
     {
+
+        var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateAsync(id);
 
         var emailTemplates = await GetEmailTemplates();
 
-        var selectedEmailTemplateId = id ?? emailTemplates.First().Id;
-
-        var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateAsync(selectedEmailTemplateId);
-
         var selectedDetailedEmailTemplate =
             new DetailedEmailTemplateViewModel { 
-                Id = selectedEmailTemplate.Id,
                 Name = selectedEmailTemplate.Name,
                 BriefDescription = selectedEmailTemplate.BriefDescription,
                 Subject = selectedEmailTemplate.Subject,
@@ -56,8 +51,8 @@ public class OperationsController : Controller
         return View(model);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> EmailTemplates(EmailTemplateViewModel model)
+    [HttpPost("{id:int}")]
+    public async Task<IActionResult> EmailTemplates(int id, EmailTemplateViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -65,7 +60,7 @@ public class OperationsController : Controller
             return View(model);
         }
 
-        var existingTemplate = await _emailTemplateService.GetEmailTemplateAsync(model.SelectedEmailTemplate.Id);
+        var existingTemplate = await _emailTemplateService.GetEmailTemplateAsync(id);
 
         existingTemplate.Name = model.SelectedEmailTemplate.Name;
         existingTemplate.Subject = model.SelectedEmailTemplate.Subject;
@@ -89,21 +84,21 @@ public class OperationsController : Controller
         return RedirectToAction(nameof(EmailTemplates));
     }
 
-    [HttpPost("[action]/{templateId:int}")]
+    [HttpPost("[action]/{id:int}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteEmailTemplate([FromRoute] int templateId)
+    public async Task<IActionResult> DeleteEmailTemplate(int id)
     {
-        await _emailTemplateService.DeleteEmailTemplateAsync(templateId);
+        await _emailTemplateService.DeleteEmailTemplateAsync(id);
 
         return Ok();
     }
 
 
-    [HttpPost("[action]/{templateId:int}")]
+    [HttpPost("[action]/{id:int}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RenewEmailTemplate([FromRoute] int templateId)
+    public async Task<IActionResult> RenewEmailTemplate(int id)
     {
-        await _emailTemplateService.RenewEmailTemplateAsync(templateId);
+        await _emailTemplateService.RenewEmailTemplateAsync(id);
 
         return Ok();
     }
@@ -112,7 +107,7 @@ public class OperationsController : Controller
 
     private async Task<IEnumerable<SimpleEmailTemplateViewModel>> GetEmailTemplates()
     {
-        var emailTemplates = await _emailTemplateService.GetAllActiveEmailTemplatesAsync();
+        var emailTemplates = await _emailTemplateService.GetAllEmailTemplatesAsync();
         var emailTemplateModels = emailTemplates.Select(
             et => new SimpleEmailTemplateViewModel
             {

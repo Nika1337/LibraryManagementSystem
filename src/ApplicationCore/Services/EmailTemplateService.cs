@@ -17,7 +17,7 @@ public class EmailTemplateService : IEmailTemplateService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<EmailTemplate>> GetAllActiveEmailTemplatesAsync()
+    public async Task<IEnumerable<EmailTemplate>> GetAllEmailTemplatesAsync()
     {
         return await _repository.ListAsync();
     }

@@ -75,7 +75,7 @@ public class EmployeeAccountController : Controller
     {
         await _employeeAuthenticationService.SignOutAsync();
 
-        return RedirectToAction("SigIn");
+        return RedirectToAction(nameof(SignIn));
     }
 
     [HttpGet]
@@ -128,8 +128,6 @@ public class EmployeeAccountController : Controller
             PostalCode = model.PostalCode,
         };
 
-        var username = User?.Identity?.Name ?? throw new ApplicationException("Current User's name is null");
-
         try
         {
             await _employeeService.UpdateDetailedEmployee(employee);
@@ -178,12 +176,12 @@ public class EmployeeAccountController : Controller
 
     [AllowAnonymous]
     [HttpGet]
-    public IActionResult ResetPassword(string token, string username)
+    public IActionResult ResetPassword(string id, string token)
     {
         var model = new ResetPasswordViewModel
         {
             Token = token,
-            Username = username
+            Id = id
         };
 
         return View(model);
@@ -200,7 +198,7 @@ public class EmployeeAccountController : Controller
 
         try
         {
-            await _employeeAuthenticationService.ResetPasswordAsync(model.Username, model.Token, model.NewPassword);
+            await _employeeAuthenticationService.ResetPasswordAsync(model.Id, model.Token, model.NewPassword);
         }
         catch(PasswordStructureValidationException ex)
         {
@@ -231,12 +229,14 @@ public class EmployeeAccountController : Controller
 
         try
         {
-            await _employeeAuthenticationService.ChangePasswordAsync(employee.Username, model.CurrentPassword, model.NewPassword);
-        } catch (PasswordIncorrectException)
+            await _employeeAuthenticationService.ChangePasswordAsync(employee.Id, model.CurrentPassword, model.NewPassword);
+        }
+        catch (PasswordIncorrectException)
         {
             model.ErrorMessage = "Current password is incorrect";
             return View(model);
-        } catch(PasswordStructureValidationException ex)
+        }
+        catch(PasswordStructureValidationException ex)
         { 
             model.ErrorMessage = ex.Message;
             return View(model);
@@ -262,21 +262,24 @@ public class EmployeeAccountController : Controller
         }
 
         var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
         var controllerName = nameof(EmployeeAccountController).Replace("Controller", "");
+
         var actionName = nameof(ConfirmEmail);
+
         var resetPasswordUrl = $"{baseUrl}/{controllerName}/{actionName}";
 
         var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(User);
 
-        await _employeeAuthenticationService.ChangeEmailAsync(existingEmployee.Username, model.Email, resetPasswordUrl);
+        await _employeeAuthenticationService.ChangeEmailAsync(existingEmployee.Id, model.Email, resetPasswordUrl);
 
         return RedirectToAction(nameof(EmailSuccessfullySent));
     }
 
     [HttpGet]
-    public async Task<IActionResult> ConfirmEmail(string username, string token)
+    public async Task<IActionResult> ConfirmEmail(string id, string token)
     {
-        await _employeeAuthenticationService.ConfirmEmailAsync(username, token);
+        await _employeeAuthenticationService.ConfirmEmailAsync(id, token);
 
         return RedirectToAction(nameof(EmailSuccessfullyConfirmed));
     }

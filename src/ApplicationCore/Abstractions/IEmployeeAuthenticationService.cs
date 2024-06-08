@@ -10,7 +10,7 @@ public interface IEmployeeAuthenticationService
     Task ResetPasswordAsync(string id, string token, string newPassword);
     Task ForgotPasswordAsync(string email, string resetPasswordUrl);
     Task ChangePasswordAsync(string id, string currentPassword, string newPassword);
-    Task ChangeEmailAsync(string username, string email, string confirmEmailUrl);
+    Task ChangeEmailAsync(string id, string email, string confirmEmailUrl);
     Task ConfirmEmailAsync(string id, string token);
     Task SignOutAsync();
 }
