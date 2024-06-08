@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿
 using Nika1337.Library.Presentation.Validation.Date;
 using Nika1337.Library.Presentation.Validation;
 using System;
@@ -10,6 +10,7 @@ namespace Nika1337.Library.Presentation.Models.EmployeeManagement;
 
 public class EmployeeProfileViewModel
 {
+    public required string Id { get; set; }
     [Required(ErrorMessage = "First Name is required.")]
     [Display(Name = "First Name")]
     [StringLength(50, ErrorMessage = "First Name cannot be longer than 50 characters.")]
@@ -49,7 +50,7 @@ public class EmployeeProfileViewModel
     [AtLeastOneElement(ErrorMessage = "At least one role must be selected.")]
     public List<string> SelectedRoles { get; set; } = [];
 
-    public List<string> AvailableRoles { get; set; } = [];
+    public string[] AvailableRoles { get; set; } = [];
 
 
     [Display(Name = "Country")]

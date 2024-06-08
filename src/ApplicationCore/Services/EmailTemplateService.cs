@@ -22,41 +22,30 @@ public class EmailTemplateService : IEmailTemplateService
         return await _repository.ListAsync();
     }
 
-    public async Task<EmailTemplate> GetEmailTemplateByIdAsync(int templateId)
+    public async Task<EmailTemplate> GetEmailTemplateAsync(int templateId)
     {
-        var specification = new EmailTemplateByNameOrIdSpecification(templateId);
+        var specification = new EmailTemplateByIdSpecification(templateId);
 
         var emailTemplate = await _repository.SingleOrDefaultAsync(specification) ?? throw new EmailTemplateNotFoundException(templateId);
 
         return emailTemplate;
     }
-
-    public async Task<EmailTemplate> GetEmailTemplateByNameAsync(string templateName)
+    public async Task UpdateEmailTemplateAsync(EmailTemplate template)
     {
-        var specification = new EmailTemplateByNameOrIdSpecification(templateName);
+        var specification = new EmailTemplateByIdSpecification(template.Id);
 
-        var emailTemplate = await _repository.SingleOrDefaultAsync(specification) ?? throw new EmailTemplateNotFoundException(templateName);
+        var doesTemplateExist = await _repository.AnyAsync(specification);
 
-        return emailTemplate;
-    }
-
-    public async Task UpdateEmailTemplateAsync(EmailTemplate emailTemplate)
-    {
-        var specification = new EmailTemplateByNameOrIdSpecification(emailTemplate.Name);
-
-        var existingTemplatesWithSameName = await _repository.SingleOrDefaultAsync(specification);
-
-        if (existingTemplatesWithSameName is not null && existingTemplatesWithSameName.Id != emailTemplate.Id)
+        if (!doesTemplateExist)
         {
-            throw new DuplicateException($"Email template with name '{emailTemplate.Name}' already exists");
+            throw new EmailTemplateNotFoundException(template.Id);
         }
 
-
-        await _repository.UpdateAsync(emailTemplate);
+        await _repository.UpdateAsync(template);
     }
     public async Task DeleteEmailTemplateAsync(int templateId)
     {
-        var emailTemplate = await GetEmailTemplateByIdAsync(templateId);
+        var emailTemplate = await GetEmailTemplateAsync(templateId);
 
         emailTemplate.DeletedDate = DateTime.UtcNow;
 
@@ -65,7 +54,7 @@ public class EmailTemplateService : IEmailTemplateService
 
     public async Task RenewEmailTemplateAsync(int templateId)
     {
-        var emailTemplate = await GetEmailTemplateByIdAsync(templateId);
+        var emailTemplate = await GetEmailTemplateAsync(templateId);
 
         emailTemplate.DeletedDate = null;
 

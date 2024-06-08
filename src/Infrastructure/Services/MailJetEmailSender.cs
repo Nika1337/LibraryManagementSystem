@@ -1,5 +1,4 @@
 ﻿using Nika1337.Library.ApplicationCore.Abstractions;
-using System;
 using Mailjet.Client;
 using Mailjet.Client.TransactionalEmails;
 using System.Threading.Tasks;

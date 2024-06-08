@@ -3,31 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
-using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.EmployeeManagement;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Human Resources Manager")]
-[Route("[controller]/[action]")]
+[Route("Employees")]
 public class EmployeeManagementController : Controller
 {
     private readonly IEmployeeAuthenticationService _employeeAuthenticationService;
     private readonly IEmployeeService _employeeService;
+    private readonly IEmployeeRoleService _employeeRoleService;
     public EmployeeManagementController(
         IEmployeeAuthenticationService employeeAuthenticationService,
-        IEmployeeService employeeService)
+        IEmployeeService employeeService,
+        IEmployeeRoleService employeeRoleService)
     {
         _employeeAuthenticationService = employeeAuthenticationService;
         _employeeService = employeeService;
+        _employeeRoleService = employeeRoleService;
     }
 
-    [HttpGet]
+
+    [HttpGet("[action]")]
     public async Task<IActionResult> RegisterEmployee()
     {
         var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
@@ -40,7 +41,7 @@ public class EmployeeManagementController : Controller
         return View(model);
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     public async Task<IActionResult> RegisterEmployee(EmployeeRegistrationViewModel model)
     {
         if (!ModelState.IsValid)
@@ -48,10 +49,11 @@ public class EmployeeManagementController : Controller
             return View(model);
         }
 
-        var selectedRoles = await _employeeService.GetEmployeeRolesByRoleNames(model.SelectedRoles);
+        var selectedRoles = model.SelectedRoles.Select(name => new EmployeeRole { Name = name });
 
         var employee = new DetailedEmployee
         {
+            Id = "",
             FirstName = model.FirstName,
             LastName = model.LastName,
             Username = model.Username,
@@ -75,16 +77,17 @@ public class EmployeeManagementController : Controller
         return RedirectToAction("AllEmployees");
     }
 
-    [HttpGet("{username}")]
-    public async Task<IActionResult> Profile(string username)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Profile(string id)
     {
-        var employee = await _employeeService.GetDetailedEmployeeAsync(username);
+        var employee = await _employeeService.GetDetailedEmployeeAsync(id);
 
         var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
 
         var selectedRoles = employee.Roles.Select(role => role.Name);
 
         var model = new EmployeeProfileViewModel {
+            Id = employee.Id,
             FirstName = employee.FirstName,
             LastName = employee.LastName,
             NewUsername = employee.Username,
@@ -108,17 +111,17 @@ public class EmployeeManagementController : Controller
         return View(model);
     }
 
-    [HttpPost("{username}")]
-    public async Task<IActionResult> Profile(string username, EmployeeProfileViewModel model)
+    [HttpPost]
+    public async Task<IActionResult> Profile(EmployeeProfileViewModel model)
     {
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(username);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(model.Id);
 
-        var selectedRoles = await _employeeService.GetEmployeeRolesByRoleNames(model.SelectedRoles);
+        var selectedRoles = model.SelectedRoles.Select(roleName => new EmployeeRole { Name = roleName });
 
         existingEmployee.FirstName = model.FirstName;
         existingEmployee.LastName = model.LastName;
@@ -130,7 +133,7 @@ public class EmployeeManagementController : Controller
 
         try
         {
-            await _employeeService.UpdateDetailedEmployee(username, existingEmployee);
+            await _employeeService.UpdateDetailedEmployee(existingEmployee);
         } catch (DuplicateException)
         {
             model.ErrorMessage = $"Username '{model.NewUsername}' is taken";
@@ -140,28 +143,28 @@ public class EmployeeManagementController : Controller
         return RedirectToAction("AllEmployees");
     }
 
-    [HttpPost("{username}")]
+    [HttpPost("[action]/{id}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> TerminateEmployee(string username)
+    public async Task<IActionResult> TerminateEmployee(string id)
     {
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(username);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(id);
 
         existingEmployee.TerminationDate = DateTime.UtcNow;
 
-        await _employeeService.UpdateDetailedEmployee(username, existingEmployee);
+        await _employeeService.UpdateDetailedEmployee(existingEmployee);
 
         return Ok();
     }
 
-    [HttpPost("{username}")]
+    [HttpPost("[action]/{id}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RenewEmployee(string username)
+    public async Task<IActionResult> RenewEmployee(string id)
     {
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(username);
+        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(id);
 
         existingEmployee.StartDate = DateTime.UtcNow;
         existingEmployee.TerminationDate = existingEmployee.TerminationDate = null;
-        await _employeeService.UpdateDetailedEmployee(username, existingEmployee);
+        await _employeeService.UpdateDetailedEmployee(existingEmployee);
 
 
         return Ok();
@@ -169,64 +172,15 @@ public class EmployeeManagementController : Controller
 
 
     [HttpGet]
-    public IActionResult AllEmployees(
-        [FromQuery] string? sortedBy,
-        [FromQuery] string? searchTerm,
-        [FromQuery] bool shouldIncludeTerminated = true)
+    public async Task<IActionResult> AllEmployeesAsync()
     {
-        Expression<Func<Employee, object>>? keySelector = null;
-        bool isAscending = false;
 
-        ViewData["SortedBy"] = sortedBy;
-        ViewData["SearchTerm"] = searchTerm;
-
-        switch (sortedBy)
-        {
-            case null:
-                keySelector = null;
-                isAscending = true;
-                break;
-            case "username":
-                keySelector = e => e.Username;
-                isAscending = true;
-                break;
-            case "usernameDesc":
-                keySelector = e => e.Username;
-                isAscending = false;
-                break;
-            case "firstName":
-                keySelector = e => e.FirstName;
-                isAscending = true;
-                break;
-            case "firstNameDesc":
-                keySelector = e => e.FirstName;
-                isAscending = false;
-                break;
-            case "lastName":
-                keySelector = e => e.LastName;
-                isAscending = true;
-                break;
-            case "lastNameDesc":
-                keySelector = e => e.LastName;
-                isAscending = false;
-                break;
-            case "startDate":
-                keySelector = e => e.StartDate;
-                isAscending = true;
-                break;
-            case "startDateDesc":
-                keySelector = e => e.StartDate;
-                isAscending = false;
-                break;
-            default:
-                throw new ApplicationException("Invalid sorted by argument");
-        }
-
-        var allEmployees = _employeeService.GetAllEmployees(keySelector, isAscending, searchTerm ?? "", shouldIncludeTerminated);
+        var allEmployees = await _employeeService.GetAllEmployees();
 
         var model = allEmployees.Select(
             employee => new EmployeeViewModel
             {
+                Id = employee.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Username = employee.Username,
@@ -241,9 +195,9 @@ public class EmployeeManagementController : Controller
         return View(model);
     }
 
-    private async Task<List<string>> GetAvaliableRoleSelectListItems()
+    private async Task<string[]> GetAvaliableRoleSelectListItems()
     {
-        var avaliableRoles = await _employeeService.GetAllEmployeeRolesAsync();
-        return avaliableRoles.Select(role => role.Name).ToList();
+        var avaliableRoles = await _employeeRoleService.GetAllEmployeeRoleNamesAsync();
+        return avaliableRoles;
     }
 }

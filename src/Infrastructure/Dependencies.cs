@@ -1,5 +1,7 @@
 ﻿using Mailjet.Client;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +38,8 @@ public static class Dependencies
             o.Stores.MaxLengthForKeys = 128;
             o.User.RequireUniqueEmail = true;
         })
-            .AddEntityFrameworkStores<IdentityContext>()
+            .AddUserStore<UserStore<IdentityEmployee, IdentityEmployeeRole, IdentityContext, string, IdentityUserClaim<string>, IdentityEmployeeRoleJunction, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>>()
+            .AddRoleStore<RoleStore<IdentityEmployeeRole, IdentityContext, string, IdentityEmployeeRoleJunction, IdentityRoleClaim<string>>>()
             .AddDefaultTokenProviders()
             .AddPasswordValidator<EmployeePasswordValidator>();
 
@@ -65,6 +68,7 @@ public static class Dependencies
         services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
         services.AddScoped<IEmployeeAuthenticationService, IdentityEmployeeAuthenticationService>();
         services.AddScoped<IEmployeeService, IdentityEmployeeService>();
+        services.AddScoped<IEmployeeRoleService, IdentityEmployeeRoleService>();
 
         services.AddScoped<IMailjetClient>(provider =>
         {

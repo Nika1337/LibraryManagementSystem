@@ -45,7 +45,7 @@ public class EmployeeRegistrationViewModel
     [AtLeastOneElement(ErrorMessage = "At least one role must be selected.")]
     public List<string> SelectedRoles { get; set; } = [];
 
-    public List<string> AvailableRoles { get; set; } = [];
+    public string[] AvailableRoles { get; set; } = [];
 
     public string? ErrorMessage {  get; set; }
 }

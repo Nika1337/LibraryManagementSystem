@@ -14,6 +14,7 @@ internal static class Extensions
     {
         var employee = new DetailedEmployee
         {
+            Id = identityEmployee.Id,
             FirstName = identityEmployee.FirstName,
             LastName = identityEmployee.LastName,
             Username = identityEmployee.UserName!,
@@ -38,8 +39,8 @@ internal static class Extensions
         RoleManager<IdentityEmployeeRole> roleManager)
     {
         var identityEmployeeRoleNames = await userManager.GetRolesAsync(identityEmployee);
+
         var identityEmployeeRoles = roleManager.Roles
-            .Include(role => role.NavigationMenuItems)
             .Where(role => identityEmployeeRoleNames.Contains(role.Name!));
 
         var employeeRoles = identityEmployeeRoles.ToEmployeeRoles();
@@ -69,7 +70,10 @@ internal static class Extensions
 
     internal static EmployeeRole ToEmployeeRole(this IdentityEmployeeRole identityEmployeeRole)
     {
-        var employeeRole = new EmployeeRole(identityEmployeeRole.Name!, identityEmployeeRole.NavigationMenuItems);
+        var employeeRole = new EmployeeRole
+        {
+            Name = identityEmployeeRole.Name!
+        };
 
         return employeeRole;
     }
@@ -83,8 +87,7 @@ internal static class Extensions
     {
         var identityEmployeeRole = new IdentityEmployeeRole
         {
-            Name = employeeRole.Name,
-            NavigationMenuItems = employeeRole.PermittedNavigationMenuItems
+            Name = employeeRole.Name
         };
 
         return identityEmployeeRole;

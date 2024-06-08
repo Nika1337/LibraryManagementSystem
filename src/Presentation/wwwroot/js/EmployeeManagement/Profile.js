@@ -2,8 +2,8 @@
 
 document.getElementById('confirmAction').addEventListener('click', function () {
 
-    var fetchPath = `/EmployeeManagement/${userAction}Employee/${username}`;
-    var afterFetchPath = `/EmployeeManagement/AllEmployees`;
+    var fetchPath = `/Employees/${userAction}Employee/${id}`;
+    var afterFetchPath = `/Employees`;
 
     performAction(fetchPath, afterFetchPath);
 });

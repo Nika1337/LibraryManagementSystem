@@ -2,10 +2,8 @@
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
-using Nika1337.Library.Infrastructure.Identity;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -97,15 +95,15 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
         }
     }
 
-    public async Task ChangePasswordAsync(string username, string currentPassword, string newPassword)
+    public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
     {
-        var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
 
         var isCurrentPasswordCorrect = await _userManager.CheckPasswordAsync(existingEmployee, currentPassword);
 
         if (!isCurrentPasswordCorrect)
         {
-            throw new PasswordIncorrectException(username);
+            throw new PasswordIncorrectException(id);
         }
 
         var newPasswordValidationResult = await new EmployeePasswordValidator().ValidateAsync(_userManager, existingEmployee, newPassword);
@@ -119,46 +117,46 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         if (!changePasswordResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to change password of employee with username '{username}'");
+            throw new ApplicationException($"Unable to change password of employee with id '{id}'");
         }
     }
 
 
-    public async Task ChangeEmailAsync(string username, string email, string confirmEmailUrl)
+    public async Task ChangeEmailAsync(string id, string email, string confirmEmailUrl)
     {
-        var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
 
         var changeEmailResult =  await _userManager.SetEmailAsync(existingEmployee, email);
 
         if (!changeEmailResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to set emailfor employee with username '{username}'");
+            throw new ApplicationException($"Unable to set email for employee with id '{id}'");
         }
 
         var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(existingEmployee);
 
         var encodedToken = HttpUtility.UrlEncode(emailConfirmationToken);
 
-        var confirmEmailHref = $"{confirmEmailUrl}?username={username}&token={encodedToken}";
+        var confirmEmailHref = $"{confirmEmailUrl}?id={id}&token={encodedToken}";
 
-        await _emailService.SendEmailAsync(email, "Confirm Email", new { Href = confirmEmailHref });
+        await _emailService.SendEmailAsync(email, 2, new { Href = confirmEmailHref });
     }
     
-    public async Task ConfirmEmailAsync(string username, string token)
+    public async Task ConfirmEmailAsync(string id, string token)
     {
-        var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
 
         var changeEmailResult = await _userManager.ConfirmEmailAsync(existingEmployee, token);
 
         if (!changeEmailResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to confirm email for employee with username '{username}'");
+            throw new ApplicationException($"Unable to confirm email for employee with id '{id}'");
         }
     }
 
-    public async Task ResetPasswordAsync(string username, string token, string newPassword)
+    public async Task ResetPasswordAsync(string id, string token, string newPassword)
     {
-        var existingEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
 
         var newPasswordValidationResult = await new EmployeePasswordValidator().ValidateAsync(_userManager, existingEmployee, newPassword);
 
@@ -167,13 +165,12 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
             throw new PasswordStructureValidationException(newPasswordValidationResult.Errors.FirstOrDefault()?.Description ?? "");
         }
 
-        var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(existingEmployee)!;
 
-        var passwordResetResult = await _userManager.ResetPasswordAsync(existingEmployee, passwordResetToken, newPassword);
+        var passwordResetResult = await _userManager.ResetPasswordAsync(existingEmployee, token, newPassword);
 
         if (!passwordResetResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to reset password for employe with username '{username}'");
+            throw new ApplicationException($"Unable to reset password for employee with Id '{id}'");
         }
     }
 
@@ -186,7 +183,7 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
     {
         var identityEmployee = await _userManager.FindByEmailAsync(email);
 
-        if (identityEmployee == null)
+        if (identityEmployee is null)
         {
             return;
         }
@@ -195,9 +192,9 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         var encodedToken = HttpUtility.UrlEncode(resetToken);
 
-        var resetPasswordHref = $"{resetPasswordUrl}?token={encodedToken}&username={identityEmployee.UserName}";
+        var resetPasswordHref = $"{resetPasswordUrl}?id={identityEmployee.UserName}&token={encodedToken}";
 
-        await _emailService.SendEmailAsync(email, "Reset Password", new { Href = resetPasswordHref });
+        await _emailService.SendEmailAsync(email, 1, new { Href = resetPasswordHref });
     }
 
 }

@@ -1,12 +1,11 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Nika1337.Library.ApplicationCore.Entities;
 
 public class DetailedEmployee
 {
+    public required string Id { get; set; }
     public required string FirstName { get; set;}
     public required string LastName { get; set; }
     public required string Username { get; set; }

@@ -132,7 +132,7 @@ public class EmployeeAccountController : Controller
 
         try
         {
-            await _employeeService.UpdateDetailedEmployee(username, employee);
+            await _employeeService.UpdateDetailedEmployee(employee);
         } catch (DuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";

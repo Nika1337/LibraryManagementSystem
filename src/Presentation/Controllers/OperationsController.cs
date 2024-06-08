@@ -13,6 +13,7 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 
 [Authorize(Roles = "Operations Manager")]
+[Route("EmailTemplates")]
 public class OperationsController : Controller
 {
     private readonly IEmailTemplateService _emailTemplateService;
@@ -22,15 +23,15 @@ public class OperationsController : Controller
         _emailTemplateService = emailTemplateService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> EmailTemplates(int? id)
+    [HttpGet("{id?}")]
+    public async Task<IActionResult> EmailTemplates([FromRoute] int? id)
     {
 
         var emailTemplates = await GetEmailTemplates();
 
         var selectedEmailTemplateId = id ?? emailTemplates.First().Id;
 
-        var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateByIdAsync(selectedEmailTemplateId);
+        var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateAsync(selectedEmailTemplateId);
 
         var selectedDetailedEmailTemplate =
             new DetailedEmailTemplateViewModel { 
@@ -64,7 +65,7 @@ public class OperationsController : Controller
             return View(model);
         }
 
-        var existingTemplate = await _emailTemplateService.GetEmailTemplateByIdAsync(model.SelectedEmailTemplate.Id);
+        var existingTemplate = await _emailTemplateService.GetEmailTemplateAsync(model.SelectedEmailTemplate.Id);
 
         existingTemplate.Name = model.SelectedEmailTemplate.Name;
         existingTemplate.Subject = model.SelectedEmailTemplate.Subject;
@@ -88,10 +89,9 @@ public class OperationsController : Controller
         return RedirectToAction(nameof(EmailTemplates));
     }
 
-    [HttpPost]
+    [HttpPost("[action]/{templateId:int}")]
     [ValidateAntiForgeryToken]
-    [Route("[controller]/[action]/{templateId:int}")]
-    public async Task<IActionResult> DeleteEmailTemplate(int templateId)
+    public async Task<IActionResult> DeleteEmailTemplate([FromRoute] int templateId)
     {
         await _emailTemplateService.DeleteEmailTemplateAsync(templateId);
 
@@ -99,10 +99,9 @@ public class OperationsController : Controller
     }
 
 
-    [HttpPost]
+    [HttpPost("[action]/{templateId:int}")]
     [ValidateAntiForgeryToken]
-    [Route("[controller]/[action]/{templateId:int}")]
-    public async Task<IActionResult> RenewEmailTemplate(int templateId)
+    public async Task<IActionResult> RenewEmailTemplate([FromRoute] int templateId)
     {
         await _emailTemplateService.RenewEmailTemplateAsync(templateId);
 

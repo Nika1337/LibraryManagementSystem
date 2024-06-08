@@ -1,11 +1,11 @@
 ﻿using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
-using Nika1337.Library.ApplicationCore.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.Infrastructure.Identity.Services;
+namespace Nika1337.Library.ApplicationCore.Services;
 
 public class NavigationMenuService : INavigationMenuService
 {
@@ -16,24 +16,18 @@ public class NavigationMenuService : INavigationMenuService
         _employeeService = employeeService;
     }
 
-    public async Task<ICollection<NavigationMenuItem>> GetPermittedNavigationMenuItemsFor(string userName)
+    public async Task<ICollection<NavigationMenuItem>> GetPermittedNavigationMenuItemsFor(ClaimsPrincipal principal)
     {
-        var identityEmployee = await _employeeService.GetDetailedEmployeeAsync(userName) ?? throw new EmployeeNotFoundException(userName);
+        var unfilteredNavigationMenuItems = await GetUnfilteredNavigationMenuItemsFor(principal);
 
-        return GetPermittedNavigationMenuItemsFor(identityEmployee);
-    }
-    private static NavigationMenuItem[] GetPermittedNavigationMenuItemsFor(DetailedEmployee employee)
-    {
-        var unfilteredNavigationMenuItems = GetUnfilteredNavigationMenuItemsFor(employee);
         var filteredNavigationMenuItems = FilterNonAccessibleChildren(unfilteredNavigationMenuItems);
 
-        return filteredNavigationMenuItems;
+        return filteredNavigationMenuItems; 
     }
 
-    private static NavigationMenuItem[] GetUnfilteredNavigationMenuItemsFor(DetailedEmployee employee)
+    private async Task<NavigationMenuItem[]> GetUnfilteredNavigationMenuItemsFor(ClaimsPrincipal principal)
     {
-        return employee.Roles
-            .SelectMany(role => role.PermittedNavigationMenuItems).ToArray();
+        return await _employeeService.GetNavigationMenuItemsFor(principal);
     }
 
 

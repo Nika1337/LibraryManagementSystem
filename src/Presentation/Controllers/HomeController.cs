@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [Authorize]
+[Route("/")]
 public class HomeController : Controller
 {
     public IActionResult Index()
@@ -13,7 +14,7 @@ public class HomeController : Controller
     }
 
 
-    [Route("Home/Error")]
+    [Route("Error")]
     public IActionResult Error()
     {
         var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
@@ -21,13 +22,13 @@ public class HomeController : Controller
     }
 
     [AllowAnonymous]
-    [Route("Home/AccessDenied")]
+    [Route("AccessDenied")]
     public IActionResult AccessDenied()
     {
         return View();
     }
 
-    [Route("Home/StatusCode")]
+    [Route("StatusCode")]
     public IActionResult StatusCode(int code)
     {
         return View(code);

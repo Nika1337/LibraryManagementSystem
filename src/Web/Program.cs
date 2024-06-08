@@ -19,7 +19,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.LoginPath = "/EmployeeAccount/SignIn";
     options.LogoutPath = "/EmployeeAccount/SignOut";
-    options.AccessDeniedPath = "/Shared/AccessDenied";
+    options.AccessDeniedPath = "/AccessDenied";
 });
 
 builder.Services.AddAuthentication()
@@ -30,12 +30,10 @@ builder.Services.AddAuthentication()
         options.Cookie.SameSite = SameSiteMode.Lax;
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
-        .Build();
-});
+        .Build());
 
 var presentationAssembly = typeof(Nika1337.Library.Presentation.AssemblyReference).Assembly;
 
@@ -52,8 +50,8 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Shared/SomethingWentWrong");
-    app.UseStatusCodePagesWithReExecute("/Shared/Error");
+    app.UseExceptionHandler("/SomethingWentWrong");
+    app.UseStatusCodePagesWithReExecute("/Error");
     app.UseHsts();
 }
 
@@ -74,15 +72,6 @@ app.UseAuthorization();
 
 
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-
-app.MapControllerRoute(
-        name: "username",
-        pattern: "{controller}/{action}/{username}"
-        );
+app.MapControllers();
 
 app.Run();

@@ -6,7 +6,7 @@ public class NavigationMenuItem
 {
     public int Id { get; set; }
     public required string Name { get; set; }
-    public required string Route { get; set; }
+    public string? Route { get; set; }
     public int? ParentNavigationMenuItemId { get; set; }
-    public ICollection<NavigationMenuItem> ChildNavigationMenuItems { get; } = [];
+    public ICollection<NavigationMenuItem> ChildNavigationMenuItems { get; set; } = [];
 }

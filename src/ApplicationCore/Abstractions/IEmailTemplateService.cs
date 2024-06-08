@@ -7,8 +7,7 @@ namespace Nika1337.Library.ApplicationCore.Abstractions;
 public interface IEmailTemplateService
 {
     Task<IEnumerable<EmailTemplate>> GetAllActiveEmailTemplatesAsync();
-    Task<EmailTemplate> GetEmailTemplateByIdAsync(int templateId);
-    Task<EmailTemplate> GetEmailTemplateByNameAsync(string templateName);
+    Task<EmailTemplate> GetEmailTemplateAsync(int templateId);
     Task UpdateEmailTemplateAsync(EmailTemplate emailTemplate);
     Task DeleteEmailTemplateAsync(int templateId);
     Task RenewEmailTemplateAsync(int templateId);

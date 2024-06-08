@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <a asp-action="Profile" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-dark btn-sm btn-block">View Profile</a>
+                            <a href="/Employees/@employee.Id" class="btn btn-dark btn-sm btn-block">View Profile</a>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Profile" asp-controller="EmployeeManagement" asp-route-username="@employee.Username" class="btn btn-dark btn-sm">View Profile</a>
+                                <a href="/Employees/@employee.Id" class="btn btn-dark btn-sm">View Profile</a>
                             </td>
                         </tr>
                     }
@@ -160,7 +160,7 @@
     </div>
 
     <div class="myfab-container">
-        <a asp-action="RegisterEmployee" asp-controller="EmployeeManagement" class="btn btn-primary btn-lg shadow-sm myfab">
+        <a href="/Employees/RegisterEmployee" class="btn btn-primary btn-lg shadow-sm myfab">
             Register Employee
         </a>
     </div>

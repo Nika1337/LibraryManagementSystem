@@ -1,11 +1,10 @@
 ﻿using Nika1337.Library.ApplicationCore.Entities;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.ApplicationCore.Abstractions;
 
-public interface INavigationMenuService
+public interface IEmployeeRoleService
 {
-    Task<ICollection<NavigationMenuItem>> GetPermittedNavigationMenuItemsFor(ClaimsPrincipal principal);
+    Task<string[]> GetAllEmployeeRoleNamesAsync();
 }

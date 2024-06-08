@@ -27,31 +27,14 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.Property<string>("IdentityEmployeeRoleId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("NavigationMenuItemsId")
+                    b.Property<int>("PermittedNavigationMenuItemsId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdentityEmployeeRoleId", "NavigationMenuItemsId");
+                    b.HasKey("IdentityEmployeeRoleId", "PermittedNavigationMenuItemsId");
 
-                    b.HasIndex("NavigationMenuItemsId");
+                    b.HasIndex("PermittedNavigationMenuItemsId");
 
                     b.ToTable("IdentityEmployeeRoleNavigationMenuItem");
-
-                    b.HasData(
-                        new
-                        {
-                            IdentityEmployeeRoleId = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
-                            NavigationMenuItemsId = 1
-                        },
-                        new
-                        {
-                            IdentityEmployeeRoleId = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
-                            NavigationMenuItemsId = 2
-                        },
-                        new
-                        {
-                            IdentityEmployeeRoleId = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
-                            NavigationMenuItemsId = 3
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -128,21 +111,6 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
@@ -200,56 +168,6 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.EmailTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BriefDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FromEmail")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("LastUpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Separator")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmailTemplates");
-                });
-
             modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", b =>
                 {
                     b.Property<int>("Id")
@@ -267,7 +185,6 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Route")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -283,22 +200,92 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Employees",
-                            Route = "/EmployeeManagement/AllEmployees"
+                            Name = "Employees"
                         },
                         new
                         {
                             Id = 2,
                             Name = "All Employees",
                             ParentNavigationMenuItemId = 1,
-                            Route = "/EmployeeManagement/AllEmployees"
+                            Route = "/Employees/"
                         },
                         new
                         {
                             Id = 3,
                             Name = "Register Employee",
                             ParentNavigationMenuItemId = 1,
-                            Route = "/EmployeeManagement/RegisterEmployee"
+                            Route = "/Employees/RegisterEmployee"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Operations"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Email Templates",
+                            ParentNavigationMenuItemId = 4,
+                            Route = "/EmailTemplates"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Books"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "All Books",
+                            ParentNavigationMenuItemId = 6,
+                            Route = "/Books"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Add Book",
+                            ParentNavigationMenuItemId = 6,
+                            Route = "/Books/AddBook"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Book Editions",
+                            ParentNavigationMenuItemId = 6
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "All Book Editions",
+                            ParentNavigationMenuItemId = 9,
+                            Route = "/Books/BookEditions"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Add Book Edition",
+                            ParentNavigationMenuItemId = 9,
+                            Route = "/Books/BookEditions/AddBookEdition"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Book Copies",
+                            ParentNavigationMenuItemId = 9
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "All Book Copies",
+                            ParentNavigationMenuItemId = 12,
+                            Route = "/Books/BookEditions/BookCopies"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Add Book Copy",
+                            ParentNavigationMenuItemId = 12,
+                            Route = "/Books/BookEditions/BookCopies/AddBookCopy"
                         });
                 });
 
@@ -429,34 +416,49 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "47676683-a8f0-4999-a9d7-c0ca0364cc98",
+                            Id = "cc920de8-6ecf-4c51-bb3e-33235c0359a1",
                             Name = "Human Resources Manager",
                             NormalizedName = "HUMAN RESOURCES MANAGER"
                         },
                         new
                         {
-                            Id = "4324e0c3-d867-4a17-bba4-119d720842fa",
+                            Id = "f8a5a82a-2f5c-4500-ab3f-f46cc4d1f0ca",
                             Name = "Operations Manager",
                             NormalizedName = "OPERATIONS MANAGER"
                         },
                         new
                         {
-                            Id = "b9f6fba0-5150-4fe2-858d-5ebdee02ee48",
+                            Id = "4ec7d765-23cf-4924-98b4-59cb9ad48b29",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
-                            Id = "87bdf5b5-9a75-4376-b885-d378ae26a31b",
+                            Id = "5b82de6e-e0d0-4756-b832-13bed3063b0e",
                             Name = "Core Librarian",
                             NormalizedName = "CORE LIBRARIAN"
                         },
                         new
                         {
-                            Id = "7af55564-3ae2-4739-90b6-aff18d865887",
+                            Id = "dfe48fc2-c6c6-49e2-99b0-169c14face3b",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
                         });
+                });
+
+            modelBuilder.Entity("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployeeRoleJunction", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("IdentityEmployeeRoleNavigationMenuItem", b =>
@@ -469,7 +471,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
 
                     b.HasOne("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", null)
                         .WithMany()
-                        .HasForeignKey("NavigationMenuItemsId")
+                        .HasForeignKey("PermittedNavigationMenuItemsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -494,21 +496,6 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployee", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployeeRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -571,9 +558,33 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployeeRoleJunction", b =>
+                {
+                    b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployeeRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployee", "User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", b =>
                 {
                     b.Navigation("ChildNavigationMenuItems");
+                });
+
+            modelBuilder.Entity("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployee", b =>
+                {
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,5 +6,5 @@ namespace Nika1337.Library.Infrastructure.Identity.Entities;
 
 internal class IdentityEmployeeRole : IdentityRole
 {
-    public ICollection<NavigationMenuItem> NavigationMenuItems { get; set; } = [];
+    public ICollection<NavigationMenuItem> PermittedNavigationMenuItems { get; } = [];
 }

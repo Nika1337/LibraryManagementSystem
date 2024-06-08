@@ -11,21 +11,20 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Microsoft.AspNetCore.Http;
-using Ardalis.Specification;
 using Nika1337.Library.Infrastructure.Logging.Audit;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace Nika1337.Library.Infrastructure.Identity;
 
 internal class IdentityContext(
     IHttpContextAccessor httpContextAccessor,
-    DbContextOptions<IdentityContext> options) : IdentityDbContext<IdentityEmployee, IdentityEmployeeRole, string>(options)
+    DbContextOptions<IdentityContext> options) : IdentityDbContext<IdentityEmployee, IdentityEmployeeRole, string,
+    IdentityUserClaim<string>, IdentityEmployeeRoleJunction, IdentityUserLogin<string>,
+    IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
 
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-
-    public DbSet<EmailTemplate> EmailTemplates { get; set; }
-
     public DbSet<AuditLog> AuditLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -33,10 +32,10 @@ internal class IdentityContext(
         base.OnModelCreating(builder);
 
         builder.ApplyConfiguration(new AuditLogConfiguration());
-        builder.ApplyConfiguration(new EmailTemplateConfiguration());
         builder.ApplyConfiguration(new IdentityEmployeeRoleConfiguration());
         builder.ApplyConfiguration(new NavigationMenuItemConfiguration());
         builder.ApplyConfiguration(new IdentityEmployeeConfiguration());
+        builder.ApplyConfiguration(new IdentityEmployeeRoleJunctionConfiguration());
     }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -57,7 +56,7 @@ internal class IdentityContext(
     {
         LoggingHelper.LogModifiedEntities(
             ChangeTracker,
-            _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!,
+            _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "notLoggedIn",
             AuditLogs);
     }
 

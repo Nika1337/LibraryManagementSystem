@@ -16,4 +16,6 @@ internal class IdentityEmployee : IdentityUser
     public Gender? Gender { get; set; }
     public required DateTime StartDate { get; set; }
     public DateTime? TerminationDate { get; set; }
+
+    public ICollection<IdentityEmployeeRoleJunction> Roles { get; set; } = [];
 }

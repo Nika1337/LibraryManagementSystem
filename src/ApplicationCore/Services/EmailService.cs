@@ -22,18 +22,18 @@ public class EmailService : IEmailService
         _emailTemplateService = emailTemplateService;
     }
 
-    public async Task SendEmailAsync(string toEmail, string templateName, object templateContent)
+    public async Task SendEmailAsync(string toEmail, int templateId, object templateContent)
     {
-        var template = await GetTemplate(templateName);
+        var template = await GetTemplate(templateId);
 
         var formattedBody = FormatEmailBody(template, templateContent);
 
         await _emailSender.SendEmailAsync(template.FromEmail, toEmail, template.Subject, formattedBody);
     }
 
-    private async Task<EmailTemplate> GetTemplate(string templateName)
+    private async Task<EmailTemplate> GetTemplate(int templateId)
     {
-        return await _emailTemplateService.GetEmailTemplateByNameAsync(templateName);
+        return await _emailTemplateService.GetEmailTemplateAsync(templateId);
     }
 
     private static string FormatEmailBody(EmailTemplate template, object templateContent)

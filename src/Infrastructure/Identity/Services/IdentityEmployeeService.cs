@@ -1,5 +1,4 @@
-﻿using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
@@ -9,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -28,22 +26,19 @@ internal class IdentityEmployeeService : IEmployeeService
         _userManager = userManager;
     }
 
-    public Task<IEnumerable<EmployeeRole>> GetAllEmployeeRolesAsync()
+    public async Task<IEnumerable<EmployeeRole>> GetAllEmployeeRolesAsync()
     {
-        var identityEmployeeRoles = _roleManager.Roles
-            .Include(role => role.NavigationMenuItems)
-            .AsEnumerable();
+        var identityEmployeeRoles = await _roleManager.Roles.ToListAsync();
 
         var employeeRoles = identityEmployeeRoles.ToEmployeeRoles();
 
 
-        return Task.FromResult(employeeRoles);
+        return employeeRoles;
     }
 
     public Task<IEnumerable<EmployeeRole>> GetEmployeeRolesByRoleNames(IEnumerable<string> roleNames)
     {
         var identityRoles = _roleManager.Roles
-            .Include(role => role.NavigationMenuItems)
             .Where(role => roleNames.Contains(role.Name));
 
         var employeeRoles = identityRoles.ToEmployeeRoles();
@@ -51,17 +46,13 @@ internal class IdentityEmployeeService : IEmployeeService
         return Task.FromResult(employeeRoles);
     }
 
-    public IEnumerable<Employee> GetAllEmployees<TKey>(
-        Expression<Func<Employee, TKey>>? keySelector,
-        bool isAscending,
-        string searchTerm,
-        bool shouldIncludeTerminated)
+    public async Task<IEnumerable<Employee>> GetAllEmployees()
     {
-        var employees =
-            _userManager.Users
+        var employees = await _userManager.Users
             .Select(
                 identityEmployee => new Employee
                 {
+                    Id = identityEmployee.Id,
                     FirstName = identityEmployee.FirstName,
                     LastName = identityEmployee.LastName,
                     Username = identityEmployee.UserName!,
@@ -72,36 +63,17 @@ internal class IdentityEmployeeService : IEmployeeService
                     Email = identityEmployee.Email,
                     IsActive = identityEmployee.TerminationDate == null
                 }
-            );
+            )
+            .ToListAsync();
 
-        if (!shouldIncludeTerminated)
-        {
-            employees = employees.Where(e => e.IsActive);
-        }
-
-        if (!string.IsNullOrEmpty(searchTerm))
-        {
-            employees = employees
-                .Where(e => 
-                    e.FirstName.Contains(searchTerm) ||
-                    e.LastName.Contains(searchTerm) ||
-                    e.Username.Contains(searchTerm)
-                );
-
-        }
-
-        if (keySelector is not null)
-        {
-            employees = isAscending ? employees.OrderBy(keySelector) : employees.OrderByDescending(keySelector);
-        }
 
 
         return employees;
     }
 
-    public async Task<DetailedEmployee> GetDetailedEmployeeAsync(string username)
+    public async Task<DetailedEmployee> GetDetailedEmployeeAsync(string id)
     {
-        var identityEmployee = await _userManager.FindByNameAsync(username) ?? throw new EmployeeNotFoundException(username);
+        var identityEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
 
         var employee = await identityEmployee.ToEmployee(_userManager, _roleManager);
 
@@ -116,11 +88,13 @@ internal class IdentityEmployeeService : IEmployeeService
         return employee;
     }
 
-    public async Task UpdateDetailedEmployee(string oldUsername, DetailedEmployee employee)
+    public async Task UpdateDetailedEmployee(DetailedEmployee employee)
     {
-        var identityEmployee = await _userManager.FindByNameAsync(oldUsername) ?? throw new EmployeeNotFoundException(oldUsername);
+        var identityEmployee = await _userManager.FindByIdAsync(employee.Id) ?? throw new EmployeeNotFoundException(employee.Id);
 
-        if (oldUsername != employee.Username && await _userManager.FindByNameAsync(employee.Username) is not null)
+        var employeeWithSameName = await _userManager.FindByNameAsync(employee.Username);
+
+        if (employeeWithSameName is not null && employeeWithSameName.Id != employee.Id)
         {
             throw new DuplicateException($"Employee with username '{employee.Username}' already exists");
         }
@@ -142,7 +116,7 @@ internal class IdentityEmployeeService : IEmployeeService
 
         if (!updateResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to update employee with old username '{oldUsername}'");
+            throw new ApplicationException($"Unable to update employee with Id '{employee.Id}'");
         }
 
         var currentRoles = await _userManager.GetRolesAsync(identityEmployee);
@@ -158,7 +132,7 @@ internal class IdentityEmployeeService : IEmployeeService
 
         if (!roleRemovalResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to remove roles for user with new username {identityEmployee.UserName}");
+            throw new ApplicationException($"Unable to remove roles for employee with Id {employee.Id}");
         }
 
         // add roles
@@ -168,5 +142,22 @@ internal class IdentityEmployeeService : IEmployeeService
         {
             throw new ApplicationException();
         }
+    }
+
+    public async Task<NavigationMenuItem[]> GetNavigationMenuItemsFor(ClaimsPrincipal principal)
+    {
+        var employeeId = _userManager.GetUserId(principal) ?? throw new EmployeeNotFoundException(principal);
+
+        var employee = await _userManager.Users
+            .Include(employee => employee.Roles)
+            .ThenInclude(junction => junction.Role)
+            .ThenInclude(role => role.PermittedNavigationMenuItems)
+            .Where(employee => employee.Id == employeeId)
+            .SingleOrDefaultAsync() ?? throw new EmployeeNotFoundException(principal);
+
+        return employee.Roles
+            .Select(junction => junction.Role)
+            .SelectMany(role => role.PermittedNavigationMenuItems)
+            .ToArray();
     }
 }

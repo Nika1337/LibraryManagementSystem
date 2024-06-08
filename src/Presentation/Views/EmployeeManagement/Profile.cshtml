@@ -1,7 +1,6 @@
 ﻿@model Nika1337.Library.Presentation.Models.EmployeeManagement.EmployeeProfileViewModel
 @{
     ViewData["Title"] = "Edit Employee";
-    var username = (string)ViewContext.RouteData.Values["username"];
     var userAction = Model.TerminationDate == null ? "Terminate" : "Renew";
     var actionButtonClass = Model.TerminationDate == null ? "btn-danger" : "btn-warning";
 }
@@ -78,7 +77,8 @@
             <div class="card mb-4">
                 <h5 class="card-header">Employee Information</h5>
                 <div class="card-body">
-                    <form asp-action="Profile" asp-controller="EmployeeManagement" asp-route-username="@username" method="post" class="needs-validation" novalidate>
+                    <form asp-route="Employees/Profile" method="post" class="needs-validation" novalidate>
+                        <input type="hidden" asp-for="Id" />
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
@@ -173,7 +173,7 @@
     <script src="~/js/Shared/ActionModal.js"></script>
     <script src="~/js/EmployeeManagement/Profile.js"></script>
     <script>
-        var username = '@username';
+        var id = '@Model.Id';
         var userAction = '@userAction';
     </script>
 }

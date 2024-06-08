@@ -2,7 +2,7 @@
 
 namespace Nika1337.Library.ApplicationCore.Exceptions;
 
-public class EmployeeRoleNotFoundException : Exception
+public class EmployeeRoleNotFoundException : NotFoundException
 {
     public EmployeeRoleNotFoundException(string roleName) : base($"No Role found with Name '{roleName}'")
     {
