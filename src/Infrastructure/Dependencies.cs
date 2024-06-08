@@ -1,13 +1,11 @@
 ﻿using Mailjet.Client;
-using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.ApplicationCore.Abstractions;
-using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Services;
 using Nika1337.Library.Infrastructure.Data;
 using Nika1337.Library.Infrastructure.Identity;

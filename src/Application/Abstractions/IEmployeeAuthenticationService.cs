@@ -1,7 +1,9 @@
-﻿using Nika1337.Library.ApplicationCore.Entities;
+﻿
+
+using Nika1337.Library.ApplicationCore.Entities;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.ApplicationCore.Abstractions;
+namespace Nika1337.Library.Application.Abstractions;
 
 public interface IEmployeeAuthenticationService
 {

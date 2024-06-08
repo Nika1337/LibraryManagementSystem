@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Nika1337.Library.ApplicationCore.Abstractions;
+using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.Operations;
 using System.Collections.Generic;

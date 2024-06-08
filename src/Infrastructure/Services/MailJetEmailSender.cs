@@ -1,6 +1,7 @@
-﻿using Nika1337.Library.ApplicationCore.Abstractions;
+﻿
 using Mailjet.Client;
 using Mailjet.Client.TransactionalEmails;
+using Nika1337.Library.Application.Abstractions;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;

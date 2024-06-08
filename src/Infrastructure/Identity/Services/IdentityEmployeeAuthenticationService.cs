@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Nika1337.Library.ApplicationCore.Abstractions;
+using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Infrastructure.Identity.Entities;

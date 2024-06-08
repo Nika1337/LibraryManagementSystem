@@ -1,4 +1,4 @@
-﻿using Nika1337.Library.ApplicationCore.Abstractions;
+﻿using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;

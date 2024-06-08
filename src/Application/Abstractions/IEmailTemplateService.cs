@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.ApplicationCore.Abstractions;
+namespace Nika1337.Library.Application.Abstractions;
 
 public interface IEmailTemplateService
 {

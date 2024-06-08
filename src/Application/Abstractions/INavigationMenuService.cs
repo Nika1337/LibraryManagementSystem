@@ -1,9 +1,10 @@
-﻿using Nika1337.Library.ApplicationCore.Entities;
+﻿
+using Nika1337.Library.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.ApplicationCore.Abstractions;
+namespace Nika1337.Library.Application.Abstractions;
 
 public interface INavigationMenuService
 {

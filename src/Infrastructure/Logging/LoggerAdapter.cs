@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Nika1337.Library.ApplicationCore.Abstractions;
+using Nika1337.Library.Application.Abstractions;
 using System;
 
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Nika1337.Library.ApplicationCore.Abstractions;
+using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,6 @@ namespace Nika1337.Library.Presentation.Components;
 public class NavigationViewComponent : ViewComponent
 {
     private readonly INavigationMenuService _navigationMenuService;
-    private readonly IEmployeeService _employeeService;
 
     private List<NavigationMenuItem> GenerateSampleData()
     {
@@ -42,7 +41,6 @@ public class NavigationViewComponent : ViewComponent
     public NavigationViewComponent(INavigationMenuService navigationMenuService, IEmployeeService employeeService)
     {
         _navigationMenuService = navigationMenuService;
-        _employeeService = employeeService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync()
