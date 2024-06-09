@@ -10,9 +10,9 @@ namespace Nika1337.Library.Infrastructure.Identity.Services;
 
 internal static class Extensions
 {
-    internal static DetailedEmployee ToEmployee(this IdentityEmployee identityEmployee, ICollection<EmployeeRole> roles)
+    internal static Employee ToEmployee(this IdentityEmployee identityEmployee, ICollection<EmployeeRole> roles)
     {
-        var employee = new DetailedEmployee
+        var employee = new Employee
         {
             Id = identityEmployee.Id,
             FirstName = identityEmployee.FirstName,
@@ -33,7 +33,7 @@ internal static class Extensions
         return employee;
     }
 
-    internal async static Task<DetailedEmployee> ToEmployee(
+    internal async static Task<Employee> ToEmployee(
         this IdentityEmployee identityEmployee,
         UserManager<IdentityEmployee> userManager,
         RoleManager<IdentityEmployeeRole> roleManager)
@@ -50,12 +50,12 @@ internal static class Extensions
         return employee;
     }
 
-    internal async static Task<IEnumerable<DetailedEmployee>> ToEmployees(
+    internal async static Task<IEnumerable<Employee>> ToEmployees(
       this IEnumerable<IdentityEmployee> identityEmployees,
       UserManager<IdentityEmployee> userManager,
       RoleManager<IdentityEmployeeRole> roleManager)
     {
-        var employees = new List<DetailedEmployee>();
+        var employees = new List<Employee>();
 
         foreach (var identityEmployee in identityEmployees)
         {

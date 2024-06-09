@@ -1,13 +1,10 @@
 ﻿
-
-using Nika1337.Library.ApplicationCore.Entities;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Application.Abstractions;
 
 public interface IEmployeeAuthenticationService
 {
-    Task RegisterEmployee(DetailedEmployee employee);
     Task PasswordSignInAsync(string id, string password);
     Task ResetPasswordAsync(string id, string token, string newPassword);
     Task ForgotPasswordAsync(string email, string resetPasswordUrl);

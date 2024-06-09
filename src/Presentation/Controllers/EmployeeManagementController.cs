@@ -51,7 +51,7 @@ public class EmployeeManagementController : Controller
 
         var selectedRoles = model.SelectedRoles.Select(name => new EmployeeRole { Name = name });
 
-        var employee = new DetailedEmployee
+        var employee = new Employee
         {
             Id = "",
             FirstName = model.FirstName,
