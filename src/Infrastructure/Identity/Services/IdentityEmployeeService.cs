@@ -35,12 +35,7 @@ internal class IdentityEmployeeService : IEmployeeService
 
     public async Task RegisterEmployeeAsync(EmployeeRegistrationRequest employee)
     {
-        var identityEmployeeWithSameUsername = await _userManager.FindByNameAsync(employee.Username);
-
-        if (identityEmployeeWithSameUsername is not null)
-        {
-            throw new UsernameDuplicateException($"Employee with username '{employee.Username}' already exists");
-        }
+        await ThrowIfUsernameExists(employee.Username);
 
 
         var identityEmployee = _mapper.Map<IdentityEmployee>(employee);
@@ -163,7 +158,12 @@ internal class IdentityEmployeeService : IEmployeeService
 
     private async Task ThrowIfUsernameExists(string username)
     {
-        _ = await _userManager.FindByNameAsync(username) ?? throw new UsernameDuplicateException($"Employee with username '{username}' already exists");
+        var employee = await _userManager.FindByNameAsync(username);
+
+        if (employee is not null)
+        {
+            throw new UsernameDuplicateException($"Employee with username '{username}' already exists");
+        }
     }
 
     private IIncludableQueryable<IdentityEmployee, IdentityEmployeeRole> GetEmployeesWithRoles()
