@@ -14,7 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.Infrastructure.Identity.Services;
+namespace Nika1337.Library.Infrastructure.Services;
 
 internal class IdentityEmployeeService : IEmployeeService
 {
@@ -57,7 +57,7 @@ internal class IdentityEmployeeService : IEmployeeService
         }
     }
 
-    public async Task<IEnumerable<EmployeeSimpleResponse>> GetAllEmployees()
+    public async Task<IEnumerable<EmployeeSimpleResponse>> GetAllEmployeesAsync()
     {
         var employees = await _userManager.Users
             .Select(
@@ -82,14 +82,14 @@ internal class IdentityEmployeeService : IEmployeeService
 
     public async Task<EmployeeDetailedResponse> GetDetailedEmployeeAsync(ClaimsPrincipal principal)
     {
-        var id = _userManager.GetUserId(principal) ?? throw new EmployeeNotFoundException(principal);
+        var id = GetEmployeeId(principal);
 
         return await GetDetailedEmployeeAsync(id);
     }
 
-    public async Task UpdateEmployee(EmployeeManagerUpdateRequest employee)
+    public async Task UpdateEmployeeAsync(EmployeeManagerUpdateRequest employee)
     {
-        var identityEmployee = await UpdateEmployee(employee as EmployeeUpdateRequest);
+        var identityEmployee = await UpdateEmployeeAsync(employee as EmployeeUpdateRequest);
 
         var currentRoles = await _userManager.GetRolesAsync(identityEmployee);
 
@@ -119,14 +119,43 @@ internal class IdentityEmployeeService : IEmployeeService
 
     }
 
-    public async Task UpdateEmployee(EmployeeAccountUpdateRequest employee)
+    public async Task UpdateEmployeeAsync(EmployeeAccountUpdateRequest employee)
     {
-        await UpdateEmployee(employee as EmployeeUpdateRequest);
+        await UpdateEmployeeAsync(employee as EmployeeUpdateRequest);
     }
 
-    public async Task<NavigationMenuItem[]> GetNavigationMenuItemsFor(ClaimsPrincipal principal)
+    public async Task TerminateEmployeeAsync(string id)
     {
-        var employeeId = _userManager.GetUserId(principal) ?? throw new EmployeeNotFoundException(principal);
+        var employee = await GetEmployeeWithId(id);
+
+        if (employee.TerminationDate is not null)
+        {
+            throw new ApplicationException($"Can not terminate already terminated employee with id '{id}'");
+        }
+
+        employee.TerminationDate = DateTime.UtcNow;
+
+        await _userManager.UpdateAsync(employee);
+    }
+
+    public async Task RenewEmployeeAsync(string id)
+    {
+        var employee = await GetEmployeeWithId(id);
+
+        if (employee.TerminationDate is null)
+        {
+            throw new ApplicationException($"Can not renew active employee with id '{id}'");
+        }
+
+        employee.TerminationDate = null;
+        employee.StartDate = DateTime.UtcNow;
+
+        await _userManager.UpdateAsync(employee);
+    }
+
+    public async Task<NavigationMenuItem[]> GetNavigationMenuItemsAsync(ClaimsPrincipal principal)
+    {
+        var employeeId = GetEmployeeId(principal);
 
         var employee = await GetEmployeesWithRoles()
             .ThenInclude(role => role.PermittedNavigationMenuItems)
@@ -144,6 +173,11 @@ internal class IdentityEmployeeService : IEmployeeService
     private async Task<IdentityEmployee> GetEmployeeWithId(string id)
     {
         return await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
+    }
+
+    private string GetEmployeeId(ClaimsPrincipal principal)
+    {
+        return _userManager.GetUserId(principal) ?? throw new EmployeeNotFoundException(principal);
     }
 
     private async Task ThrowIfEmployeeWithGivenUsernameHasDifferentId(string username, string id)
@@ -175,7 +209,7 @@ internal class IdentityEmployeeService : IEmployeeService
         return employee;
     }
 
-    private async Task<IdentityEmployee> UpdateEmployee(EmployeeUpdateRequest employee)
+    private async Task<IdentityEmployee> UpdateEmployeeAsync(EmployeeUpdateRequest employee)
     {
         var identityEmployee = await GetEmployeeWithId(employee.Id);
 
@@ -195,5 +229,4 @@ internal class IdentityEmployeeService : IEmployeeService
 
         return identityEmployee;
     }
-
 }

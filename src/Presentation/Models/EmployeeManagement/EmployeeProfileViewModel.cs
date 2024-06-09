@@ -24,7 +24,7 @@ public class EmployeeProfileViewModel
     [Required(ErrorMessage = "Username is required.")]
     [Display(Name = "Username")]
     [StringLength(50, ErrorMessage = "Username cannot be longer than 50 characters.")]
-    public required string NewUsername { get; set; }
+    public required string Username { get; set; }
 
     [Required(ErrorMessage = "Date of Birth is required.")]
     [Display(Name = "Date of Birth")]

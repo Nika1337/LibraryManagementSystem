@@ -4,10 +4,11 @@ using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Nika1337.Library.Infrastructure.Identity.Services;
+namespace Nika1337.Library.Infrastructure.Services;
 
 
 internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationService
@@ -51,16 +52,16 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
         }
     }
 
-    public async Task ChangePasswordAsync(string id, string currentPassword, string newPassword)
+    public async Task ChangePasswordAsync(ClaimsPrincipal principal, string currentPassword, string newPassword)
     {
-        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
+        var existingEmployee = await _userManager.GetUserAsync(principal) ?? throw new EmployeeNotFoundException(principal);
 
 
         var isCurrentPasswordCorrect = await _userManager.CheckPasswordAsync(existingEmployee, currentPassword);
 
         if (!isCurrentPasswordCorrect)
         {
-            throw new PasswordIncorrectException(id);
+            throw new PasswordIncorrectException(existingEmployee.Id);
         }
 
 
@@ -76,21 +77,21 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         if (!changePasswordResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to change password of employee with id '{id}'");
+            throw new ApplicationException($"Unable to change password of employee with id '{existingEmployee.Id}'");
         }
     }
 
 
-    public async Task ChangeEmailAsync(string id, string email, string confirmEmailUrl)
+    public async Task ChangeEmailAsync(ClaimsPrincipal principal, string email, string confirmEmailUrl)
     {
-        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
+        var existingEmployee = await _userManager.GetUserAsync(principal) ?? throw new EmployeeNotFoundException(principal);
 
 
-        var changeEmailResult =  await _userManager.SetEmailAsync(existingEmployee, email);
+        var changeEmailResult = await _userManager.SetEmailAsync(existingEmployee, email);
 
         if (!changeEmailResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to set email for employee with id '{id}'");
+            throw new ApplicationException($"Unable to set email for employee with id '{existingEmployee.Id}'");
         }
 
 
@@ -98,22 +99,21 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         var encodedToken = HttpUtility.UrlEncode(emailConfirmationToken);
 
-        var confirmEmailHref = $"{confirmEmailUrl}?id={id}&token={encodedToken}";
+        var confirmEmailHref = $"{confirmEmailUrl}?id={existingEmployee.Id}&token={encodedToken}";
 
 
         await _emailService.SendEmailAsync(email, 2, new { Href = confirmEmailHref });
     }
-    
+
     public async Task ConfirmEmailAsync(string id, string token)
     {
         var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
-
 
         var changeEmailResult = await _userManager.ConfirmEmailAsync(existingEmployee, token);
 
         if (!changeEmailResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to confirm email for employee with id '{id}'");
+            throw new ApplicationException($"Unable to confirm email for employee with id '{existingEmployee.Id}'");
         }
     }
 
@@ -134,7 +134,7 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
         if (!passwordResetResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to reset password for employee with Id '{id}'");
+            throw new ApplicationException($"Unable to reset password for employee with Id '{existingEmployee.Id}'");
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
@@ -31,12 +32,12 @@ public class EmailService : IEmailService
         await _emailSender.SendEmailAsync(template.FromEmail, toEmail, template.Subject, formattedBody);
     }
 
-    private async Task<EmailTemplate> GetTemplate(int templateId)
+    private async Task<EmailTemplateDetailedResponse> GetTemplate(int templateId)
     {
         return await _emailTemplateService.GetEmailTemplateAsync(templateId);
     }
 
-    private static string FormatEmailBody(EmailTemplate template, object templateContent)
+    private static string FormatEmailBody(EmailTemplateDetailedResponse template, object templateContent)
     {
         // Extract the separator and escape it for regex if necessary
         var separator = Regex.Escape(template.Separator);

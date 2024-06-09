@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.EmployeeManagement;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,24 +15,24 @@ namespace Nika1337.Library.Presentation.Controllers;
 [Route("Employees")]
 public class EmployeeManagementController : Controller
 {
-    private readonly IEmployeeAuthenticationService _employeeAuthenticationService;
     private readonly IEmployeeService _employeeService;
     private readonly IEmployeeRoleService _employeeRoleService;
+    private readonly IMapper _mapper;
     public EmployeeManagementController(
-        IEmployeeAuthenticationService employeeAuthenticationService,
         IEmployeeService employeeService,
-        IEmployeeRoleService employeeRoleService)
+        IEmployeeRoleService employeeRoleService,
+        IMapper mapper)
     {
-        _employeeAuthenticationService = employeeAuthenticationService;
         _employeeService = employeeService;
         _employeeRoleService = employeeRoleService;
+        _mapper = mapper;
     }
 
 
     [HttpGet("[action]")]
     public async Task<IActionResult> RegisterEmployee()
     {
-        var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
+        var avaliableRoleNames = await GetAvaliableRoleNames();
 
         var model = new EmployeeRegistrationViewModel
         {
@@ -49,26 +50,13 @@ public class EmployeeManagementController : Controller
             return View(model);
         }
 
-        var selectedRoles = model.SelectedRoles.Select(name => new EmployeeRole { Name = name });
-
-        var employee = new Employee
-        {
-            Id = "",
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            Username = model.Username,
-            IdNumber = model.IdNumber,
-            DateOfBirth = model.DateOfBirth,
-            Salary = model.Salary,
-            Roles = selectedRoles.ToArray(),
-            StartDate = DateTime.UtcNow
-        };
-
+        var registrationRequest = _mapper.Map<EmployeeRegistrationRequest>(model);
 
         try
         {
-            await _employeeAuthenticationService.RegisterEmployee(employee);
-        } catch(DuplicateException)
+            await _employeeService.RegisterEmployeeAsync(registrationRequest);
+        }
+        catch(UsernameDuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);
@@ -82,76 +70,42 @@ public class EmployeeManagementController : Controller
     {
         var employee = await _employeeService.GetDetailedEmployeeAsync(id);
 
-        var avaliableRoleNames = await GetAvaliableRoleSelectListItems();
+        var avaliableRoleNames = await GetAvaliableRoleNames();
 
-        var selectedRoles = employee.Roles.Select(role => role.Name);
-
-        var model = new EmployeeProfileViewModel {
-            Id = employee.Id,
-            FirstName = employee.FirstName,
-            LastName = employee.LastName,
-            NewUsername = employee.Username,
-            IdNumber = employee.IdNumber,
-            DateOfBirth = employee.DateOfBirth,
-            Salary = employee.Salary,
-            StartDate = employee.StartDate,
-            TerminationDate = employee.TerminationDate,
-            SelectedRoles = selectedRoles.ToList(),
-            AvailableRoles = avaliableRoleNames,
-            Country = employee.Address?.Country,
-            State = employee.Address?.State,
-            City = employee.Address?.City,
-            Street = employee.Address?.Street,
-            PostalCode = employee.Address?.PostalCode,
-            Gender = employee.Gender,
-            Email = employee.Email,
-            PhoneNumber = employee.PhoneNumber
-        };
+        var model = _mapper.Map<EmployeeProfileViewModel>(employee);
+        model.AvailableRoles = avaliableRoleNames;
 
         return View(model);
     }
 
-    [HttpPost("{id}")]
-    public async Task<IActionResult> Profile(string id, EmployeeProfileViewModel model)
+    [HttpPost]
+    public async Task<IActionResult> Profile(EmployeeProfileViewModel model)
     {
         if (!ModelState.IsValid)
         {
             return View(model);
         }
 
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(id);
-
-        var selectedRoles = model.SelectedRoles.Select(roleName => new EmployeeRole { Name = roleName });
-
-        existingEmployee.FirstName = model.FirstName;
-        existingEmployee.LastName = model.LastName;
-        existingEmployee.Username = model.NewUsername;
-        existingEmployee.IdNumber = model.IdNumber;
-        existingEmployee.DateOfBirth = model.DateOfBirth;
-        existingEmployee.Salary = model.Salary;
-        existingEmployee.Roles = selectedRoles.ToArray();
+        var updateRequest = _mapper.Map<EmployeeManagerUpdateRequest>(model);
 
         try
         {
-            await _employeeService.UpdateDetailedEmployee(existingEmployee);
-        } catch (DuplicateException)
+            await _employeeService.UpdateEmployeeAsync(updateRequest);
+        }
+        catch (UsernameDuplicateException)
         {
-            model.ErrorMessage = $"Username '{model.NewUsername}' is taken";
+            model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);
         }
 
-        return RedirectToAction("AllEmployees");
+        return RedirectToAction(nameof(AllEmployees));
     }
 
     [HttpPost("[action]/{id}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> TerminateEmployee(string id)
     {
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(id);
-
-        existingEmployee.TerminationDate = DateTime.UtcNow;
-
-        await _employeeService.UpdateDetailedEmployee(existingEmployee);
+        await _employeeService.TerminateEmployeeAsync(id);
 
         return Ok();
     }
@@ -160,12 +114,7 @@ public class EmployeeManagementController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RenewEmployee(string id)
     {
-        var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(id);
-
-        existingEmployee.StartDate = DateTime.UtcNow;
-        existingEmployee.TerminationDate = existingEmployee.TerminationDate = null;
-        await _employeeService.UpdateDetailedEmployee(existingEmployee);
-
+        await _employeeService.RenewEmployeeAsync(id);
 
         return Ok();
     }
@@ -175,29 +124,18 @@ public class EmployeeManagementController : Controller
     public async Task<IActionResult> AllEmployees()
     {
 
-        var allEmployees = await _employeeService.GetAllEmployees();
+        var allEmployees = await _employeeService.GetAllEmployeesAsync();
 
         var model = allEmployees.Select(
-            employee => new EmployeeViewModel
-            {
-                Id = employee.Id,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                Username = employee.Username,
-                IdNumber = employee.IdNumber,
-                DateOfBirth = employee.DateOfBirth,
-                PhoneNumber = employee.PhoneNumber,
-                Email = employee.Email,
-                StartDate = employee.StartDate,
-                IsActive = employee.IsActive
-            });
+            employee => _mapper.Map<IEnumerable<EmployeeViewModel>>(allEmployees));
 
         return View(model);
     }
 
-    private async Task<string[]> GetAvaliableRoleSelectListItems()
+    private async Task<string[]> GetAvaliableRoleNames()
     {
         var avaliableRoles = await _employeeRoleService.GetAllEmployeeRoleNamesAsync();
+
         return avaliableRoles;
     }
 }

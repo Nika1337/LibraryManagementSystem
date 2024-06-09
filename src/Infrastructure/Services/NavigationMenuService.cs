@@ -27,7 +27,7 @@ public class NavigationMenuService : INavigationMenuService
 
     private async Task<NavigationMenuItem[]> GetUnfilteredNavigationMenuItemsFor(ClaimsPrincipal principal)
     {
-        return await _employeeService.GetNavigationMenuItemsFor(principal);
+        return await _employeeService.GetNavigationMenuItemsAsync(principal);
     }
 
 

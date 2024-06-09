@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 public class EmployeePersonalProfileViewModel
 {
+    public string Id { get; set; }
     [Required(ErrorMessage = "First Name is required.")]
     [Display(Name = "First Name")]
     [StringLength(50, ErrorMessage = "First Name cannot be longer than 50 characters.")]

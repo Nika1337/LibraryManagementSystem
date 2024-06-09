@@ -10,11 +10,12 @@ namespace Nika1337.Library.Application.Abstractions;
 public interface IEmployeeService
 {
     Task RegisterEmployeeAsync(EmployeeRegistrationRequest employee);
-    Task<IEnumerable<EmployeeSimpleResponse>> GetAllEmployees();
+    Task<IEnumerable<EmployeeSimpleResponse>> GetAllEmployeesAsync();
     Task<EmployeeDetailedResponse> GetDetailedEmployeeAsync(string id);
     Task<EmployeeDetailedResponse> GetDetailedEmployeeAsync(ClaimsPrincipal principal);
-    Task UpdateEmployee(Employee employee);
-    Task UpdateEmployee(EmployeeManagerUpdateRequest employee);
-    Task UpdateEmployee(EmployeeAccountUpdateRequest employee);
-    Task<NavigationMenuItem[]> GetNavigationMenuItemsFor(ClaimsPrincipal principal);
+    Task UpdateEmployeeAsync(EmployeeManagerUpdateRequest employee);
+    Task UpdateEmployeeAsync(EmployeeAccountUpdateRequest employee);
+    Task TerminateEmployeeAsync(string id);
+    Task RenewEmployeeAsync(string id);
+    Task<NavigationMenuItem[]> GetNavigationMenuItemsAsync(ClaimsPrincipal principal);
 }

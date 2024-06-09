@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.Infrastructure.Identity;
+namespace Nika1337.Library.Infrastructure.Identity.Validators;
 
 internal class OptionalEmailUserValidator<TUser> : UserValidator<TUser> where TUser : class
 {

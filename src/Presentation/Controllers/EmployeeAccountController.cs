@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.EmployeeAccount;
@@ -16,13 +18,15 @@ public class EmployeeAccountController : Controller
 {
     private readonly IEmployeeAuthenticationService _employeeAuthenticationService;
     private readonly IEmployeeService _employeeService;
-
+    private readonly IMapper _mapper;
     public EmployeeAccountController(
         IEmployeeAuthenticationService employeeAuthenticationService,
-        IEmployeeService employeeService)
+        IEmployeeService employeeService,
+        IMapper mapper)
     {
         _employeeAuthenticationService = employeeAuthenticationService;
         _employeeService = employeeService;
+        _mapper = mapper;
     }
 
     [AllowAnonymous]
@@ -83,24 +87,7 @@ public class EmployeeAccountController : Controller
     {
         var employee = await _employeeService.GetDetailedEmployeeAsync(User);
 
-        var model = new EmployeePersonalProfileViewModel
-        {
-            FirstName = employee.FirstName,
-            LastName = employee.LastName,
-            Username = employee.Username,
-            PhoneNumber = employee.PhoneNumber,
-            Gender = employee.Gender,
-            IdNumber = employee.IdNumber,
-            DateOfBirth = employee.DateOfBirth,
-            Email = employee.Email,
-            Salary = employee.Salary,
-            StartDate = employee.StartDate,
-            Country = employee.Address?.Country,
-            State = employee.Address?.State,
-            City = employee.Address?.City,
-            Street = employee.Address?.Street,
-            PostalCode = employee.Address?.PostalCode,
-        };
+        var model = _mapper.Map<EmployeePersonalProfileViewModel>(employee);
 
         return View(model);
     }
@@ -112,26 +99,13 @@ public class EmployeeAccountController : Controller
             return View(model);
         }
 
-        var employee = await _employeeService.GetDetailedEmployeeAsync(User);
-
-        employee.FirstName = model.FirstName;
-        employee.LastName = model.LastName;
-        employee.Username = model.Username;
-        employee.PhoneNumber = model.PhoneNumber;
-        employee.Gender = model.Gender;
-        employee.Address = new Address
-        {
-            Country = model.Country,
-            State = model.State,
-            City = model.City,
-            Street = model.Street,
-            PostalCode = model.PostalCode,
-        };
+        var updateRequest = _mapper.Map<EmployeeAccountUpdateRequest>(model);
 
         try
         {
-            await _employeeService.UpdateDetailedEmployee(employee);
-        } catch (DuplicateException)
+            await _employeeService.UpdateEmployeeAsync(updateRequest);
+        }
+        catch (UsernameDuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);
@@ -158,7 +132,9 @@ public class EmployeeAccountController : Controller
         var baseUrl = $"{Request.Scheme}://{Request.Host}";
 
         var controllerName = nameof(EmployeeAccountController).Replace("Controller", "");
+
         var actionName = nameof(ResetPassword);
+
 
         var resetPasswordUrl = $"{baseUrl}/{controllerName}/{actionName}";
 
@@ -225,11 +201,9 @@ public class EmployeeAccountController : Controller
             return View(model);
         }
 
-        var employee = await _employeeService.GetDetailedEmployeeAsync(User);
-
         try
         {
-            await _employeeAuthenticationService.ChangePasswordAsync(employee.Id, model.CurrentPassword, model.NewPassword);
+            await _employeeAuthenticationService.ChangePasswordAsync(User, model.CurrentPassword, model.NewPassword);
         }
         catch (PasswordIncorrectException)
         {
@@ -271,7 +245,7 @@ public class EmployeeAccountController : Controller
 
         var existingEmployee = await _employeeService.GetDetailedEmployeeAsync(User);
 
-        await _employeeAuthenticationService.ChangeEmailAsync(existingEmployee.Id, model.Email, resetPasswordUrl);
+        await _employeeAuthenticationService.ChangeEmailAsync(User, model.Email, resetPasswordUrl);
 
         return RedirectToAction(nameof(EmailSuccessfullySent));
     }

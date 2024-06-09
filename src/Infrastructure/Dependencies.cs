@@ -10,7 +10,7 @@ using Nika1337.Library.ApplicationCore.Services;
 using Nika1337.Library.Infrastructure.Data;
 using Nika1337.Library.Infrastructure.Identity;
 using Nika1337.Library.Infrastructure.Identity.Entities;
-using Nika1337.Library.Infrastructure.Identity.Services;
+using Nika1337.Library.Infrastructure.Identity.Validators;
 using Nika1337.Library.Infrastructure.Logging;
 using Nika1337.Library.Infrastructure.Services;
 using System;

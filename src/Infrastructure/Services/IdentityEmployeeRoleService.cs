@@ -5,7 +5,7 @@ using Nika1337.Library.Infrastructure.Identity.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.Infrastructure.Identity.Services;
+namespace Nika1337.Library.Infrastructure.Services;
 
 internal class IdentityEmployeeRoleService : IEmployeeRoleService
 {

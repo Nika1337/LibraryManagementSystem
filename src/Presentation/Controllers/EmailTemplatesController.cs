@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.Operations;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
@@ -15,10 +16,12 @@ namespace Nika1337.Library.Presentation.Controllers;
 public class EmailTemplatesController : Controller
 {
     private readonly IEmailTemplateService _emailTemplateService;
+    private readonly IMapper _mapper;
 
-    public EmailTemplatesController(IEmailTemplateService emailTemplateService)
+    public EmailTemplatesController(IEmailTemplateService emailTemplateService, IMapper mapper)
     {
         _emailTemplateService = emailTemplateService;
+        _mapper = mapper;
     }
 
     [HttpGet("{id:int}")]
@@ -27,19 +30,9 @@ public class EmailTemplatesController : Controller
 
         var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateAsync(id);
 
+        var selectedDetailedEmailTemplate = _mapper.Map<DetailedEmailTemplateViewModel>(selectedEmailTemplate);
+
         var emailTemplates = await GetEmailTemplates();
-
-        var selectedDetailedEmailTemplate =
-            new DetailedEmailTemplateViewModel { 
-                Name = selectedEmailTemplate.Name,
-                BriefDescription = selectedEmailTemplate.BriefDescription,
-                Subject = selectedEmailTemplate.Subject,
-                FromEmail = selectedEmailTemplate.FromEmail,
-                Separator = selectedEmailTemplate.Separator,
-                Body = selectedEmailTemplate.Body,
-                DeletedDate = selectedEmailTemplate.DeletedDate
-            };
-
 
         var model = new EmailTemplateViewModel
         {
@@ -51,8 +44,8 @@ public class EmailTemplatesController : Controller
         return View(model);
     }
 
-    [HttpPost("{id:int}")]
-    public async Task<IActionResult> EmailTemplates(int id, EmailTemplateViewModel model)
+    [HttpPost]
+    public async Task<IActionResult> EmailTemplates(EmailTemplateViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -60,19 +53,11 @@ public class EmailTemplatesController : Controller
             return View(model);
         }
 
-        var existingTemplate = await _emailTemplateService.GetEmailTemplateAsync(id);
-
-        existingTemplate.Name = model.SelectedEmailTemplate.Name;
-        existingTemplate.Subject = model.SelectedEmailTemplate.Subject;
-        existingTemplate.FromEmail = model.SelectedEmailTemplate.FromEmail;
-        existingTemplate.BriefDescription = model.SelectedEmailTemplate.BriefDescription;
-        existingTemplate.Separator = model.SelectedEmailTemplate.Separator;
-        existingTemplate.Body = model.SelectedEmailTemplate.Body;
- 
+        var updateRequest = _mapper.Map<EmailTemplateUpdateRequest>(model.SelectedEmailTemplate);
 
         try
         {
-            await _emailTemplateService.UpdateEmailTemplateAsync(existingTemplate);
+            await _emailTemplateService.UpdateEmailTemplateAsync(updateRequest);
         }
         catch(DuplicateException)
         {
@@ -108,14 +93,9 @@ public class EmailTemplatesController : Controller
     private async Task<IEnumerable<SimpleEmailTemplateViewModel>> GetEmailTemplates()
     {
         var emailTemplates = await _emailTemplateService.GetAllEmailTemplatesAsync();
-        var emailTemplateModels = emailTemplates.Select(
-            et => new SimpleEmailTemplateViewModel
-            {
-                Id = et.Id,
-                Name = et.Name,
-                BriefDescription = et.BriefDescription,
-                IsActive = et.DeletedDate == null
-            });
+
+        var emailTemplateModels = _mapper.Map<IEnumerable<SimpleEmailTemplateViewModel>>(emailTemplates);
+
         return emailTemplateModels;
     }
 }

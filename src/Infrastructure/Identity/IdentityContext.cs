@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.Infrastructure.Identity.Config;
 using Nika1337.Library.Infrastructure.Identity.Entities;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System;
 using Microsoft.AspNetCore.Http;
 using Nika1337.Library.Infrastructure.Logging.Audit;
 using Microsoft.AspNetCore.Identity;

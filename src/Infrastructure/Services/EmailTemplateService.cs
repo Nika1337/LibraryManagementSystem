@@ -1,4 +1,6 @@
-﻿using Nika1337.Library.Application.Abstractions;
+﻿using AutoMapper;
+using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
@@ -12,53 +14,64 @@ namespace Nika1337.Library.ApplicationCore.Services;
 public class EmailTemplateService : IEmailTemplateService
 {
     private readonly IRepository<EmailTemplate> _repository;
-
-    public EmailTemplateService(IRepository<EmailTemplate> repository)
+    private readonly IMapper _mapper;
+    public EmailTemplateService(
+        IRepository<EmailTemplate> repository,
+        IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<EmailTemplate>> GetAllEmailTemplatesAsync()
+    public async Task<IEnumerable<EmailTemplateSimpleResponse>> GetAllEmailTemplatesAsync()
     {
-        return await _repository.ListAsync();
+        var templates = await _repository.ListAsync();
+
+        var response = _mapper.Map<IEnumerable<EmailTemplateSimpleResponse>>(templates);
+
+        return response;
     }
 
-    public async Task<EmailTemplate> GetEmailTemplateAsync(int templateId)
+    public async Task<EmailTemplateDetailedResponse> GetEmailTemplateAsync(int id)
     {
-        var specification = new EmailTemplateByIdSpecification(templateId);
+        var template = await GetEmailTemplateEntityAsync(id);
 
-        var emailTemplate = await _repository.SingleOrDefaultAsync(specification) ?? throw new EmailTemplateNotFoundException(templateId);
+        var response = _mapper.Map<EmailTemplateDetailedResponse>(template);
 
-        return emailTemplate;
+        return response;
     }
-    public async Task UpdateEmailTemplateAsync(EmailTemplate template)
+    public async Task UpdateEmailTemplateAsync(EmailTemplateUpdateRequest templateUpdateRequest)
     {
-        var specification = new EmailTemplateByIdSpecification(template.Id);
+        var template = await GetEmailTemplateEntityAsync(templateUpdateRequest.Id);
 
-        var doesTemplateExist = await _repository.AnyAsync(specification);
-
-        if (!doesTemplateExist)
-        {
-            throw new EmailTemplateNotFoundException(template.Id);
-        }
+        _mapper.Map(templateUpdateRequest, template);
 
         await _repository.UpdateAsync(template);
     }
-    public async Task DeleteEmailTemplateAsync(int templateId)
+    public async Task DeleteEmailTemplateAsync(int id)
     {
-        var emailTemplate = await GetEmailTemplateAsync(templateId);
+        var template = await GetEmailTemplateEntityAsync(id);
 
-        emailTemplate.DeletedDate = DateTime.UtcNow;
+        template.DeletedDate = DateTime.UtcNow;
 
-        await _repository.UpdateAsync(emailTemplate);
+        await _repository.UpdateAsync(template);
     }
 
-    public async Task RenewEmailTemplateAsync(int templateId)
+    public async Task RenewEmailTemplateAsync(int id)
     {
-        var emailTemplate = await GetEmailTemplateAsync(templateId);
+        var template = await GetEmailTemplateEntityAsync(id);
 
-        emailTemplate.DeletedDate = null;
+        template.DeletedDate = null;
 
-        await _repository.UpdateAsync(emailTemplate);
+        await _repository.UpdateAsync(template);
+    }
+
+    private async Task<EmailTemplate> GetEmailTemplateEntityAsync(int id)
+    {
+        var specification = new EmailTemplateByIdSpecification(id);
+
+        var emailTemplate = await _repository.SingleOrDefaultAsync(specification) ?? throw new EmailTemplateNotFoundException(id);
+
+        return emailTemplate;
     }
 }

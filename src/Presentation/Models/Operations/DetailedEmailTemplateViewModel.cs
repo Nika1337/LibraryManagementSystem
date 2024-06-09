@@ -7,6 +7,7 @@ namespace Nika1337.Library.Presentation.Models.Operations;
 
 public class DetailedEmailTemplateViewModel
 {
+    public required int Id { get; set; }
     [DisplayName("Name")]
     public required string Name { get; set; }
 
