@@ -1,3 +1,9 @@
+
+
+
+loadEmailTemplates();
+
+
 tinymce.init({
     selector: '#tinymce-editor',
     plugins: [
@@ -20,3 +26,43 @@ document.getElementById('confirmAction').addEventListener('click', function () {
 
     performAction(fetchPath, afterFetchPath);
 });
+function loadEmailTemplates() {
+    $.ajax({
+        url: '/Operations/EmailTemplates',
+        method: 'GET',
+        success: function (data) {
+            var emailTemplatesList = $('#emailTemplatesList');
+            var offcanvasEmailTemplatesList = $('#offcanvasEmailTemplatesListe');
+            emailTemplatesList.empty();
+            offcanvasEmailTemplatesList.empty();
+
+
+
+            data.forEach(function (template) {
+                var isSelected = template.id == id;
+                var templateItem = `
+                                        <a href="/Operations/EmailTemplates/${template.id}" class="list-group-item list-group-item-action ${isSelected ? 'selected' : ''} py-3 lh-tight w-100">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="row">
+                                                    <h5 class="mb-1">${template.name}</h5>
+                                                    <p class="mb-1">${template.briefDescription}</p>
+                                                </div>
+                                                <div>
+                                                    <span class="badge ${template.isActive ? 'bg-success' : 'bg-danger'}">
+                                                        ${template.isActive ? 'Active' : 'Deleted'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>`;
+                emailTemplatesList.append(templateItem);
+                offcanvasEmailTemplatesList.append(templateItem);
+            });
+            showContent();
+        }
+    });
+}
+
+function showContent() {
+    $('#loadingIndicator').hide();
+    $('#mainContent').show();
+}

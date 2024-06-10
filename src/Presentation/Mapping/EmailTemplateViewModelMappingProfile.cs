@@ -8,11 +8,9 @@ public class EmailTemplateViewModelMappingProfile : Profile
 {
     public EmailTemplateViewModelMappingProfile()
     {
-        CreateMap<EmailTemplateSimpleResponse, SimpleEmailTemplateViewModel>();
+        CreateMap<EmailTemplateDetailedResponse, EmailTemplateViewModel>()
+            .ForMember(detvm => detvm.ErrorMessage, opts => opts.Ignore());
 
-        CreateMap<EmailTemplateDetailedResponse, DetailedEmailTemplateViewModel>();
-
-        CreateMap<DetailedEmailTemplateViewModel, EmailTemplateUpdateRequest>();
-
+        CreateMap<EmailTemplateViewModel, EmailTemplateUpdateRequest>();
     }
 }

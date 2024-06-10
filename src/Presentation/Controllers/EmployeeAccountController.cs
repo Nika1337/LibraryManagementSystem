@@ -105,7 +105,7 @@ public class EmployeeAccountController : Controller
         {
             await _employeeService.UpdateEmployeeAsync(updateRequest);
         }
-        catch (UsernameDuplicateException)
+        catch (NameDuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);

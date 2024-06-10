@@ -3,39 +3,22 @@
 @{
     ViewData["Title"] = "Email Templates";
 
-    var stringId = (string)ViewContext.RouteData.Values["id"]!;
-    var id = int.Parse(stringId);
-    var userAction = Model.SelectedEmailTemplate?.DeletedDate == null ? "Delete" : "Renew";
-    var actionButtonClass = Model.SelectedEmailTemplate?.DeletedDate == null ? "btn-danger" : "btn-warning";
+    var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
+    var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
 }
 
+
 <div class="container-fluid p-0 vh-100">
-    <div class="row g-0" style="display: flex; align-items: stretch">
+    <div id="loadingIndicator" class="loading-indicator">
+        Loading...
+    </div>
+
+    <div id="mainContent" class="row g-0" style="display: flex; align-items: stretch" style="display: none;">
         <!-- Sidebar -->
-        <div class="col-12 col-lg-3  bg-white p-0 border-end d-none d-lg-block">
+        <div class="col-12 col-lg-3 bg-white p-0 border-end d-none d-lg-block">
             <nav class="navbar navbar-expand-lg flex-md-column align-items-stretch navbar-light p-0 h-100">
-                <div class="list-group list-group-flush border-bottom scrollarea">
-                    @foreach (var template in Model.EmailTemplates)
-                    {
-                        <a href="/Operations/EmailTemplates/@template.Id" class="list-group-item list-group-item-action @(Model.SelectedEmailTemplate != null && id == template.Id ? "active" : "") py-3 lh-tight w-100">
-                            <div class="d-flex justify-content-between">
-                                <div class="row">
-                                    <h5 class="mb-1">@template.Name</h5>
-                                    <p class="mb-1">@template.BriefDescription</p>
-                                </div>
-                                <div>
-                                    @if (template.IsActive)
-                                    {
-                                        <span class="badge bg-success">Active</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">Deleted</span>
-                                    }
-                                </div>
-                            </div>
-                        </a>
-                    }
+                <div id="emailTemplatesList" class="list-group list-group-flush border-bottom scrollarea">
+                    <!-- Email templates will be loaded here via AJAX -->
                 </div>
             </nav>
         </div>
@@ -51,26 +34,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body p-0">
-                        <div class="list-group list-group-flush border-bottom scrollarea">
-                            @foreach (var template in Model.EmailTemplates)
-                            {
-                                <a href="/Operations/EmailTemplates/@template.Id" class="list-group-item list-group-item-action @(Model.SelectedEmailTemplate != null && id == template.Id ? "active" : "") py-3 lh-tight w-100">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="mb-1">@template.Name</h5>
-                                            <p class="mb-1">@template.BriefDescription</p>
-                                        </div>
-                                        @if (template.IsActive)
-                                        {
-                                            <span class="badge bg-success">Active</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-danger">Deleted</span>
-                                        }
-                                    </div>
-                                </a>
-                            }
+                        <div id="offcanvasEmailTemplatesList" class="list-group list-group-flush border-bottom scrollarea">
+                            <!-- Email templates will be loaded here via AJAX -->
                         </div>
                     </div>
                 </div>
@@ -90,22 +55,22 @@
                 }
             </div>
             <form asp-route="/Operations/EmailTemplates" method="post">
-                <input type="hidden" asp-for="SelectedEmailTemplate.Id" />
+                <input type="hidden" asp-for="Id" />
 
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="SelectedEmailTemplate.Name" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.Name" class="form-control" readonly/>
-                            <span asp-validation-for="SelectedEmailTemplate.Name" class="text-danger"></span>
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="SelectedEmailTemplate.Subject" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.Subject" class="form-control" />
-                            <span asp-validation-for="SelectedEmailTemplate.Subject" class="text-danger"></span>
+                            <label asp-for="Subject" class="form-label"></label>
+                            <input asp-for="Subject" class="form-control" />
+                            <span asp-validation-for="Subject" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -113,16 +78,16 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="SelectedEmailTemplate.FromEmail" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.FromEmail" class="form-control" />
-                            <span asp-validation-for="SelectedEmailTemplate.FromEmail" class="text-danger"></span>
+                            <label asp-for="FromEmail" class="form-label"></label>
+                            <input asp-for="FromEmail" class="form-control" />
+                            <span asp-validation-for="FromEmail" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="SelectedEmailTemplate.BriefDescription" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.BriefDescription" class="form-control" />
-                            <span asp-validation-for="SelectedEmailTemplate.BriefDescription" class="text-danger"></span>
+                            <label asp-for="BriefDescription" class="form-label"></label>
+                            <input asp-for="BriefDescription" class="form-control" />
+                            <span asp-validation-for="BriefDescription" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -130,22 +95,22 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="SelectedEmailTemplate.DeletedDate" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.DeletedDate" class="form-control" readonly />
+                            <label asp-for="DeletedDate" class="form-label"></label>
+                            <input asp-for="DeletedDate" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group" >
-                            <label asp-for="SelectedEmailTemplate.Separator" class="form-label"></label>
-                            <input asp-for="SelectedEmailTemplate.Separator" class="form-control" />
-                            <span asp-validation-for="SelectedEmailTemplate.Separator" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="Separator" class="form-label"></label>
+                            <input asp-for="Separator" class="form-control" />
+                            <span asp-validation-for="Separator" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group" style="margin-bottom: 10rem">
-                    <label asp-for="SelectedEmailTemplate.Body" class="form-label"></label>
-                    <textarea asp-for="SelectedEmailTemplate.Body" class="form-control" id="tinymce-editor"></textarea>
+                    <label asp-for="Body" class="form-label"></label>
+                    <textarea asp-for="Body" class="form-control" id="tinymce-editor"></textarea>
                 </div>
 
                 <div class="fab-container">
@@ -153,7 +118,7 @@
                         <button type="submit" class="btn btn-primary mb-2 fab">
                             Save
                         </button>
-                        <button type="button" class="btn  @actionButtonClass fab" data-bs-toggle="modal" data-bs-target="#actionModal">
+                        <button type="button" class="btn @actionButtonClass fab" data-bs-toggle="modal" data-bs-target="#actionModal">
                             @userAction
                         </button>
                     </div>
@@ -165,14 +130,13 @@
 
 @await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Email Template"));
 
-
 @section Scripts {
     <script src="https://cdn.tiny.cloud/1/wkssty2otjmc1ux36i1xy7pdmzh2eijw8m6ogi2ll9v810e6/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="~/js/Shared/ActionModal.js"></script>
     <script src="~/js/Operations/EmailTemplates.js"></script>
     <script>
-        var id = "@id";
-        var userAction = "@userAction";
+        var userAction = '@userAction';
+        var id = '@Model.Id';
     </script>
 }
 

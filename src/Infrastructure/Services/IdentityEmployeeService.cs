@@ -194,23 +194,13 @@ internal class IdentityEmployeeService : IEmployeeService
         return _userManager.GetUserId(principal) ?? throw new EmployeeNotFoundException(principal);
     }
 
-    private async Task ThrowIfEmployeeWithGivenUsernameHasDifferentId(string username, string id)
-    {
-        var employee = await _userManager.FindByNameAsync(username);
-
-        if (employee is not null && employee.Id != id)
-        {
-            throw new UsernameDuplicateException($"Employee with username '{username}' already exists");
-        }
-    }
-
     private async Task ThrowIfUsernameExists(string username)
     {
         var employee = await _userManager.FindByNameAsync(username);
 
         if (employee is not null)
         {
-            throw new UsernameDuplicateException($"Employee with username '{username}' already exists");
+            throw new NameDuplicateException($"Employee with username '{username}' already exists");
         }
     }
 
@@ -242,5 +232,15 @@ internal class IdentityEmployeeService : IEmployeeService
         }
 
         return identityEmployee;
+    }
+
+    private async Task ThrowIfEmployeeWithGivenUsernameHasDifferentId(string username, string id)
+    {
+        var employee = await _userManager.FindByNameAsync(username);
+
+        if (employee is not null && employee.Id != id)
+        {
+            throw new NameDuplicateException($"Employee with username '{username}' already exists");
+        }
     }
 }

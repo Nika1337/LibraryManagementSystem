@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Abstractions;
@@ -44,6 +45,8 @@ public class EmailTemplateService : IEmailTemplateService
     {
         var template = await GetEmailTemplateEntityAsync(templateUpdateRequest.Id);
 
+        await ThrowIfTemplateWithGivenNameHasDifferentId(templateUpdateRequest.Name, templateUpdateRequest.Id);
+
         _mapper.Map(templateUpdateRequest, template);
 
         await _repository.UpdateAsync(template);
@@ -68,10 +71,22 @@ public class EmailTemplateService : IEmailTemplateService
 
     private async Task<EmailTemplate> GetEmailTemplateEntityAsync(int id)
     {
-        var specification = new EmailTemplateByIdSpecification(id);
+        var specification = new EmailTemplateSpecification(id);
 
         var emailTemplate = await _repository.SingleOrDefaultAsync(specification) ?? throw new EmailTemplateNotFoundException(id);
 
         return emailTemplate;
+    }
+
+    private async Task ThrowIfTemplateWithGivenNameHasDifferentId(string name, int id)
+    {
+        var specification = new EmailTemplateSpecification(name);
+
+        var template = await _repository.SingleOrDefaultAsync(specification);
+
+        if (template is not null && template.Id != id)
+        {
+            throw new NameDuplicateException($"Email Template with name '{name}' already exists");
+        }
     }
 }

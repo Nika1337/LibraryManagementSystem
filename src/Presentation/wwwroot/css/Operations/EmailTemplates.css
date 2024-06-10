@@ -18,9 +18,23 @@
     width: 100%;
 }
 
-.list-group-item.active {
+.list-group-item.selected {
     z-index: 2;
     color: #fff;
     background-color: #784EF1;
     border-color: #784EF1;
+}
+
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    font-size: 2rem;
 }

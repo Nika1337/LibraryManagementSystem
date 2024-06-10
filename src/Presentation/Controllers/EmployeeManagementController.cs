@@ -56,7 +56,7 @@ public class EmployeeManagementController : Controller
         {
             await _employeeService.RegisterEmployeeAsync(registrationRequest);
         }
-        catch(UsernameDuplicateException)
+        catch(NameDuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);
@@ -92,7 +92,7 @@ public class EmployeeManagementController : Controller
         {
             await _employeeService.UpdateEmployeeAsync(updateRequest);
         }
-        catch (UsernameDuplicateException)
+        catch (NameDuplicateException)
         {
             model.ErrorMessage = $"Username '{model.Username}' is taken";
             return View(model);

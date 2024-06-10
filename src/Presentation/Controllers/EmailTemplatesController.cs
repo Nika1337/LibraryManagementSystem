@@ -5,7 +5,6 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.Operations;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
@@ -30,16 +29,8 @@ public class EmailTemplatesController : Controller
 
         var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateAsync(id);
 
-        var selectedDetailedEmailTemplate = _mapper.Map<DetailedEmailTemplateViewModel>(selectedEmailTemplate);
-
-        var emailTemplates = await GetEmailTemplates();
-
-        var model = new EmailTemplateViewModel
-        {
-            EmailTemplates = emailTemplates,
-            SelectedEmailTemplate = selectedDetailedEmailTemplate
-        };
-
+        var model = _mapper.Map<EmailTemplateViewModel>(selectedEmailTemplate);
+     
 
         return View(model);
     }
@@ -49,20 +40,18 @@ public class EmailTemplatesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.EmailTemplates = await GetEmailTemplates();
             return View(model);
         }
 
-        var updateRequest = _mapper.Map<EmailTemplateUpdateRequest>(model.SelectedEmailTemplate);
+        var updateRequest = _mapper.Map<EmailTemplateUpdateRequest>(model);
 
         try
         {
             await _emailTemplateService.UpdateEmailTemplateAsync(updateRequest);
         }
-        catch(DuplicateException)
+        catch(NameDuplicateException)
         {
-            model.ErrorMessage = $"Email template with name '{model.SelectedEmailTemplate.Name}' already exists";
-            model.EmailTemplates = await GetEmailTemplates();
+            model.ErrorMessage = $"Email template with name '{model.Name}' already exists";
             return View(model);
         }
 
@@ -89,13 +78,12 @@ public class EmailTemplatesController : Controller
     }
 
 
-
-    private async Task<IEnumerable<SimpleEmailTemplateViewModel>> GetEmailTemplates()
+    [HttpGet]
+    public async Task<IActionResult> EmailTemplates()
     {
         var emailTemplates = await _emailTemplateService.GetAllEmailTemplatesAsync();
 
-        var emailTemplateModels = _mapper.Map<IEnumerable<SimpleEmailTemplateViewModel>>(emailTemplates);
 
-        return emailTemplateModels;
+        return Json(emailTemplates);
     }
 }
