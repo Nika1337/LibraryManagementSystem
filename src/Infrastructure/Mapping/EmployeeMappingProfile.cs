@@ -3,6 +3,7 @@ using AutoMapper;
 using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.Infrastructure.Identity.Entities;
+using System;
 using System.Linq;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
@@ -26,7 +27,8 @@ public class EmployeeMappingProfile : Profile
 
         CreateMap<EmployeeRegistrationRequest, IdentityEmployee>()
             .ForMember(ie => ie.Roles, opts => opts.Ignore())
-            .ForMember(ie => ie.UserName, opts => opts.MapFrom(esp => esp.Username));
+            .ForMember(ie => ie.UserName, opts => opts.MapFrom(esp => esp.Username))
+            .ForMember(ie => ie.StartDate, opts => opts.MapFrom(esp => DateTime.UtcNow));
 
 
         CreateMap<EmployeeManagerUpdateRequest, IdentityEmployee>()

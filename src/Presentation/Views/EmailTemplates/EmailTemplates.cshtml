@@ -89,7 +89,9 @@
                     </div>
                 }
             </div>
-            <form asp-route="/Operations/EmailTemplates/@id" method="post">
+            <form asp-route="/Operations/EmailTemplates" method="post">
+                <input type="hidden" asp-for="SelectedEmailTemplate.Id" />
+
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">

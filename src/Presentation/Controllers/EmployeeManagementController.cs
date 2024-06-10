@@ -78,7 +78,7 @@ public class EmployeeManagementController : Controller
         return View(model);
     }
 
-    [HttpPost]
+    [HttpPost("{id}")]
     public async Task<IActionResult> Profile(EmployeeProfileViewModel model)
     {
         if (!ModelState.IsValid)
@@ -126,8 +126,7 @@ public class EmployeeManagementController : Controller
 
         var allEmployees = await _employeeService.GetAllEmployeesAsync();
 
-        var model = allEmployees.Select(
-            employee => _mapper.Map<IEnumerable<EmployeeViewModel>>(allEmployees));
+        var model = _mapper.Map<IEnumerable<EmployeeViewModel>>(allEmployees);
 
         return View(model);
     }

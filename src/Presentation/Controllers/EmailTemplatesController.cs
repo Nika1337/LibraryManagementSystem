@@ -44,7 +44,7 @@ public class EmailTemplatesController : Controller
         return View(model);
     }
 
-    [HttpPost]
+    [HttpPost("{id}")]
     public async Task<IActionResult> EmailTemplates(EmailTemplateViewModel model)
     {
         if (!ModelState.IsValid)

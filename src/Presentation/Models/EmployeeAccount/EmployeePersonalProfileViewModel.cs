@@ -57,6 +57,8 @@ public class EmployeePersonalProfileViewModel
     [DataType(DataType.Date)]
     public DateTime StartDate { get; init; }
 
+
+
     [Display(Name = "Country")]
     [StringLength(50, ErrorMessage = "Country cannot be longer than 50 characters.")]
     public string? Country { get; set; }
@@ -76,6 +78,7 @@ public class EmployeePersonalProfileViewModel
     [Display(Name = "Postal Code")]
     [StringLength(10, ErrorMessage = "Postal Code cannot be longer than 10 characters.")]
     public string? PostalCode { get; set; }
+
 
     public string? ErrorMessage { get; set; }
 }

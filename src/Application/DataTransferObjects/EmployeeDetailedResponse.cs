@@ -16,10 +16,10 @@ public record EmployeeDetailedResponse
     public required DateTime DateOfBirth { get; init; }
     public required decimal Salary { get; init; }
     public required DateTime StartDate { get; init; }
-    public required string PhoneNumber { get; init; }
-    public required string Email { get; init; }
+    public required string? PhoneNumber { get; init; }
+    public required string? Email { get; init; }
     public required Address Address { get; init; }
-    public required Gender Gender { get; init; }
-    public required DateTime TerminationDate { get; init; }
+    public required Gender? Gender { get; init; }
+    public required DateTime? TerminationDate { get; init; }
     public required ICollection<string> RoleNames { get; init; }
 }

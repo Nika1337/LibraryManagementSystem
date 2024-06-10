@@ -15,8 +15,8 @@ tinymce.init({
 });
 
 document.getElementById('confirmAction').addEventListener('click', function () {
-    var fetchPath = `/EmailTemplates/${userAction}EmailTemplate/${id}`;
-    var afterFetchPath = `/EmailTemplates/${id}`;
+    var fetchPath = `/Operations/EmailTemplates/${userAction}EmailTemplate/${id}`;
+    var afterFetchPath = `/Operations/EmailTemplates/${id}`;
 
     performAction(fetchPath, afterFetchPath);
 });

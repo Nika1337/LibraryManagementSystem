@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Nika1337.Library.Infrastructure.Mapping;
+using Nika1337.Library.Presentation.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,12 @@ var presentationAssembly = typeof(Nika1337.Library.Presentation.AssemblyReferenc
 
 builder.Services.AddControllersWithViews()
     .AddApplicationPart(presentationAssembly);
+
+builder.Services.AddAutoMapper(
+    typeof(EmployeeMappingProfile),
+    typeof(EmailTemplateMappingProfile),
+    typeof(EmployeeViewModelMappingProfile),
+    typeof(EmailTemplateViewModelMappingProfile));
 
 
 var app = builder.Build();

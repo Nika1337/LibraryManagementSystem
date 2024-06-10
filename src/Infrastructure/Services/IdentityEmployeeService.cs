@@ -40,6 +40,20 @@ internal class IdentityEmployeeService : IEmployeeService
 
         var identityEmployee = _mapper.Map<IdentityEmployee>(employee);
 
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine(identityEmployee.DateOfBirth);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine(identityEmployee.StartDate);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
 
         var registrationResult = await _userManager.CreateAsync(identityEmployee, _temporaryPassword);
 
