@@ -1,6 +1,5 @@
 ﻿using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
-using Nika1337.Library.ApplicationCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.ApplicationCore.Services;
 
-public class EmailService : IEmailService
+internal class EmailService : IEmailService
 {
     private readonly IEmailSender _emailSender;
     private readonly IEmailTemplateService _emailTemplateService;

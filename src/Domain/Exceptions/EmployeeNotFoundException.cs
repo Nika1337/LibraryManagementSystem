@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Security.Claims;
 
 namespace Nika1337.Library.ApplicationCore.Exceptions;

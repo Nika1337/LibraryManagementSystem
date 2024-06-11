@@ -6,7 +6,6 @@ using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.EmployeeManagement;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;

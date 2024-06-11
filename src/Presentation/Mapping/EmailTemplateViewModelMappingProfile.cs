@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.DataTransferObjects;
-using Nika1337.Library.Presentation.Models.Operations;
+using Nika1337.Library.Presentation.Models.EmailTemplates;
 
 namespace Nika1337.Library.Presentation.Mapping;
 

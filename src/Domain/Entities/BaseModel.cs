@@ -5,7 +5,7 @@ namespace Nika1337.Library.ApplicationCore.Entities;
 public abstract class BaseModel : IEquatable<BaseModel>
 {
     public int Id { get; set; }
-    public DateTime? DeletedDate { get; set; }
+    public DateTime? DeletedDate { get; private set; }
 
     public static bool operator ==(BaseModel left, BaseModel right)
     {
@@ -46,5 +46,15 @@ public abstract class BaseModel : IEquatable<BaseModel>
     public override int GetHashCode()
     {
         return Id.GetHashCode() * 41;
+    }
+
+    public void Delete()
+    {
+        DeletedDate = DateTime.UtcNow;
+    }
+
+    public void Renew()
+    {
+        DeletedDate = null;
     }
 }

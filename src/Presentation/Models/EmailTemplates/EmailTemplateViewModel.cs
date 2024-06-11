@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Nika1337.Library.Presentation.Models.Operations;
+namespace Nika1337.Library.Presentation.Models.EmailTemplates;
 
 public class EmailTemplateViewModel
 {

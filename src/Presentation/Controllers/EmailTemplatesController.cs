@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Exceptions;
-using Nika1337.Library.Presentation.Models.Operations;
+using Nika1337.Library.Presentation.Models.EmailTemplates;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;

@@ -1,18 +1,16 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.ApplicationCore.Abstractions;
 using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.ApplicationCore.Specifications;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.ApplicationCore.Services;
 
-public class EmailTemplateService : IEmailTemplateService
+internal class EmailTemplateService : IEmailTemplateService
 {
     private readonly IRepository<EmailTemplate> _repository;
     private readonly IMapper _mapper;
@@ -55,7 +53,7 @@ public class EmailTemplateService : IEmailTemplateService
     {
         var template = await GetEmailTemplateEntityAsync(id);
 
-        template.DeletedDate = DateTime.UtcNow;
+        template.Delete();
 
         await _repository.UpdateAsync(template);
     }
@@ -64,27 +62,25 @@ public class EmailTemplateService : IEmailTemplateService
     {
         var template = await GetEmailTemplateEntityAsync(id);
 
-        template.DeletedDate = null;
+        template.Renew();
 
         await _repository.UpdateAsync(template);
     }
 
     private async Task<EmailTemplate> GetEmailTemplateEntityAsync(int id)
     {
-        var specification = new EmailTemplateSpecification(id);
-
-        var emailTemplate = await _repository.SingleOrDefaultAsync(specification) ?? throw new EmailTemplateNotFoundException(id);
+        var emailTemplate = await _repository.GetByIdAsync(id) ?? throw new EmailTemplateNotFoundException(id);
 
         return emailTemplate;
     }
 
     private async Task ThrowIfTemplateWithGivenNameHasDifferentId(string name, int id)
     {
-        var specification = new EmailTemplateSpecification(name);
+        var specification = new EmailTemplateSpecification(name, id);
 
-        var template = await _repository.SingleOrDefaultAsync(specification);
+        var isNameUsedByDifferentEntity = await _repository.AnyAsync(specification);
 
-        if (template is not null && template.Id != id)
+        if (isNameUsedByDifferentEntity)
         {
             throw new NameDuplicateException($"Email Template with name '{name}' already exists");
         }

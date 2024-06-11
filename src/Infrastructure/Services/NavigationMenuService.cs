@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.ApplicationCore.Services;
 
-public class NavigationMenuService : INavigationMenuService
+internal class NavigationMenuService : INavigationMenuService
 {
     private readonly IEmployeeService _employeeService;
 

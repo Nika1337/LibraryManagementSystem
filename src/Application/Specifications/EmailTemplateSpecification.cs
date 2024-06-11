@@ -5,15 +5,10 @@ namespace Nika1337.Library.ApplicationCore.Specifications;
 
 public class EmailTemplateSpecification : SingleResultSpecification<EmailTemplate>
 {
-    public EmailTemplateSpecification(int templateId)
-    {
-        Query
-            .Where(et => et.Id == templateId);
-    }
 
-    public EmailTemplateSpecification(string name)
+    public EmailTemplateSpecification(string name, int id)
     {
         Query
-            .Where(et => et.Name == name);
+            .Where(et => et.Name == name && et.Id != id);
     }
 }

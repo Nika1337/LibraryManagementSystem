@@ -5,10 +5,7 @@ using Nika1337.Library.ApplicationCore.Entities;
 using Nika1337.Library.Infrastructure.Data.Config;
 using Nika1337.Library.Infrastructure.Identity.Config;
 using Nika1337.Library.Infrastructure.Logging.Audit;
-using System;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,6 +31,7 @@ internal class LibraryContext(
     public DbSet<Checkout> Checkouts { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<Genre> Genres { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
