@@ -1,0 +1,9 @@
+.table-description {
+    max-width: 1000px; /* Limit the width of the description column */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflowed text */
+    text-overflow: ellipsis; /* Show ellipsis (...) for overflowed text */
+}
+.no-wrap {
+    white-space: nowrap; /* Ensure the content never wraps */
+}

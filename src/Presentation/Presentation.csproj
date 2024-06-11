@@ -15,6 +15,13 @@
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Genres\" />
+    <Folder Include="wwwroot\css\Books\Genres\" />
+    <Folder Include="wwwroot\css\Shared\" />
+    <Folder Include="wwwroot\js\Books\Genres\" />
+  </ItemGroup>
+
 
 
 

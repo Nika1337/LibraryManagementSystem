@@ -41,7 +41,7 @@ internal class GenreService : IGenreService
         return response;
     }
 
-    public async Task AddGenreAsync(GenreCreateRequest request)
+    public async Task CreateGenreAsync(GenreCreateRequest request)
     {
         await ThrowIfNameExists(request.Name);
 

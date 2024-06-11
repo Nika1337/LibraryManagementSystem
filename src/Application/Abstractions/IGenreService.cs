@@ -10,7 +10,7 @@ public interface IGenreService
 {
     Task<IEnumerable<GenreResponse>> GetGenresAsync();
     Task<GenreResponse> GetGenreAsync(int id);
-    Task AddGenreAsync(GenreCreateRequest request);
+    Task CreateGenreAsync(GenreCreateRequest request);
 
     Task UpdateGenreAsync(GenreUpdateRequest request);
 

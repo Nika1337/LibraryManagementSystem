@@ -70,7 +70,7 @@
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 employee-card" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive">
                 <div class="card h-100 shadow-sm d-flex flex-column">
                     <div class="card-header d-flex justify-content-between align-items-center text-white">
-                        <span class="employee-name">@employee.FirstName @employee.LastName</span>
+                        <span class="card-header-name">@employee.FirstName @employee.LastName</span>
                         @if (employee.IsActive)
                         {
                             <span class="badge bg-success badge-sm">Active</span>
@@ -168,9 +168,10 @@
 
 @section Scripts {
     <script src="~/js/EmployeeManagement/AllEmployees.js"></script>
+    <script src="~/js/Shared/CardTableList.js"></script>
 }
 
 @section Styles {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/EmployeeManagement/AllEmployees.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Shared/CardTableList.css" asp-append-version="true" />
 }

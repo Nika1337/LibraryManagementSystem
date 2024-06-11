@@ -1,8 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
+using Nika1337.Library.ApplicationCore.Exceptions;
 using Nika1337.Library.Presentation.Models.Genres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,9 +40,79 @@ public class GenresController : Controller
     {
         var genre = await _genreService.GetGenreAsync(id);
 
-        var model = _mapper.Map<GenreViewModel>(genre);
+        var model = _mapper.Map<GenreDetailViewModel>(genre);
 
         return View(model);
     }
 
+    [HttpPost("{id:int}")]
+    public async Task<IActionResult> Genres(GenreDetailViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var request = _mapper.Map<GenreUpdateRequest>(model);
+
+        try
+        {
+            await _genreService.UpdateGenreAsync(request);
+        }
+        catch (NameDuplicateException)
+        {
+            model.ErrorMessage = $"Genre with name '{model.Name}' already exists";
+            return View(model);
+        }
+
+        return RedirectToAction(nameof(Genres));
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> CreateGenre()
+    {
+        var model = new GenreCreateViewModel();
+
+        return View(model);
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> CreateGenre(GenreCreateViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var request = _mapper.Map<GenreCreateRequest>(model);
+
+        try
+        {
+            await _genreService.CreateGenreAsync(request);
+        }
+        catch (NameDuplicateException)
+        {
+            model.ErrorMessage = $"Genre with name '{model.Name}' already exists";
+            return View(model);
+        }
+
+        return RedirectToAction(nameof(Genres));
+    }
+
+
+    [HttpPost("[action]/{id:int}")]
+    public async Task<IActionResult> DeleteGenre(int id)
+    {
+        await _genreService.DeleteGenreAsync(id);
+
+        return Ok();
+    }
+
+    [HttpPost("[action]/{id:int}")]
+    public async Task<IActionResult> RenewGenre(int id)
+    {
+        await _genreService.RenewGenreAsync(id);
+
+        return Ok();
+    }
 }

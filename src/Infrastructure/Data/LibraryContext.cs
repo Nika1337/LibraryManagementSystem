@@ -31,7 +31,7 @@ internal class LibraryContext(
     public DbSet<Checkout> Checkouts { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
-    public DbSet<Genre> Genres { get; set; }
+    public DbSet<Genre> Genre { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
