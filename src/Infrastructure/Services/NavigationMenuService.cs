@@ -33,9 +33,12 @@ public class NavigationMenuService : INavigationMenuService
 
     private static NavigationMenuItem[] FilterNonAccessibleChildren(NavigationMenuItem[] menuItems)
     {
-        var parentItems = menuItems.Where(nmi => nmi.ParentNavigationMenuItemId is null);
+        var parentItems = menuItems.Where(nmi => nmi.ParentNavigationMenuItemId is null)
+            .DistinctBy(item => item.Id);
 
-        var childItems = menuItems.Where(nmi => nmi.ParentNavigationMenuItemId is not null).ToList();
+        var childItems = menuItems.Where(nmi => nmi.ParentNavigationMenuItemId is not null)
+            .DistinctBy(item => item.Id)
+            .ToList();
 
         foreach (var parentItem in parentItems)
         {
@@ -57,6 +60,7 @@ public class NavigationMenuService : INavigationMenuService
         }
         else
         {
+
             foreach (var childItem in parentItem.ChildNavigationMenuItems)
             {
                 if (childItems.Remove(childItem))
@@ -68,6 +72,7 @@ public class NavigationMenuService : INavigationMenuService
                     parentItem.ChildNavigationMenuItems.Remove(childItem);
                 }
             }
+
         }
     }
 }

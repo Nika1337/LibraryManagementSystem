@@ -130,6 +130,66 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
                 Name = "Add Book Copy",
                 Route = "/Books/BookEditions/BookCopies/AddBookCopy",
                 ParentNavigationMenuItemId = 12
+            },
+            new()
+            {
+                Id = 15,
+                Name = "Genres",
+                ParentNavigationMenuItemId = 6
+            },
+            new()
+            {
+                Id = 16,
+                Name = "All Genres",
+                Route = "/Books/Genres",
+                ParentNavigationMenuItemId = 15
+            },
+            new()
+            {
+                Id = 17,
+                Name = "Add Genre",
+                Route = "/Books/Genres/AddGenre",
+                ParentNavigationMenuItemId = 15
+            },
+            new()
+            {
+                Id = 18,
+                Name = "Languages",
+                ParentNavigationMenuItemId = 6
+            },
+            new()
+            {
+                Id = 19,
+                Name = "All Languages",
+                Route = "/Books/Languages",
+                ParentNavigationMenuItemId = 18
+            },
+            new()
+            {
+                Id = 20,
+                Name = "Add Language",
+                Route = "/Books/Languages/AddLanguage",
+                ParentNavigationMenuItemId = 18
+            },
+            new()
+            {
+                Id = 21,
+                Name = "Author",
+                ParentNavigationMenuItemId = 6
+            },
+            new()
+            {
+                Id = 22,
+                Name = "All Authors",
+                Route = "/Books/Authors",
+                ParentNavigationMenuItemId = 21
+            },
+            new()
+            {
+                Id = 23,
+                Name = "Add Author",
+                Route = "/Books/Authors/AddAuthor",
+                ParentNavigationMenuItemId = 21
             }
         };
 

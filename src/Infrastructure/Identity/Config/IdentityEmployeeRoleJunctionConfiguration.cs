@@ -21,6 +21,7 @@ internal class IdentityEmployeeRoleJunctionConfiguration : IEntityTypeConfigurat
             .HasOne(eur => eur.Role)
             .WithMany()
             .HasForeignKey(eur => eur.RoleId)
+            .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
     }
 }

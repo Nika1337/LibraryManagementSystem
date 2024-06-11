@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nika1337.Library.Infrastructure.Identity;
 
@@ -11,9 +12,11 @@ using Nika1337.Library.Infrastructure.Identity;
 namespace Nika1337.Library.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20240611072850_corelibrarianroutesaddition")]
+    partial class corelibrarianroutesaddition
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,31 +478,31 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7eb8eed4-543d-4eef-9692-aaab0780d714",
+                            Id = "618cbc5a-0310-4a43-aa79-aa188d3183e8",
                             Name = "Human Resources Manager",
                             NormalizedName = "HUMAN RESOURCES MANAGER"
                         },
                         new
                         {
-                            Id = "233ff12e-dfb5-4864-ab35-7ce398443c7b",
+                            Id = "45d8d084-207a-414f-8fcf-c465024c375a",
                             Name = "Operations Manager",
                             NormalizedName = "OPERATIONS MANAGER"
                         },
                         new
                         {
-                            Id = "3bd3b1a4-3f0d-49b2-afcc-a24b034034ed",
+                            Id = "02639985-77a9-4b02-954d-bc4b0cdad51f",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
-                            Id = "15d8f808-b8e8-4b00-9300-43476da970fb",
+                            Id = "cc8677c1-73c1-4109-9c4e-dd04167f89ec",
                             Name = "Core Librarian",
                             NormalizedName = "CORE LIBRARIAN"
                         },
                         new
                         {
-                            Id = "e19d6a57-7b78-4095-bb13-a9ee9c239b79",
+                            Id = "fb6c3cb6-2ffa-40b4-b7a2-bb4aa59f9091",
                             Name = "Consultant",
                             NormalizedName = "CONSULTANT"
                         });
@@ -622,7 +625,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployeeRole", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployee", "User")
