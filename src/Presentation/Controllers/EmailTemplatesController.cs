@@ -79,7 +79,7 @@ public class EmailTemplatesController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> EmailTemplates()
+    public async Task<IActionResult> GetEmailTemplates()
     {
         var emailTemplates = await _emailTemplateService.GetAllEmailTemplatesAsync();
 
