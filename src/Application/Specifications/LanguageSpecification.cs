@@ -1,5 +1,5 @@
 ﻿using Ardalis.Specification;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using System.Linq;
 
 

@@ -1,10 +1,10 @@
 ﻿
 
-namespace Nika1337.Library.ApplicationCore.Exceptions;
+namespace Nika1337.Library.Domain.Exceptions;
 
 public class EmailTemplateNotFoundException : NotFoundException
 {
-    public EmailTemplateNotFoundException(int templateId) : base($"No email template found with id '{templateId}'")
+    public EmailTemplateNotFoundException(int id) : base($"No email template found with id '{id}'")
     {
 
     }

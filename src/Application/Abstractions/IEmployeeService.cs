@@ -1,6 +1,6 @@
 ﻿
 using Nika1337.Library.Application.DataTransferObjects;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;

@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 
-namespace Nika1337.Library.ApplicationCore.Specifications;
+namespace Nika1337.Library.Domain.Specifications;
 
 public class EmailTemplateSpecification : SingleResultSpecification<EmailTemplate>
 {

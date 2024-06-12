@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using System;
 using System.Collections.Generic;
 

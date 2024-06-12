@@ -43,10 +43,8 @@ builder.Services.AddControllersWithViews()
     .AddApplicationPart(presentationAssembly);
 
 builder.Services.AddAutoMapper(
-    typeof(EmployeeMappingProfile),
-    typeof(EmailTemplateMappingProfile),
-    typeof(EmployeeViewModelMappingProfile),
-    typeof(EmailTemplateViewModelMappingProfile));
+    typeof(Nika1337.Library.Presentation.AssemblyReference).Assembly,
+    typeof(Nika1337.Library.Infrastructure.AssemblyReference).Assembly);
 
 
 var app = builder.Build();

@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System.Collections.Generic;
 

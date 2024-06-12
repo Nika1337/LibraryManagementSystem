@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 using Nika1337.Library.Application.DataTransferObjects;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System;
 using System.Linq;

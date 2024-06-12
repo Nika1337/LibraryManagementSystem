@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nika1337.Library.ApplicationCore.Entities;
+namespace Nika1337.Library.Domain.Entities;
 
 public abstract class Account : BaseModel
 {

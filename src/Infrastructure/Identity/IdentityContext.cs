@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Infrastructure.Identity.Config;
 using Nika1337.Library.Infrastructure.Identity.Entities;
 using System.Security.Claims;

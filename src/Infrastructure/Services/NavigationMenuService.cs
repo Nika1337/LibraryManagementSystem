@@ -1,11 +1,11 @@
 ﻿using Nika1337.Library.Application.Abstractions;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.ApplicationCore.Services;
+namespace Nika1337.Library.Infrastructure.Services;
 
 internal class NavigationMenuService : INavigationMenuService
 {

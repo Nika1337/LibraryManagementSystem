@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Nika1337.Library.ApplicationCore.Services;
+namespace Nika1337.Library.Infrastructure.Services;
 
 internal class EmailService : IEmailService
 {

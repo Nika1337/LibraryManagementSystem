@@ -1,4 +1,4 @@
-﻿using Nika1337.Library.ApplicationCore.Entities;
+﻿using Nika1337.Library.Domain.Entities;
 
 namespace Nika1337.Library.Application.DataTransferObjects;
 

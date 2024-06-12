@@ -1,6 +1,6 @@
 ﻿using Ardalis.Specification.EntityFrameworkCore;
-using Nika1337.Library.ApplicationCore.Abstractions;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Abstractions;
+using Nika1337.Library.Domain.Entities;
 
 namespace Nika1337.Library.Infrastructure.Data;
 

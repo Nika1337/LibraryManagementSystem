@@ -1,7 +1,7 @@
-﻿using Nika1337.Library.ApplicationCore.Entities;
+﻿using Nika1337.Library.Domain.Entities;
 using System;
 
-namespace Nika1337.Library.ApplicationCore.Exceptions;
+namespace Nika1337.Library.Domain.Exceptions;
 
 public class NotFoundException : Exception
 {

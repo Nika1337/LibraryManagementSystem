@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Nika1337.Library.ApplicationCore.Entities;
+namespace Nika1337.Library.Domain.Entities;
 public class PersonalAccount : Account
 {
     public required string FirstName { get; set; }

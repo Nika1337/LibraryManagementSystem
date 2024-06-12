@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace Nika1337.Library.ApplicationCore.Entities;
+namespace Nika1337.Library.Domain.Entities;
 
 public class Author : BaseModel
 {

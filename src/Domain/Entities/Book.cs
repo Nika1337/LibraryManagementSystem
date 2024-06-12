@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nika1337.Library.ApplicationCore.Entities;
+namespace Nika1337.Library.Domain.Entities;
 public class Book : BaseModel
 {
     public required string Title { get; set; }

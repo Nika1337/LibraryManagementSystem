@@ -132,7 +132,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.AuditLog", b =>
+            modelBuilder.Entity("Nika1337.Library.Domain.Entities.AuditLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,7 +168,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", b =>
+            modelBuilder.Entity("Nika1337.Library.Domain.Entities.NavigationMenuItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -528,7 +528,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", null)
+                    b.HasOne("Nika1337.Library.Domain.Entities.NavigationMenuItem", null)
                         .WithMany()
                         .HasForeignKey("PermittedNavigationMenuItemsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -571,9 +571,9 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", b =>
+            modelBuilder.Entity("Nika1337.Library.Domain.Entities.NavigationMenuItem", b =>
                 {
-                    b.HasOne("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", null)
+                    b.HasOne("Nika1337.Library.Domain.Entities.NavigationMenuItem", null)
                         .WithMany("ChildNavigationMenuItems")
                         .HasForeignKey("ParentNavigationMenuItemId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -581,7 +581,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Nika1337.Library.Infrastructure.Identity.Entities.IdentityEmployee", b =>
                 {
-                    b.OwnsOne("Nika1337.Library.ApplicationCore.Entities.Address", "Address", b1 =>
+                    b.OwnsOne("Nika1337.Library.Domain.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<string>("IdentityEmployeeId")
                                 .HasColumnType("nvarchar(450)");
@@ -636,7 +636,7 @@ namespace Nika1337.Library.Infrastructure.Identity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Nika1337.Library.ApplicationCore.Entities.NavigationMenuItem", b =>
+            modelBuilder.Entity("Nika1337.Library.Domain.Entities.NavigationMenuItem", b =>
                 {
                     b.Navigation("ChildNavigationMenuItems");
                 });

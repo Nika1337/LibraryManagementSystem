@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Infrastructure.Data.Config;
 using Nika1337.Library.Infrastructure.Identity.Config;
 using Nika1337.Library.Infrastructure.Logging.Audit;

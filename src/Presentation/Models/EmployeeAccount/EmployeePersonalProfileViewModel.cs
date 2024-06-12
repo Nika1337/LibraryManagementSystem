@@ -1,6 +1,6 @@
 ﻿namespace Nika1337.Library.Presentation.Models.EmployeeAccount;
 
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Presentation.Validation.Date;
 using System;
 using System.ComponentModel.DataAnnotations;

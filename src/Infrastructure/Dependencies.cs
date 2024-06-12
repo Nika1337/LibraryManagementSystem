@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nika1337.Library.Application.Abstractions;
-using Nika1337.Library.ApplicationCore.Abstractions;
-using Nika1337.Library.ApplicationCore.Services;
+using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Infrastructure.Data;
 using Nika1337.Library.Infrastructure.Identity;
 using Nika1337.Library.Infrastructure.Identity.Entities;
@@ -21,13 +20,30 @@ public static class Dependencies
 {
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // use real database
+        services.AddDbContexts(configuration);
+
+        services.ConfigureIdentity();
+
+        services.AddEmailSender(configuration);
+
+        services.AddLoggingAdapter();
+
+        services.AddRepositories();
+
+        services.AddServices();
+    }
+
+    private static void AddDbContexts(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddDbContext<LibraryContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("LibraryConnection")), ServiceLifetime.Transient);
 
-        // Add Identity DbContext
         services.AddDbContext<IdentityContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")), ServiceLifetime.Transient);
+    }
+
+    private static void ConfigureIdentity(this IServiceCollection services)
+    {
 
         services.AddTransient<IUserValidator<IdentityEmployee>, OptionalEmailUserValidator<IdentityEmployee>>();
 
@@ -62,14 +78,10 @@ public static class Dependencies
             options.User.RequireUniqueEmail = true;
         });
 
-        services.AddScoped<INavigationMenuService, NavigationMenuService>();
-        services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-        services.AddScoped<IEmployeeAuthenticationService, IdentityEmployeeAuthenticationService>();
-        services.AddScoped<IEmployeeService, IdentityEmployeeService>();
-        services.AddScoped<IEmployeeRoleService, IdentityEmployeeRoleService>();
-        services.AddScoped<IGenreService, GenreService>();
-        services.AddScoped<ILanguageService, LanguageService>();
+    }
 
+    private static void AddEmailSender(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddScoped<IMailjetClient>(provider =>
         {
             var apiKey = configuration["MailjetConfiguration:MailjetApiKey"];
@@ -78,13 +90,28 @@ public static class Dependencies
         });
 
         services.AddTransient<IEmailSender, MailJetEmailSender>();
-        
-        services.AddScoped<IEmailService, EmailService>();
-        
-        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+    }
 
+    private static void AddLoggingAdapter(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+    }
 
+    private static void AddRepositories(this IServiceCollection services)
+    {
         services.AddScoped(typeof(IRepository<>), typeof(LibraryEfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(LibraryEfRepository<>));
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IEmployeeAuthenticationService, IdentityEmployeeAuthenticationService>();
+        services.AddScoped<IEmployeeService, IdentityEmployeeService>();
+        services.AddScoped<IEmployeeRoleService, IdentityEmployeeRoleService>();
+        services.AddScoped<IGenreService, GenreService>();
+        services.AddScoped<ILanguageService, LanguageService>();
+        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+        services.AddScoped<INavigationMenuService, NavigationMenuService>();
+        services.AddScoped<IEmailService, EmailService>();
     }
 }

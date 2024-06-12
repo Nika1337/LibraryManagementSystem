@@ -4,7 +4,7 @@ using Nika1337.Library.Presentation.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Nika1337.Library.ApplicationCore.Entities;
+using Nika1337.Library.Domain.Entities;
 
 namespace Nika1337.Library.Presentation.Models.EmployeeManagement;
 

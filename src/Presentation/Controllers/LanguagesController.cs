@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
-using Nika1337.Library.ApplicationCore.Exceptions;
+using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Presentation.Models.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
