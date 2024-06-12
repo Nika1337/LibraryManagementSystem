@@ -1,18 +1,10 @@
 ﻿@model Nika1337.Library.Presentation.Models.EmployeeManagement.EmployeeRegistrationViewModel
 
 @{
+    Layout = "_DetailLayout";
     ViewData["Title"] = "Register Employee";
 }
-
-<div class="container-fluid d-flex flex-column justify-content-center align-items-center pt-5">
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="d-flex flex-column align-items-center">
-            <div class="alert alert-danger" style="width: fit-content">
-                @Model.ErrorMessage
-            </div>
-        </div>
-    }
+<div class="row justify-content-center">
     <div class="card" style="width: 100%; max-width: 1000px;">
         <h5 class="card-header">@ViewData["Title"]</h5>
         <div class="card-body">
@@ -92,13 +84,25 @@
                     </div>
 
                     <div class="d-flex align-items-end justify-content-end myfab-container">
-                        <button type="submit" class="btn btn-primary myfab" >Register</button>
+                        <button type="submit" class="btn btn-primary myfab">Register</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

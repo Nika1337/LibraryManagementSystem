@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+}
+
+<div class="container-fluid pt-5">
+    @RenderSection("Error", required: false)
+    
+    @RenderBody()
+</div>
+
+
+@RenderSection("ActionModal", required: false)
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+
+@section Styles {
+    @RenderSection("Styles", required: false)
+}

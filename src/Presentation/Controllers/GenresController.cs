@@ -25,7 +25,7 @@ public class GenresController : Controller
         _genreService = genreService;
     }
 
-    [HttpGet]
+    [HttpGet(Name = "Genres")]
     public async Task<IActionResult> Genres()
     {
         var genres = await _genreService.GetGenresAsync();
@@ -42,7 +42,7 @@ public class GenresController : Controller
 
         var model = _mapper.Map<GenreDetailViewModel>(genre);
 
-        return View(model);
+        return View("Genre", model);
     }
 
     [HttpPost("{id:int}")]
@@ -50,7 +50,7 @@ public class GenresController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return View("Genre", model);
         }
 
         var request = _mapper.Map<GenreUpdateRequest>(model);
@@ -62,14 +62,14 @@ public class GenresController : Controller
         catch (NameDuplicateException)
         {
             model.ErrorMessage = $"Genre with name '{model.Name}' already exists";
-            return View(model);
+            return View("Genre", model);
         }
 
-        return RedirectToAction(nameof(Genres));
+        return RedirectToRoute("Genres");
     }
 
     [HttpGet("[action]")]
-    public IActionResult CreateGenre()
+    public IActionResult AddGenre()
     {
         var model = new GenreCreateViewModel();
 
@@ -77,7 +77,7 @@ public class GenresController : Controller
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> CreateGenre(GenreCreateViewModel model)
+    public async Task<IActionResult> AddGenre(GenreCreateViewModel model)
     {
         if (!ModelState.IsValid)
         {
