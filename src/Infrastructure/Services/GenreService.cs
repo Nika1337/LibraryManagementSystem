@@ -10,28 +10,85 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
 
-internal class GenreService : CRUDService<Genre>, IGenreService
+internal class GenreService : IGenreService
 {
+    private readonly IRepository<Genre> _repository;
+    private readonly IMapper _mapper;
 
     public GenreService(
         IRepository<Genre> repository,
-        IMapper mapper) : base(repository, mapper)
+        IMapper mapper)
     {
+        _repository = repository;
+        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<GenreResponse>> GetGenresAsync() => await GetAllAsync<GenreResponse>();
+    public async Task<IEnumerable<GenreResponse>> GetGenresAsync()
+    {
+        var genres = await _repository.ListAsync();
 
-    public async Task<GenreResponse> GetGenreAsync(int id) => await GetAsync<GenreResponse>(id);
-    
-    public async Task CreateGenreAsync(GenreCreateRequest request) => await CreateAsync(request, request => request.Name);
+        var response = _mapper.Map<IEnumerable<GenreResponse>>(genres);
 
-    public async Task UpdateGenreAsync(GenreUpdateRequest request) => await UpdateAsync(request, request => request.Id, request => request.Name);
+        return response;
+    }
 
-    public async Task DeleteGenreAsync(int id) => await DeleteAsync(id);
-    public async Task RenewGenreAsync(int id) => await RenewAsync(id);
+    public async Task<GenreResponse> GetGenreAsync(int id)
+    {
+        var genre = await GetGenreEntityAsync(id);
+
+        var response = _mapper.Map<GenreResponse>(genre);
+
+        return response;
+    }
+
+    public async Task CreateGenreAsync(GenreCreateRequest request)
+    {
+        await ThrowIfNameExistsAsync(request.Name);
+
+        var genre = _mapper.Map<Genre>(request);
+
+        await _repository.AddAsync(genre);
+    }
+
+    public async Task UpdateGenreAsync(GenreUpdateRequest request)
+    {
+        await ThrowIfGenreWithGivenNameHasDifferentIdAsync(request.Name, request.Id);
+
+        var genre = await GetGenreEntityAsync(request.Id);
+
+        _mapper.Map(request, genre);
+
+        await _repository.UpdateAsync(genre);
+    }
+
+    public async Task DeleteGenreAsync(int id)
+    {
+        var genre = await GetGenreEntityAsync(id);
+
+        genre.Delete();
+
+        await _repository.UpdateAsync(genre);
+    }
+
+    public async Task RenewGenreAsync(int id)
+    {
+        var genre = await GetGenreEntityAsync(id);
+
+        genre.Renew();
+
+        await _repository.UpdateAsync(genre);
+    }
 
 
-    protected override async Task ThrowIfNameExistsAsync(string name)
+
+    private async Task<Genre> GetGenreEntityAsync(int id)
+    {
+        var genre = await _repository.GetByIdAsync(id) ?? throw new GenreNotFoundException(id);
+
+        return genre;
+    }
+
+    private async Task ThrowIfNameExistsAsync(string name)
     {
         var specification = new GenreSpecification(name);
 
@@ -43,7 +100,7 @@ internal class GenreService : CRUDService<Genre>, IGenreService
         }
     }
 
-    protected override async Task ThrowIfEntityWithGivenNameHasDifferentId(string name, int id)
+    private async Task ThrowIfGenreWithGivenNameHasDifferentIdAsync(string name, int id)
     {
         var specification = new GenreSpecification(name, id);
 
