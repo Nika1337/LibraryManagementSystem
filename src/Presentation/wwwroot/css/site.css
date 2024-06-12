@@ -57,3 +57,6 @@ body {
     margin-top: -1px;
 }
 
+.no-wrap {
+    white-space: nowrap; /* Ensure the content never wraps */
+}

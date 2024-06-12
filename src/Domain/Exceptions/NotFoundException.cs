@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nika1337.Library.ApplicationCore.Entities;
+using System;
 
 namespace Nika1337.Library.ApplicationCore.Exceptions;
 

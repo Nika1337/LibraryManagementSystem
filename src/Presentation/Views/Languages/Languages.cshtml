@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Nika1337.Library.Presentation.Models.Languages.LanguageViewModel>
+
+@{
+    ViewData["Title"] = "Languages";
+    Layout = "_CardTableLayout";
+    var sortOptions = new Dictionary<string, string>
+    {
+        { "name", "Name: A - Z" },
+        { "nameDesc", "Name: Z - A" },
+    };
+}
+
+@section SortFilterSearchSwitch {
+    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
+}
+
+@section Cards {
+    @foreach (var language in Model)
+    {
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 language-card" data-name="@language.Name" data-active="@(!language.DeletedDate.HasValue)">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+                <div class="card-header d-flex justify-content-between align-items-center text-white">
+                    <span class="card-header-name">@language.Name</span>
+                    @if (!language.DeletedDate.HasValue)
+                    {
+                        <span class="badge bg-success badge-sm">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger badge-sm">Deleted</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section Table {
+    <table id="languageTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var language in Model)
+            {
+                <tr class="language-row" data-name="@language.Name" data-active="@(!language.DeletedDate.HasValue)">
+                    <td>@language.Name</td>
+                    <td>
+                        @if (!language.DeletedDate.HasValue)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                    </td>
+                    <td class="no-wrap">
+                        <a href="/Books/Languages/@language.Id" class="btn btn-dark btn-sm">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Fab {
+    <a href="/Books/Languages/AddLanguage" class="btn btn-primary btn-lg shadow-sm myfab">
+        Add Language
+    </a>
+}
+
+@section Scripts {
+    <script src="~/js/Books/Languages/Languages.js"></script>
+    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+}

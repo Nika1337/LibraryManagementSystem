@@ -19,6 +19,7 @@
     <Folder Include="wwwroot\css\Books\Genres\" />
     <Folder Include="wwwroot\css\Shared\" />
     <Folder Include="wwwroot\js\Books\Genres\" />
+    <Folder Include="wwwroot\js\Books\Languages\" />
   </ItemGroup>
 
 

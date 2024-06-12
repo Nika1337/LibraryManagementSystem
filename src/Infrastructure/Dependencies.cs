@@ -68,6 +68,7 @@ public static class Dependencies
         services.AddScoped<IEmployeeService, IdentityEmployeeService>();
         services.AddScoped<IEmployeeRoleService, IdentityEmployeeRoleService>();
         services.AddScoped<IGenreService, GenreService>();
+        services.AddScoped<ILanguageService, LanguageService>();
 
         services.AddScoped<IMailjetClient>(provider =>
         {
