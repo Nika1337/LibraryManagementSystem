@@ -68,6 +68,14 @@ function sort(sortType) {
                 aData = new Date(a.dataset.startdate);
                 bData = new Date(b.dataset.startdate);
                 return bData - aData;
+            case 'DateOfBirth':
+                aData = new Date(a.dataset.dateofbirth);
+                bData = new Date(b.dataset.dateofbirth);
+                return aData - bData;
+            case 'DateOfBirthDesc':
+                aData = new Date(a.dataset.dateofbirth);
+                bData = new Date(b.dataset.dateofbirth);
+                return bData - aData;
             default:
                 return 0;
         }

@@ -12,7 +12,9 @@
         { "lastName", "Last name: A - Z" },
         { "lastNameDesc", "Last name: Z - A" },
         { "startDate", "Start Date: Ascending" },
-        { "startDateDesc", "Start Date: Descending" }
+        { "startDateDesc", "Start Date: Descending" },
+        { "DateOfBirth", "Date Of Birth: Ascending" },
+        { "DateOfBirthDesc", "Date Of Birth: Descending" }
     };
 }
 
@@ -23,7 +25,7 @@
 @section Cards {
     @foreach (var employee in Model)
     {
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 employee-card" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 employee-card" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@employee.FirstName @employee.LastName</span>
@@ -85,7 +87,7 @@
         <tbody>
             @foreach (var employee in Model)
             {
-                <tr class="employee-row" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive">
+                <tr class="employee-row" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth">
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Username</td>
