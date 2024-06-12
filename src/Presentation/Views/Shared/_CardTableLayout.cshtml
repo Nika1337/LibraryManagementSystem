@@ -1,0 +1,32 @@
+
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<div class="container-fluid p-5">
+    @RenderSection("SortFilterSearchSwitch", required: true)
+
+    <div id="cardView" class="row d-none">
+        @RenderSection("Cards", required: true)
+    </div>
+
+    <div id="tableView">
+        <div class="table-responsive d-flex justify-content-center">
+            @RenderSection("Table", required: true)
+        </div>
+    </div>
+
+    <div class="myfab-container">
+        @RenderSection("Fab", required: false)
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Shared/CardTableList.js"></script>
+    @RenderSection("Scripts", required: false)
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Shared/CardTableList.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+}

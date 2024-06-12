@@ -1,10 +1,7 @@
 
 
-function searchGenres() {
-    filterGenres();
-}
 
-function filterGenres() {
+function filter() {
     var searchTerm = document.getElementById('searchTerm').value.toLowerCase();
     var includeDeleted = document.getElementById('includeDeleted').checked;
     var genreCards = document.querySelectorAll('.genre-card');
@@ -31,16 +28,8 @@ function filterGenres() {
     });
 }
 
-document.querySelectorAll('.sort-option').forEach(function (element) {
-    element.addEventListener('click', function () {
-        var sortType = element.getAttribute('data-sort');
-        var sortLabel = document.getElementById('sortLabel');
-        sortLabel.innerText = element.innerText;
-        sortGenres(sortType);
-    });
-});
 
-function sortGenres(sortType) {
+function sort(sortType) {
     var genreCards = Array.from(document.querySelectorAll('.genre-card'));
     var genreRows = Array.from(document.querySelectorAll('.genre-row'));
 

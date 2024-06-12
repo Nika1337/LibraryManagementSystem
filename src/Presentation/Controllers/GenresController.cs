@@ -69,7 +69,7 @@ public class GenresController : Controller
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> CreateGenre()
+    public IActionResult CreateGenre()
     {
         var model = new GenreCreateViewModel();
 

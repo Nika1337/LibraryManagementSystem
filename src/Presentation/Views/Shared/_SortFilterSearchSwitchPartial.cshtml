@@ -1,0 +1,46 @@
+﻿@model Dictionary<string, string>
+
+
+<h2 class="text-center m-3">@ViewData["Title"]</h2>
+<div class="row justify-content-between">
+    <div class="col-md-6" style="width: fit-content">
+        <div class="dropdown mb-4" style="width: fit-content">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 200px">
+                <span id="sortLabel">
+                    Sort
+                </span>
+            </button>
+            <ul class="dropdown-menu" style="width: fit-content">
+                @foreach (var (key, value) in Model)
+                {
+                    <li><a class="dropdown-item sort-option" data-sort="@key">@value</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6" style="width: fit-content">
+        <div class="row  mb-4">
+            <div class="col-md-8" style="width: fit-content">
+                <div class="row flex-nowrap">
+                    <div class="col-md-8" style="width: fit-content">
+                        <div class="input-group">
+                            <input type="text" id="searchTerm" class="form-control" placeholder="Search...">
+                            <button class="btn btn-outline-secondary" type="button" onclick="filter()">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
+                        <i id="cardViewIcon" class="fas fa-th-large toggle-icon mx-2" onclick="toggleView('card')" title="Card View"></i>
+                        <i id="tableViewIcon" class="fas fa-table toggle-icon mx-2" onclick="toggleView('table')" title="Table View"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="includeDeleted" onclick="filter()" checked>
+                    <label class="form-check-label" for="includeDeleted">Include Deleted</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,12 +1,8 @@
 
 
-function searchEmployees() {
-    filterEmployees();
-}
-
-function filterEmployees() {
+function filter() {
     var searchTerm = document.getElementById('searchTerm').value.toLowerCase();
-    var includeTerminated = document.getElementById('includeTerminated').checked;
+    var includeDeleted = document.getElementById('includeDeleted').checked;
     var employeeCards = document.querySelectorAll('.employee-card');
     var employeeRows = document.querySelectorAll('.employee-row');
 
@@ -14,7 +10,7 @@ function filterEmployees() {
         var name = card.dataset.firstname.toLowerCase() + ' ' + card.dataset.lastname.toLowerCase();
         var username = card.dataset.username.toLowerCase();
         var isActive = card.dataset.active === 'True';
-        if ((name.includes(searchTerm) || username.includes(searchTerm)) && (includeTerminated || isActive)) {
+        if ((name.includes(searchTerm) || username.includes(searchTerm)) && (includeDeleted || isActive)) {
             card.style.display = '';
         } else {
             card.style.display = 'none';
@@ -25,7 +21,7 @@ function filterEmployees() {
         var name = row.dataset.firstname.toLowerCase() + ' ' + row.dataset.lastname.toLowerCase();
         var username = row.dataset.username.toLowerCase();
         var isActive = row.dataset.active === 'True';
-        if ((name.includes(searchTerm) || username.includes(searchTerm)) && (includeTerminated || isActive)) {
+        if ((name.includes(searchTerm) || username.includes(searchTerm)) && (includeDeleted || isActive)) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
@@ -33,16 +29,7 @@ function filterEmployees() {
     });
 }
 
-document.querySelectorAll('.sort-option').forEach(function (element) {
-    element.addEventListener('click', function () {
-        var sortType = element.getAttribute('data-sort');
-        var sortLabel = document.getElementById('sortLabel');
-        sortLabel.innerText = element.innerText;
-        sortEmployees(sortType);
-    });
-});
-
-function sortEmployees(sortType) {
+function sort(sortType) {
     var employeeCards = Array.from(document.querySelectorAll('.employee-card'));
     var employeeRows = Array.from(document.querySelectorAll('.employee-row'));
 
