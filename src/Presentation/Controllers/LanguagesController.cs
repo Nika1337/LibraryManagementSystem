@@ -15,22 +15,22 @@ namespace Nika1337.Library.Presentation.Controllers;
 public class LanguagesController : Controller
 {
     private readonly IMapper _mapper;
-    private readonly ILanguageService _genreService;
+    private readonly ILanguageService _languageService;
 
     public LanguagesController(
         IMapper mapper,
-        ILanguageService genreService)
+        ILanguageService languageService)
     {
         _mapper = mapper;
-        _genreService = genreService;
+        _languageService = languageService;
     }
 
     [HttpGet(Name = "Languages")]
     public async Task<IActionResult> Languages()
     {
-        var genres = await _genreService.GetLanguagesAsync();
+        var languages = await _languageService.GetLanguagesAsync();
 
-        var model = _mapper.Map<IEnumerable<LanguageViewModel>>(genres);
+        var model = _mapper.Map<IEnumerable<LanguageViewModel>>(languages);
 
         return View(model);
     }
@@ -38,9 +38,9 @@ public class LanguagesController : Controller
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Languages(int id)
     {
-        var genre = await _genreService.GetLanguageAsync(id);
+        var language = await _languageService.GetLanguageAsync(id);
 
-        var model = _mapper.Map<LanguageDetailViewModel>(genre);
+        var model = _mapper.Map<LanguageDetailViewModel>(language);
 
         return View("Language", model);
     }
@@ -57,7 +57,7 @@ public class LanguagesController : Controller
 
         try
         {
-            await _genreService.UpdateLanguageAsync(request);
+            await _languageService.UpdateLanguageAsync(request);
         }
         catch (NameDuplicateException)
         {
@@ -88,7 +88,7 @@ public class LanguagesController : Controller
 
         try
         {
-            await _genreService.CreateLanguageAsync(request);
+            await _languageService.CreateLanguageAsync(request);
         }
         catch (NameDuplicateException)
         {
@@ -103,7 +103,7 @@ public class LanguagesController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> DeleteLanguage(int id)
     {
-        await _genreService.DeleteLanguageAsync(id);
+        await _languageService.DeleteLanguageAsync(id);
 
         return Ok();
     }
@@ -111,7 +111,7 @@ public class LanguagesController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> RenewLanguage(int id)
     {
-        await _genreService.RenewLanguageAsync(id);
+        await _languageService.RenewLanguageAsync(id);
 
         return Ok();
     }
