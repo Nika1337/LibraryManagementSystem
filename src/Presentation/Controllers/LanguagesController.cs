@@ -103,7 +103,7 @@ public class LanguagesController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> DeleteLanguage(int id)
     {
-        await _languageService.DeleteLanguageAsync(id);
+        await _languageService.DeleteAsync(id);
 
         return Ok();
     }
@@ -111,7 +111,7 @@ public class LanguagesController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> RenewLanguage(int id)
     {
-        await _languageService.RenewLanguageAsync(id);
+        await _languageService.RenewAsync(id);
 
         return Ok();
     }

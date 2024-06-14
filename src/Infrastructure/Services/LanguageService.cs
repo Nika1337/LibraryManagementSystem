@@ -1,25 +1,23 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
-using Nika1337.Library.Application.Specifications;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.Specifications.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
 
-internal class LanguageService : ILanguageService
+internal class LanguageService : BaseModelService<Language>, ILanguageService
 {
-    private readonly IRepository<Language> _repository;
     private readonly IMapper _mapper;
 
     public LanguageService(
         IRepository<Language> repository,
-        IMapper mapper)
+        IMapper mapper) : base(repository)
     {
-        _repository = repository;
         _mapper = mapper;
     }
 
@@ -34,7 +32,7 @@ internal class LanguageService : ILanguageService
 
     public async Task<LanguageResponse> GetLanguageAsync(int id)
     {
-        var genre = await GetLanguageEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         var response = _mapper.Map<LanguageResponse>(genre);
 
@@ -54,7 +52,7 @@ internal class LanguageService : ILanguageService
     {
         await ThrowIfLanguageWithGivenNameHasDifferentIdAsync(request.Name, request.Id);
 
-        var genre = await GetLanguageEntityAsync(request.Id);
+        var genre = await GetEntityAsync(request.Id);
 
         _mapper.Map(request, genre);
 
@@ -63,7 +61,7 @@ internal class LanguageService : ILanguageService
 
     public async Task DeleteLanguageAsync(int id)
     {
-        var genre = await GetLanguageEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         genre.Delete();
 
@@ -72,7 +70,7 @@ internal class LanguageService : ILanguageService
 
     public async Task RenewLanguageAsync(int id)
     {
-        var genre = await GetLanguageEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         genre.Renew();
 
@@ -80,17 +78,9 @@ internal class LanguageService : ILanguageService
     }
 
 
-
-    private async Task<Language> GetLanguageEntityAsync(int id)
-    {
-        var genre = await _repository.GetByIdAsync(id) ?? throw new LanguageNotFoundException(id);
-
-        return genre;
-    }
-
     private async Task ThrowIfNameExistsAsync(string name)
     {
-        var specification = new LanguageSpecification(name);
+        var specification = new LanguageWithNameSpecification(name);
 
         var isNameUsed = await _repository.AnyAsync(specification);
 
@@ -102,9 +92,11 @@ internal class LanguageService : ILanguageService
 
     private async Task ThrowIfLanguageWithGivenNameHasDifferentIdAsync(string name, int id)
     {
-        var specification = new LanguageSpecification(name, id);
+        var specification = new LanguageWithNameSpecification(name);
 
-        var isNameUsedByDifferentEntity = await _repository.AnyAsync(specification);
+        var language = await _repository.SingleOrDefaultAsync(specification);
+
+        var isNameUsedByDifferentEntity = language is not null && language.Id == id;
 
         if (isNameUsedByDifferentEntity)
         {

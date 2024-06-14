@@ -4,21 +4,19 @@ using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
-using Nika1337.Library.Domain.Specifications;
+using Nika1337.Library.Domain.Specifications.EmailTemplates;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
 
-internal class EmailTemplateService : IEmailTemplateService
+internal class EmailTemplateService : BaseModelService<EmailTemplate>, IEmailTemplateService
 {
-    private readonly IRepository<EmailTemplate> _repository;
     private readonly IMapper _mapper;
     public EmailTemplateService(
         IRepository<EmailTemplate> repository,
-        IMapper mapper)
+        IMapper mapper) : base(repository)
     {
-        _repository = repository;
         _mapper = mapper;
     }
 
@@ -33,7 +31,7 @@ internal class EmailTemplateService : IEmailTemplateService
 
     public async Task<EmailTemplateDetailedResponse> GetEmailTemplateAsync(int id)
     {
-        var template = await GetEmailTemplateEntityAsync(id);
+        var template = await GetEntityAsync(id);
 
         var response = _mapper.Map<EmailTemplateDetailedResponse>(template);
 
@@ -41,7 +39,7 @@ internal class EmailTemplateService : IEmailTemplateService
     }
     public async Task UpdateEmailTemplateAsync(EmailTemplateUpdateRequest templateUpdateRequest)
     {
-        var template = await GetEmailTemplateEntityAsync(templateUpdateRequest.Id);
+        var template = await GetEntityAsync(templateUpdateRequest.Id);
 
         await ThrowIfTemplateWithGivenNameHasDifferentId(templateUpdateRequest.Name, templateUpdateRequest.Id);
 
@@ -51,7 +49,7 @@ internal class EmailTemplateService : IEmailTemplateService
     }
     public async Task DeleteEmailTemplateAsync(int id)
     {
-        var template = await GetEmailTemplateEntityAsync(id);
+        var template = await GetEntityAsync(id);
 
         template.Delete();
 
@@ -60,25 +58,20 @@ internal class EmailTemplateService : IEmailTemplateService
 
     public async Task RenewEmailTemplateAsync(int id)
     {
-        var template = await GetEmailTemplateEntityAsync(id);
+        var template = await GetEntityAsync(id);
 
         template.Renew();
 
         await _repository.UpdateAsync(template);
     }
 
-    private async Task<EmailTemplate> GetEmailTemplateEntityAsync(int id)
-    {
-        var emailTemplate = await _repository.GetByIdAsync(id) ?? throw new EmailTemplateNotFoundException(id);
-
-        return emailTemplate;
-    }
-
     private async Task ThrowIfTemplateWithGivenNameHasDifferentId(string name, int id)
     {
-        var specification = new EmailTemplateSpecification(name, id);
+        var specification = new EmailTemplateWithNameSpecification(name);
 
-        var isNameUsedByDifferentEntity = await _repository.AnyAsync(specification);
+        var template = await _repository.SingleOrDefaultAsync(specification);
+
+        var isNameUsedByDifferentEntity = template is not null && template.Id != id;
 
         if (isNameUsedByDifferentEntity)
         {

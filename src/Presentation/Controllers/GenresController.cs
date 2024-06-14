@@ -103,7 +103,7 @@ public class GenresController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> DeleteGenre(int id)
     {
-        await _genreService.DeleteGenreAsync(id);
+        await _genreService.DeleteAsync(id);
 
         return Ok();
     }
@@ -111,7 +111,7 @@ public class GenresController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> RenewGenre(int id)
     {
-        await _genreService.RenewGenreAsync(id);
+        await _genreService.RenewAsync(id);
 
         return Ok();
     }

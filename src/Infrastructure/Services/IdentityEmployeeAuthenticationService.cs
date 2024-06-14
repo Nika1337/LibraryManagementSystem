@@ -55,7 +55,7 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
     public async Task ChangePasswordAsync(ClaimsPrincipal principal, string currentPassword, string newPassword)
     {
-        var existingEmployee = await _userManager.GetUserAsync(principal) ?? throw new EmployeeNotFoundException(principal);
+        var existingEmployee = await GetIdentityEmployeeAsync(principal);
 
 
         var isCurrentPasswordCorrect = await _userManager.CheckPasswordAsync(existingEmployee, currentPassword);
@@ -85,7 +85,7 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
     public async Task ChangeEmailAsync(ClaimsPrincipal principal, string email, string confirmEmailUrl)
     {
-        var existingEmployee = await _userManager.GetUserAsync(principal) ?? throw new EmployeeNotFoundException(principal);
+        var existingEmployee = await GetIdentityEmployeeAsync(principal);
 
 
         var changeEmailResult = await _userManager.SetEmailAsync(existingEmployee, email);
@@ -108,22 +108,21 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
 
     public async Task ConfirmEmailAsync(string id, string token)
     {
-        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
+        var employee = await GetIdentityEmployeeAsync(id);
 
-        var changeEmailResult = await _userManager.ConfirmEmailAsync(existingEmployee, token);
+        var changeEmailResult = await _userManager.ConfirmEmailAsync(employee, token);
 
         if (!changeEmailResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to confirm email for employee with id '{existingEmployee.Id}'");
+            throw new ApplicationException($"Unable to confirm email for employee with id '{employee.Id}'");
         }
     }
 
     public async Task ResetPasswordAsync(string id, string token, string newPassword)
     {
-        var existingEmployee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
+        var employee = await GetIdentityEmployeeAsync(id);
 
-
-        var newPasswordValidationResult = await new EmployeePasswordValidator().ValidateAsync(_userManager, existingEmployee, newPassword);
+        var newPasswordValidationResult = await new EmployeePasswordValidator().ValidateAsync(_userManager, employee, newPassword);
 
         if (!newPasswordValidationResult.Succeeded)
         {
@@ -131,11 +130,11 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
         }
 
 
-        var passwordResetResult = await _userManager.ResetPasswordAsync(existingEmployee, token, newPassword);
+        var passwordResetResult = await _userManager.ResetPasswordAsync(employee, token, newPassword);
 
         if (!passwordResetResult.Succeeded)
         {
-            throw new ApplicationException($"Unable to reset password for employee with Id '{existingEmployee.Id}'");
+            throw new ApplicationException($"Unable to reset password for employee with Id '{employee.Id}'");
         }
     }
 
@@ -163,4 +162,18 @@ internal class IdentityEmployeeAuthenticationService : IEmployeeAuthenticationSe
         await _emailService.SendEmailAsync(email, 1, new { Href = resetPasswordHref });
     }
 
+
+    private async Task<IdentityEmployee> GetIdentityEmployeeAsync(string id)
+    {
+        var employee = await _userManager.FindByIdAsync(id) ?? throw new EmployeeNotFoundException(id);
+
+        return employee;
+    }
+
+    private async Task<IdentityEmployee> GetIdentityEmployeeAsync(ClaimsPrincipal principal)
+    {
+        var employee = await _userManager.GetUserAsync(principal) ?? throw new EmployeeNotFoundException(principal);
+
+        return employee;
+    }
 }

@@ -5,15 +5,10 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Application.Abstractions;
 
-public interface IAuthorService
+public interface IAuthorService : IBaseModelService
 {
     Task<IEnumerable<AuthorResponse>> GetAuthorsAsync();
     Task<AuthorResponse> GetAuthorAsync(int id);
     Task CreateAuthorAsync(AuthorCreateRequest request);
-
     Task UpdateAuthorAsync(AuthorUpdateRequest request);
-
-    Task DeleteAuthorAsync(int id);
-
-    Task RenewAuthorAsync(int id);
 }

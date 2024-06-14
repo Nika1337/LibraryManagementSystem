@@ -1,25 +1,23 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
-using Nika1337.Library.Application.Specifications;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.Specifications.Genres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
 
-internal class GenreService : IGenreService
+internal class GenreService : BaseModelService<Genre>, IGenreService
 {
-    private readonly IRepository<Genre> _repository;
     private readonly IMapper _mapper;
 
     public GenreService(
         IRepository<Genre> repository,
-        IMapper mapper)
+        IMapper mapper) : base(repository)
     {
-        _repository = repository;
         _mapper = mapper;
     }
 
@@ -34,7 +32,7 @@ internal class GenreService : IGenreService
 
     public async Task<GenreResponse> GetGenreAsync(int id)
     {
-        var genre = await GetGenreEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         var response = _mapper.Map<GenreResponse>(genre);
 
@@ -54,7 +52,7 @@ internal class GenreService : IGenreService
     {
         await ThrowIfGenreWithGivenNameHasDifferentIdAsync(request.Name, request.Id);
 
-        var genre = await GetGenreEntityAsync(request.Id);
+        var genre = await GetEntityAsync(request.Id);
 
         _mapper.Map(request, genre);
 
@@ -63,7 +61,7 @@ internal class GenreService : IGenreService
 
     public async Task DeleteGenreAsync(int id)
     {
-        var genre = await GetGenreEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         genre.Delete();
 
@@ -72,7 +70,7 @@ internal class GenreService : IGenreService
 
     public async Task RenewGenreAsync(int id)
     {
-        var genre = await GetGenreEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         genre.Renew();
 
@@ -80,17 +78,9 @@ internal class GenreService : IGenreService
     }
 
 
-
-    private async Task<Genre> GetGenreEntityAsync(int id)
-    {
-        var genre = await _repository.GetByIdAsync(id) ?? throw new GenreNotFoundException(id);
-
-        return genre;
-    }
-
     private async Task ThrowIfNameExistsAsync(string name)
     {
-        var specification = new GenreSpecification(name);
+        var specification = new GenreWithNameSpecification(name);
 
         var isNameUsed = await _repository.AnyAsync(specification);
 
@@ -102,11 +92,13 @@ internal class GenreService : IGenreService
 
     private async Task ThrowIfGenreWithGivenNameHasDifferentIdAsync(string name, int id)
     {
-        var specification = new GenreSpecification(name, id);
+        var specification = new GenreWithNameSpecification(name);
 
-        var isNameUsedByDifferentEntity = await _repository.AnyAsync(specification);
+        var genre = await _repository.SingleOrDefaultAsync(specification);
 
-        if (isNameUsedByDifferentEntity)
+        var isNameUsedByDifferentGenre = genre is not null && genre.Id != id;
+
+        if (isNameUsedByDifferentGenre)
         {
             throw new NameDuplicateException($"Genre with name '{name}' already exists");
         }

@@ -3,22 +3,19 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
-using Nika1337.Library.Domain.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
 
-internal class AuthorService : IAuthorService
+internal class AuthorService : BaseModelService<Author>, IAuthorService
 {
-    private readonly IRepository<Author> _repository;
     private readonly IMapper _mapper;
 
     public AuthorService(
         IRepository<Author> repository,
-        IMapper mapper)
+        IMapper mapper) : base(repository)
     {
-        _repository = repository;
         _mapper = mapper;
     }
 
@@ -33,7 +30,7 @@ internal class AuthorService : IAuthorService
 
     public async Task<AuthorResponse> GetAuthorAsync(int id)
     {
-        var genre = await GetAuthorEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         var response = _mapper.Map<AuthorResponse>(genre);
 
@@ -51,7 +48,7 @@ internal class AuthorService : IAuthorService
     public async Task UpdateAuthorAsync(AuthorUpdateRequest request)
     {
 
-        var genre = await GetAuthorEntityAsync(request.Id);
+        var genre = await GetEntityAsync(request.Id);
 
         _mapper.Map(request, genre);
 
@@ -60,7 +57,7 @@ internal class AuthorService : IAuthorService
 
     public async Task DeleteAuthorAsync(int id)
     {
-        var genre = await GetAuthorEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         genre.Delete();
 
@@ -69,19 +66,11 @@ internal class AuthorService : IAuthorService
 
     public async Task RenewAuthorAsync(int id)
     {
-        var genre = await GetAuthorEntityAsync(id);
+        var genre = await GetEntityAsync(id);
 
         genre.Renew();
 
         await _repository.UpdateAsync(genre);
     }
 
-
-
-    private async Task<Author> GetAuthorEntityAsync(int id)
-    {
-        var genre = await _repository.GetByIdAsync(id) ?? throw new AuthorNotFoundException(id);
-
-        return genre;
-    }
 }

@@ -62,7 +62,7 @@ public class EmailTemplatesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteEmailTemplate(int id)
     {
-        await _emailTemplateService.DeleteEmailTemplateAsync(id);
+        await _emailTemplateService.DeleteAsync(id);
 
         return Ok();
     }
@@ -72,7 +72,7 @@ public class EmailTemplatesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RenewEmailTemplate(int id)
     {
-        await _emailTemplateService.RenewEmailTemplateAsync(id);
+        await _emailTemplateService.RenewAsync(id);
 
         return Ok();
     }

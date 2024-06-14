@@ -86,7 +86,7 @@ public class AuthorsController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> DeleteAuthor(int id)
     {
-        await _authorService.DeleteAuthorAsync(id);
+        await _authorService.DeleteAsync(id);
 
         return Ok();
     }
@@ -94,7 +94,7 @@ public class AuthorsController : Controller
     [HttpPost("[action]/{id:int}")]
     public async Task<IActionResult> RenewAuthor(int id)
     {
-        await _authorService.RenewAuthorAsync(id);
+        await _authorService.RenewAsync(id);
 
         return Ok();
     }
