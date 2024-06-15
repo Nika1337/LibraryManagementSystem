@@ -23,18 +23,18 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
 
     public async Task<IEnumerable<LanguageResponse>> GetLanguagesAsync()
     {
-        var genres = await _repository.ListAsync();
+        var languages = await _repository.ListAsync();
 
-        var response = _mapper.Map<IEnumerable<LanguageResponse>>(genres);
+        var response = _mapper.Map<IEnumerable<LanguageResponse>>(languages);
 
         return response;
     }
 
     public async Task<LanguageResponse> GetLanguageAsync(int id)
     {
-        var genre = await GetEntityAsync(id);
+        var language = await GetEntityAsync(id);
 
-        var response = _mapper.Map<LanguageResponse>(genre);
+        var response = _mapper.Map<LanguageResponse>(language);
 
         return response;
     }
@@ -43,38 +43,38 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
     {
         await ThrowIfNameExistsAsync(request.Name);
 
-        var genre = _mapper.Map<Language>(request);
+        var language = _mapper.Map<Language>(request);
 
-        await _repository.AddAsync(genre);
+        await _repository.AddAsync(language);
     }
 
     public async Task UpdateLanguageAsync(LanguageUpdateRequest request)
     {
         await ThrowIfLanguageWithGivenNameHasDifferentIdAsync(request.Name, request.Id);
 
-        var genre = await GetEntityAsync(request.Id);
+        var language = await GetEntityAsync(request.Id);
 
-        _mapper.Map(request, genre);
+        _mapper.Map(request, language);
 
-        await _repository.UpdateAsync(genre);
+        await _repository.UpdateAsync(language);
     }
 
     public async Task DeleteLanguageAsync(int id)
     {
-        var genre = await GetEntityAsync(id);
+        var language = await GetEntityAsync(id);
 
-        genre.Delete();
+        language.Delete();
 
-        await _repository.UpdateAsync(genre);
+        await _repository.UpdateAsync(language);
     }
 
     public async Task RenewLanguageAsync(int id)
     {
-        var genre = await GetEntityAsync(id);
+        var language = await GetEntityAsync(id);
 
-        genre.Renew();
+        language.Renew();
 
-        await _repository.UpdateAsync(genre);
+        await _repository.UpdateAsync(language);
     }
 
 

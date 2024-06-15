@@ -21,18 +21,18 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
 
     public async Task<IEnumerable<AuthorResponse>> GetAuthorsAsync()
     {
-        var genres = await _repository.ListAsync();
+        var authors = await _repository.ListAsync();
 
-        var response = _mapper.Map<IEnumerable<AuthorResponse>>(genres);
+        var response = _mapper.Map<IEnumerable<AuthorResponse>>(authors);
 
         return response;
     }
 
     public async Task<AuthorResponse> GetAuthorAsync(int id)
     {
-        var genre = await GetEntityAsync(id);
+        var author = await GetEntityAsync(id);
 
-        var response = _mapper.Map<AuthorResponse>(genre);
+        var response = _mapper.Map<AuthorResponse>(author);
 
         return response;
     }
@@ -40,37 +40,18 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
     public async Task CreateAuthorAsync(AuthorCreateRequest request)
     {
 
-        var genre = _mapper.Map<Author>(request);
+        var author = _mapper.Map<Author>(request);
 
-        await _repository.AddAsync(genre);
+        await _repository.AddAsync(author);
     }
 
     public async Task UpdateAuthorAsync(AuthorUpdateRequest request)
     {
 
-        var genre = await GetEntityAsync(request.Id);
+        var author = await GetEntityAsync(request.Id);
 
-        _mapper.Map(request, genre);
+        _mapper.Map(request, author);
 
-        await _repository.UpdateAsync(genre);
+        await _repository.UpdateAsync(author);
     }
-
-    public async Task DeleteAuthorAsync(int id)
-    {
-        var genre = await GetEntityAsync(id);
-
-        genre.Delete();
-
-        await _repository.UpdateAsync(genre);
-    }
-
-    public async Task RenewAuthorAsync(int id)
-    {
-        var genre = await GetEntityAsync(id);
-
-        genre.Renew();
-
-        await _repository.UpdateAsync(genre);
-    }
-
 }
