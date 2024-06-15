@@ -93,46 +93,6 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             },
             new()
             {
-                Id = 9,
-                Name = "Book Editions",
-                ParentNavigationMenuItemId = 6
-            },
-            new()
-            {
-                Id = 10,
-                Name = "All Book Editions",
-                Route = "/Books/BookEditions",
-                ParentNavigationMenuItemId = 9
-            },
-            new()
-            {
-                Id = 11,
-                Name = "Add Book Edition",
-                Route = "/Books/BookEditions/AddBookEdition",
-                ParentNavigationMenuItemId = 9
-            },
-            new()
-            {
-                Id = 12,
-                Name = "Book Copies",
-                ParentNavigationMenuItemId = 9,
-            },
-            new()
-            {
-                Id = 13,
-                Name = "All Book Copies",
-                Route = "/Books/BookEditions/BookCopies",
-                ParentNavigationMenuItemId = 12
-            },
-            new()
-            {
-                Id = 14,
-                Name = "Add Book Copy",
-                Route = "/Books/BookEditions/BookCopies/AddBookCopy",
-                ParentNavigationMenuItemId = 12
-            },
-            new()
-            {
                 Id = 15,
                 Name = "Genres",
                 ParentNavigationMenuItemId = 6
