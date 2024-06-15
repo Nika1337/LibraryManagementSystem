@@ -47,23 +47,6 @@ internal class EmailTemplateService : BaseModelService<EmailTemplate>, IEmailTem
 
         await _repository.UpdateAsync(template);
     }
-    public async Task DeleteEmailTemplateAsync(int id)
-    {
-        var template = await GetEntityAsync(id);
-
-        template.Delete();
-
-        await _repository.UpdateAsync(template);
-    }
-
-    public async Task RenewEmailTemplateAsync(int id)
-    {
-        var template = await GetEntityAsync(id);
-
-        template.Renew();
-
-        await _repository.UpdateAsync(template);
-    }
 
     private async Task ThrowIfTemplateWithGivenNameHasDifferentId(string name, int id)
     {
