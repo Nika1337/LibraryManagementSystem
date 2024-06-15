@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
-using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Presentation.Models.EmployeeAccount;
-using System;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
