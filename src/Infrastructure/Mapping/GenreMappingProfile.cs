@@ -13,5 +13,7 @@ public class GenreMappingProfile : Profile
         CreateMap<GenreUpdateRequest, Genre>();
 
         CreateMap<Genre, GenreResponse>(); 
+       
+        CreateMap<Genre, GenrePreviewResponse>();
     }
 }

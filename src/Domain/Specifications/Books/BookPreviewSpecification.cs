@@ -3,9 +3,9 @@ using Nika1337.Library.Domain.Entities;
 
 namespace Nika1337.Library.Domain.Specifications.Books;
 
-public class BookWithAuthorsLanguageEditionsSpecification : Specification<Book>
+public class BookPreviewSpecification : Specification<Book>
 {
-    public BookWithAuthorsLanguageEditionsSpecification()
+    public BookPreviewSpecification()
     {
         Query.Include(book => book.Authors);
 

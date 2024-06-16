@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
+using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,6 +28,17 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
         var languages = await _repository.ListAsync();
 
         var response = _mapper.Map<IEnumerable<LanguageResponse>>(languages);
+
+        return response;
+    }
+
+    public async Task<IEnumerable<LanguagePreviewResponse>> GetActiveLanguagePreviewsAsync()
+    {
+        var specification = new NonDeletedSpecification<Language>();
+
+        var genres = await _repository.ListAsync(specification);
+
+        var response = _mapper.Map<IEnumerable<LanguagePreviewResponse>>(genres);
 
         return response;
     }

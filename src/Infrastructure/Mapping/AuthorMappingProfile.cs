@@ -13,5 +13,7 @@ public class AuthorMappingProfile : Profile
         CreateMap<AuthorUpdateRequest, Author>();
 
         CreateMap<Author, AuthorResponse>();
+
+        CreateMap<Author, AuthorPreviewResponse>();
     }
 }

@@ -108,10 +108,13 @@ public static class Dependencies
         services.AddScoped<IEmployeeAuthenticationService, IdentityEmployeeAuthenticationService>();
         services.AddScoped<IEmployeeService, IdentityEmployeeService>();
         services.AddScoped<IEmployeeRoleService, IdentityEmployeeRoleService>();
+
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<ILanguageService, LanguageService>();
         services.AddScoped<IAuthorService, AuthorService>();
         services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+        services.AddScoped<IBookService, BookService>();
+
         services.AddScoped<INavigationMenuService, NavigationMenuService>();
         services.AddScoped<IEmailService, EmailService>();
     }

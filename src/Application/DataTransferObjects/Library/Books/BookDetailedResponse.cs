@@ -15,8 +15,8 @@ public record BookDetailedResponse
     public required string Summary { get; init; }
     public required DateTime OriginalReleaseDate { get; init; }
     public required byte? MinimumAge { get; init; }
-    public required DateTime? DeletedDate { get; init; }
     public required LanguagePreviewResponse OriginalLanguage { get; init; }
     public required ICollection<GenrePreviewResponse> Genres { get; init; }
     public required ICollection<AuthorPreviewResponse> Authors { get; init; }
+    public required DateTime? DeletedDate { get; init; }
 }

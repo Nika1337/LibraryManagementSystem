@@ -3,6 +3,7 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,17 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
         var authors = await _repository.ListAsync();
 
         var response = _mapper.Map<IEnumerable<AuthorResponse>>(authors);
+
+        return response;
+    }
+
+    public async Task<IEnumerable<AuthorPreviewResponse>> GetActiveAuthorPreviewsAsync()
+    {
+        var specification = new NonDeletedSpecification<Author>();
+
+        var authors = await _repository.ListAsync(specification);
+
+        var response = _mapper.Map<IEnumerable<AuthorPreviewResponse>>(authors);
 
         return response;
     }

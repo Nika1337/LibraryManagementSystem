@@ -11,5 +11,5 @@ public record BookUpdateRequest
     public required byte? MinimumAge { get; init; }
     public required int OriginalLanguageId { get; init; }
     public required int[] GenreIds { get; init; }
-    public required int[] AuthorsIds { get; init; }
+    public required int[] AuthorIds { get; init; }
 }

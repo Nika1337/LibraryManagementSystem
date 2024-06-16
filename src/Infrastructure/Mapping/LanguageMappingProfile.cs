@@ -13,5 +13,7 @@ public class LanguageMappingProfile : Profile
         CreateMap<LanguageUpdateRequest, Language>();
 
         CreateMap<Language, LanguageResponse>();
+
+        CreateMap<Language, LanguagePreviewResponse>();
     }
 }
