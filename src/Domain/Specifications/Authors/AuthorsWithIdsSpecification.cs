@@ -8,7 +8,6 @@ public class AuthorsWithIdsSpecification : Specification<Author>
 {
     public AuthorsWithIdsSpecification(int[] ids)
     {
-        Query
-            .Where(author => ids.Contains(author.Id));
+        Query.Where(author => ids.Contains(author.Id));
     }
 }

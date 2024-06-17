@@ -1,0 +1,100 @@
+@model Nika1337.Library.Presentation.Models.Books.BookCreateViewModel
+
+@{
+    Layout = "_DetailLayout";
+    ViewData["Title"] = "Add Book";
+}
+
+<form asp-action="AddBook" method="post" class="needs-validation" novalidate>
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <h5 class="card-header">Add Book</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Title" class="form-label"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="OriginalReleaseDate" class="form-label"></label>
+                                <input asp-for="OriginalReleaseDate" class="form-control" type="date" />
+                                <span asp-validation-for="OriginalReleaseDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Summary" class="form-label"></label>
+                                <textarea asp-for="Summary" class="form-control" rows="5"></textarea>
+                                <span asp-validation-for="Summary" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="MinimumAge" class="form-label"></label>
+                                <input asp-for="MinimumAge" class="form-control" type="number" min="0" />
+                                <span asp-validation-for="MinimumAge" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="OriginalLanguageId" class="form-label">Original Language</label>
+                                <select asp-for="OriginalLanguageId" class="form-select" asp-items="@(new SelectList(ViewBag.Languages, "Id", "Name"))"></select>
+                                <span asp-validation-for="OriginalLanguageId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="GenreIds" class="form-label">Genres</label>
+                                <select asp-for="GenreIds" class="form-select" asp-items="@(new MultiSelectList(ViewBag.Genres, "Id", "Name"))" multiple></select>
+                                <span asp-validation-for="GenreIds" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="AuthorIds" class="form-label">Authors</label>
+                                <select asp-for="AuthorIds" class="form-select" asp-items="@(new MultiSelectList(ViewBag.Authors, "Id", "Name"))" multiple></select>
+                                <span asp-validation-for="AuthorIds" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-end justify-content-end myfab-container">
+                        <button type="submit" class="btn btn-primary myfab">Add Book</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

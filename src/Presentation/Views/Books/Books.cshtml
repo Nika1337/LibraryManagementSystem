@@ -1,0 +1,123 @@
+﻿@model IEnumerable<Nika1337.Library.Presentation.Models.Books.BookViewModel>
+
+@{
+    ViewData["Title"] = "Books";
+    Layout = "_CardTableLayout";
+    var sortOptions = new Dictionary<string, string>
+    {
+        { "title", "Title: A - Z" },
+        { "titleDesc", "Title: Z - A" },
+        { "releaseDate", "Release Date: Ascending" },
+        { "releaseDateDesc", "Release Date: Descending" }
+    };
+
+}
+
+@section SortFilterSearchSwitch {
+    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
+}
+
+@section Cards {
+    @foreach (var book in Model)
+    {
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 book-card" data-title="@book.Title" data-releasedate="@book.OriginalReleaseDate" data-active="@(!book.DeletedDate.HasValue)">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+                <div class="card-header d-flex justify-content-between align-items-center text-white">
+                    <span class="card-header-name">@book.Title</span>
+                    @if (!book.DeletedDate.HasValue)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Deleted</span>
+                    }
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div class="property">
+                        <span class="text-muted">Authors:</span>
+                        <span>@string.Join(", ", book.AuthorNames)</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Original Language:</span>
+                        <span>@book.OriginalLanguageName</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Original Release Date:</span>
+                        <span>@book.OriginalReleaseDate.ToShortDateString()</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Minimum Age:</span>
+                        <span>@book.MinimumAge</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Editions:</span>
+                        <span>@book.EditionsCount</span>
+                    </div>
+                    <div class="mt-auto">
+                        <a href="/Books/@book.Id" class="btn btn-dark btn-sm btn-block">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section Table {
+    <table id="bookTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Authors</th>
+                <th>Original Language</th>
+                <th>Original Release Date</th>
+                <th>Minimum Age</th>
+                <th>Editions Count</th>
+                <th>Status</th>
+                <th style="width: 8%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr class="book-row" data-title="@book.Title" data-releasedate="@book.OriginalReleaseDate" data-active="@(!book.DeletedDate.HasValue)">
+                    <td>@book.Title</td>
+                    <td>@string.Join(", ", book.AuthorNames)</td>
+                    <td>@book.OriginalLanguageName</td>
+                    <td>@book.OriginalReleaseDate.ToShortDateString()</td>
+                    <td>@book.MinimumAge</td>
+                    <td>@book.EditionsCount</td>
+                    <td>
+                        @if (!book.DeletedDate.HasValue)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Books/@book.Id" class="btn btn-dark btn-sm no-wrap">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Fab {
+    <a href="/Books/AddBook" class="btn btn-primary btn-lg shadow-sm myfab">
+        Add Book
+    </a>
+}
+
+@section Scripts {
+    <script src="~/js/Books/Books.js"></script>
+    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/Books/Books.css" asp-append-version="true" />
+}

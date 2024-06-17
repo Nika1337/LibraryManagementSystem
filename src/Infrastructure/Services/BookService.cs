@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Abstractions;
@@ -7,6 +8,8 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.Specifications.Authors;
 using Nika1337.Library.Domain.Specifications.Books;
 using Nika1337.Library.Domain.Specifications.Genres;
+using Nika1337.Library.Domain.Specifications.Languages;
+using Nika1337.Library.Infrastructure.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,6 +21,7 @@ internal class BookService : BaseModelService<Book>, IBookService
     private readonly IRepository<Genre> _genreRepository;
     private readonly IRepository<Language> _languageRepository;
     private readonly IRepository<Author> _authorRepository;
+
     public BookService(
         IRepository<Book> repository,
         IMapper mapper,
@@ -57,7 +61,6 @@ internal class BookService : BaseModelService<Book>, IBookService
     {
         var book = _mapper.Map<Book>(request);
 
-
         await AddOriginalLanguage(book, request.OriginalLanguageId);
 
         await AddGenres(book, request.GenreIds);
@@ -87,7 +90,9 @@ internal class BookService : BaseModelService<Book>, IBookService
 
     private async Task AddOriginalLanguage(Book book, int languageId)
     {
-        var language = await _languageRepository.GetByIdAsync(languageId) ?? throw new NotFoundException<Language>(languageId);
+        var specification = new LanguageWithIdSpecification(languageId);
+
+        var language = await _languageRepository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Language>(languageId);
 
         book.OriginalLanguage = language;
     }
@@ -103,7 +108,8 @@ internal class BookService : BaseModelService<Book>, IBookService
             throw new NotFoundException<Genre>(genreIds);
         }
 
-        book.Genres = genres;
+        book.Genres.Clear();
+        book.Genres.AddRange(genres);
     }
 
     private async Task AddAuthors(Book book, int[] authorIds)
@@ -117,6 +123,7 @@ internal class BookService : BaseModelService<Book>, IBookService
             throw new NotFoundException<Genre>(authorIds);
         }
 
-        book.Authors = authors;
+        book.Authors.Clear();
+        book.Authors.AddRange(authors);
     }
 }
