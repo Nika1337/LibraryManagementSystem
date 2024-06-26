@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -15,10 +14,9 @@ public class HomeController : Controller
 
 
     [Route("Home/[action]")]
-    public IActionResult Error()
+    public new IActionResult NotFound()
     {
-        var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
-        return View(feature?.Error);
+        return View();
     }
 
     [Route("Home/[action]")]
@@ -29,8 +27,8 @@ public class HomeController : Controller
     }
 
     [Route("Home/[action]")]
-    public new IActionResult StatusCode(int code)
+    public new IActionResult Error()
     {
-        return View(code);
+        return View();
     }
 }

@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using Nika1337.Library.Infrastructure.Mapping;
-using Nika1337.Library.Presentation.Mapping;
+using NLog;
+using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 builder.Services.ConfigureServices(builder.Configuration);
 
@@ -50,14 +52,16 @@ builder.Services.AddAutoMapper(
 var app = builder.Build();
 
 
-if (!app.Environment.IsDevelopment())
+
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 else
 {
-    app.UseExceptionHandler("/Home/SomethingWentWrong");
-    app.UseStatusCodePagesWithReExecute("/Home/Error");
+    var logger = app.Services.GetRequiredService<ILoggerManager>();
+
+    app.ConfigureExceptionHandler(logger);
     app.UseHsts();
 }
 

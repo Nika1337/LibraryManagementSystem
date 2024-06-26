@@ -26,7 +26,7 @@ public static class Dependencies
 
         services.AddEmailSender(configuration);
 
-        services.AddLoggingAdapter();
+        services.AddLoggingManager();
 
         services.AddRepositories();
 
@@ -92,9 +92,9 @@ public static class Dependencies
         services.AddTransient<IEmailSender, MailJetEmailSender>();
     }
 
-    private static void AddLoggingAdapter(this IServiceCollection services)
+    private static void AddLoggingManager(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+        services.AddSingleton<ILoggerManager, NLogLoggerManager>();
     }
 
     private static void AddRepositories(this IServiceCollection services)
