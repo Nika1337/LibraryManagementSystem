@@ -9,7 +9,6 @@ using Nika1337.Library.Domain.Specifications.Authors;
 using Nika1337.Library.Domain.Specifications.Books;
 using Nika1337.Library.Domain.Specifications.Genres;
 using Nika1337.Library.Domain.Specifications.Languages;
-using Nika1337.Library.Infrastructure.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
