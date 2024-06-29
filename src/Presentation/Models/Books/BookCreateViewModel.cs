@@ -19,6 +19,7 @@ public class BookCreateViewModel
     [Required]
     [DisplayName("Original Release Date")]
     public DateTime OriginalReleaseDate { get; set; } = DateTime.Now;
+    [DisplayName("Minimum Age")]
     public byte? MinimumAge { get; set; }
 
     [Required(ErrorMessage = "Original Language is required")]

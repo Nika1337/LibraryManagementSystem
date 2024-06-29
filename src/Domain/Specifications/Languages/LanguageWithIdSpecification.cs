@@ -7,7 +7,6 @@ public class LanguageWithIdSpecification : SingleResultSpecification<Language>
 {
     public LanguageWithIdSpecification(int id)
     {
-        Query.AsNoTrackingWithIdentityResolution();
         Query.Where(language => language.Id == id);
     }
 }

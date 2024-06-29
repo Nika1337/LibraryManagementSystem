@@ -13,6 +13,6 @@ public class AtLeastOneElementAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        return new ValidationResult("At least one role must be selected.");
+        return new ValidationResult(base.ErrorMessage);
     }
 }

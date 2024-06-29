@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Abstractions;
@@ -60,13 +59,17 @@ internal class BookService : BaseModelService<Book>, IBookService
     {
         var book = _mapper.Map<Book>(request);
 
+
         await AddOriginalLanguage(book, request.OriginalLanguageId);
 
         await AddGenres(book, request.GenreIds);
 
         await AddAuthors(book, request.AuthorIds);
 
+
         await _repository.AddAsync(book);
+
+        await _repository.SaveChangesAsync();
     }
 
     public async Task UpdateBookAsync(BookUpdateRequest request)

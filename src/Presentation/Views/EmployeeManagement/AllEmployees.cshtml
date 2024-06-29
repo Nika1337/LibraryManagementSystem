@@ -25,7 +25,7 @@
 @section Cards {
     @foreach (var employee in Model)
     {
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 employee-card" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 employee-card" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth" style="text-decoration:none; color:black" href="/Employees/@employee.Id">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@employee.FirstName @employee.LastName</span>
@@ -61,12 +61,9 @@
                             <span>@employee.StartDate.ToShortDateString()</span>
                         </div>
                     </div>
-                    <div class="mt-auto">
-                        <a href="/Employees/@employee.Id" class="btn btn-dark btn-sm btn-block">View Profile</a>
-                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     }
 }
 @section Table {

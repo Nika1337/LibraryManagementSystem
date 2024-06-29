@@ -20,7 +20,7 @@
 @section Cards {
     @foreach (var book in Model)
     {
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 book-card" data-title="@book.Title" data-releasedate="@book.OriginalReleaseDate" data-active="@(!book.DeletedDate.HasValue)">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 book-card" data-title="@book.Title" data-releasedate="@book.OriginalReleaseDate" data-active="@(!book.DeletedDate.HasValue)" href="/Books/@book.Id" style="text-decoration:none; color:black">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@book.Title</span>
@@ -54,12 +54,9 @@
                         <span class="text-muted">Editions:</span>
                         <span>@book.EditionsCount</span>
                     </div>
-                    <div class="mt-auto">
-                        <a href="/Books/@book.Id" class="btn btn-dark btn-sm btn-block">View Details</a>
-                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     }
 }
 

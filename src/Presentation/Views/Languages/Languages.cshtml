@@ -17,7 +17,7 @@
 @section Cards {
     @foreach (var language in Model)
     {
-        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 language-card" data-name="@language.Name" data-active="@(!language.DeletedDate.HasValue)">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 language-card" data-name="@language.Name" data-active="@(!language.DeletedDate.HasValue)" href="/Books/Languages/@language.Id" style="text-decoration:none">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@language.Name</span>
@@ -31,7 +31,7 @@
                     }
                 </div>
             </div>
-        </div>
+        </a>
     }
 }
 

@@ -36,10 +36,10 @@ public static class Dependencies
     private static void AddDbContexts(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<LibraryContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("LibraryConnection")), ServiceLifetime.Transient);
+            options.UseSqlServer(configuration.GetConnectionString("LibraryConnection")));
 
         services.AddDbContext<IdentityContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")), ServiceLifetime.Transient);
+            options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
     }
 
     private static void ConfigureIdentity(this IServiceCollection services)
