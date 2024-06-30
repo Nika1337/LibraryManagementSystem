@@ -1,7 +1,4 @@
 ﻿
-
-using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
-using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
 using System;
 using System.Collections.Generic;
@@ -15,8 +12,8 @@ public record BookDetailedResponse
     public required string Summary { get; init; }
     public required DateTime OriginalReleaseDate { get; init; }
     public required byte? MinimumAge { get; init; }
-    public required LanguagePreviewResponse OriginalLanguage { get; init; }
-    public required ICollection<GenrePreviewResponse> Genres { get; init; }
-    public required ICollection<AuthorPreviewResponse> Authors { get; init; }
+    public required int OriginalLanguageId { get; init; }
+    public required ICollection<int> GenreIds { get; init; }
+    public required ICollection<int> AuthorIds { get; init; }
     public required DateTime? DeletedDate { get; init; }
 }

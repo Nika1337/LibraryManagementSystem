@@ -98,4 +98,12 @@ public class AuthorsController : Controller
 
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetActiveAuthorPreviews()
+    {
+        var authors = await _authorService.GetActiveAuthorPreviewsAsync();
+
+        return Ok(authors);
+    }
 }

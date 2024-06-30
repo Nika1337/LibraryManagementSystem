@@ -115,4 +115,12 @@ public class LanguagesController : Controller
 
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetActiveLanguagePreviews()
+    {
+        var languages = await _languageService.GetActiveLanguagePreviewsAsync();
+
+        return Ok(languages);
+    }
 }

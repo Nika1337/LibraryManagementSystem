@@ -13,6 +13,6 @@ public class AtLeastOneElementAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        return new ValidationResult(base.ErrorMessage);
+        return new ValidationResult(ErrorMessage);
     }
 }

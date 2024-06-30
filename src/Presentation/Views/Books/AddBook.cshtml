@@ -50,8 +50,8 @@
 
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
-                                <label asp-for="OriginalLanguageId" class="form-label">Original Language</label>
-                                <select asp-for="OriginalLanguageId" class="form-select" asp-items="@(new SelectList(ViewBag.Languages, "Id", "Name"))"></select>
+                                <label asp-for="OriginalLanguageId" class="form-label"></label>
+                                <select asp-for="OriginalLanguageId" id="OriginalLanguageId" class="form-select"></select>
                                 <span asp-validation-for="OriginalLanguageId" class="text-danger"></span>
                             </div>
                         </div>
@@ -60,16 +60,16 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
-                                <label asp-for="GenreIds" class="form-label">Genres</label>
-                                <select asp-for="GenreIds" class="form-select" asp-items="@(new MultiSelectList(ViewBag.Genres, "Id", "Name"))" multiple></select>
+                                <label asp-for="GenreIds" class="form-label"></label>
+                                <select id="GenreIds" asp-for="GenreIds" class="form-select" multiple></select>
                                 <span asp-validation-for="GenreIds" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <div class="form-group">
-                                <label asp-for="AuthorIds" class="form-label">Authors</label>
-                                <select asp-for="AuthorIds" class="form-select" asp-items="@(new MultiSelectList(ViewBag.Authors, "Id", "Name"))" multiple></select>
+                                <label asp-for="AuthorIds" class="form-label"></label>
+                                <select id="AuthorIds" asp-for="AuthorIds" class="form-select" multiple></select>
                                 <span asp-validation-for="AuthorIds" class="text-danger"></span>
                             </div>
                         </div>
@@ -84,6 +84,7 @@
     </div>
 </form>
 
+
 @section Error {
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
@@ -97,4 +98,54 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <!-- Include Choices JavaScript (latest) -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Choices.js
+            const languageChoices = new Choices('#OriginalLanguageId', {
+                removeItemButton: true,
+                searchEnabled: true,
+                placeholder: true,
+                placeholderValue: 'Select a language',
+            });
+
+            const genreChoices = new Choices('#GenreIds', {
+                removeItemButton: true,
+                searchEnabled: true,
+                placeholder: true,
+                placeholderValue: 'Select genres',
+            });
+
+            const authorChoices = new Choices('#AuthorIds', {
+                removeItemButton: true,
+                searchEnabled: true,
+                placeholder: true,
+                placeholderValue: 'Select authors',
+            });
+
+            // Load data for dropdowns
+            function loadDropdownData(url, choicesInstance) {
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const choices = data.map(item => ({
+                            value: item.id,
+                            label: item.name
+                        }));
+                        choicesInstance.setChoices(choices, 'value', 'label', true);
+                    });
+            }
+
+            loadDropdownData('/Books/Languages/GetActiveLanguagePreviews', languageChoices);
+            loadDropdownData('/Books/Genres/GetActiveGenrePreviews', genreChoices);
+            loadDropdownData('/Books/Authors/GetActiveAuthorPreviews', authorChoices);
+        });
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
 }

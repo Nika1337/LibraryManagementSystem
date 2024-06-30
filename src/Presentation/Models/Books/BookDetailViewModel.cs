@@ -1,6 +1,7 @@
 ﻿
 using Nika1337.Library.Presentation.Validation;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,13 +25,16 @@ public class BookDetailViewModel
     public required byte? MinimumAge { get; set; }
 
     [Required(ErrorMessage = "Original Language is required")]
-    public required int OriginalLanguageId { get; set; }
+    [DisplayName("Original Language")]
+    public int OriginalLanguageId { get; set; }
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one genre")]
-    public int[]? GenreIds { get; set; }
+    [DisplayName("Genres")]
+    public IList<int> GenreIds { get; set; }
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one author")]
-    public int[]? AuthorIds { get; set; }
+    [DisplayName("Authors")]
+    public IList<int> AuthorIds { get; set; }
 
     public DateTime? DeletedDate { get; set; }
     public string? ErrorMessage { get; set; }

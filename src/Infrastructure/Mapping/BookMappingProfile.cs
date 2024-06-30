@@ -24,7 +24,10 @@ public class BookMappingProfile : Profile
             .ForMember(b => b.Editions, opts => opts.Ignore());
 
 
-        CreateMap<Book, BookDetailedResponse>();
+        CreateMap<Book, BookDetailedResponse>()
+            .ForMember(bdr => bdr.GenreIds, opts => opts.MapFrom(b => b.Genres.Select(genre => genre.Id)))
+            .ForMember(bdr => bdr.AuthorIds, opts => opts.MapFrom(b => b.Authors.Select(author => author.Id)))
+            .ForMember(bdr => bdr.OriginalLanguageId, opts => opts.MapFrom(b => b.OriginalLanguage.Id));
 
         CreateMap<Book, BookPreviewResponse>()
             .ForMember(bpr => bpr.EditionsCount, opts => opts.MapFrom(b => b.Editions.Count))

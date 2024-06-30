@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
-using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
-using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
-using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
 using Nika1337.Library.Presentation.Models.Books;
 using System;
 using System.Collections.Generic;
@@ -19,21 +16,13 @@ public class BooksController : Controller
 {
     private readonly IMapper _mapper;
     private readonly IBookService _bookService;
-    private readonly IGenreService _genreService;
-    private readonly ILanguageService _languageService;
-    private readonly IAuthorService _authorService;
+
     public BooksController(
         IMapper mapper,
-        IBookService bookService,
-        IAuthorService authorService,
-        ILanguageService languageService,
-        IGenreService genreService)
+        IBookService bookService)
     {
         _mapper = mapper;
         _bookService = bookService;
-        _authorService = authorService;
-        _languageService = languageService;
-        _genreService = genreService;
     }
 
     [HttpGet(Name = "Books")]
@@ -47,13 +36,9 @@ public class BooksController : Controller
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> AddBook()
+    public IActionResult AddBook()
     {
         var model = new BookCreateViewModel();
-
-        ViewBag.Languages = await GetLanguages();
-        ViewBag.Genres = await GetGenres();
-        ViewBag.Authors = await GetAuthors();
 
         return View(model);
     }
@@ -80,9 +65,23 @@ public class BooksController : Controller
         
         var model = _mapper.Map<BookDetailViewModel>(book);
 
-        ViewBag.Languages = await GetLanguages();
-        ViewBag.Genres = await GetGenres();
-        ViewBag.Authors = await GetAuthors();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine("get");
+        Console.WriteLine(model.OriginalLanguageId);
+        Console.WriteLine(model.AuthorIds);
+        Console.WriteLine(model.GenreIds);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
 
         return View("Book", model);
     }
@@ -90,11 +89,25 @@ public class BooksController : Controller
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Books(BookDetailViewModel model)
     {
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine("post");
+        Console.WriteLine(model.OriginalLanguageId);
+        Console.WriteLine(model.AuthorIds);
+        Console.WriteLine(model.GenreIds);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
         if (!ModelState.IsValid)
         {
-            ViewBag.Languages = await GetLanguages();
-            ViewBag.Genres = await GetGenres();
-            ViewBag.Authors = await GetAuthors();
             return View("Book", model);
         }
 
@@ -120,26 +133,5 @@ public class BooksController : Controller
         await _bookService.RenewAsync(id);
 
         return Ok();
-    }
-
-    private async Task<IEnumerable<LanguagePreviewResponse>> GetLanguages()
-    {
-        var languages = await _languageService.GetActiveLanguagePreviewsAsync();
-
-        return languages;
-    }
-
-    private async Task<IEnumerable<GenrePreviewResponse>> GetGenres()
-    {
-        var genres = await _genreService.GetActiveGenrePreviewsAsync();
-
-        return genres;
-    }
-
-    private async Task<IEnumerable<AuthorPreviewResponse>> GetAuthors()
-    {
-        var authors = await _authorService.GetActiveAuthorPreviewsAsync();
-
-        return authors;
     }
 }

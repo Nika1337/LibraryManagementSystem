@@ -19,16 +19,20 @@ public class BookCreateViewModel
     [Required]
     [DisplayName("Original Release Date")]
     public DateTime OriginalReleaseDate { get; set; } = DateTime.Now;
+
     [DisplayName("Minimum Age")]
     public byte? MinimumAge { get; set; }
 
     [Required(ErrorMessage = "Original Language is required")]
+    [DisplayName("Original Language")]
     public int OriginalLanguageId { get; set; }
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one genre")]
+    [DisplayName("Genres")]
     public IList<int> GenreIds { get; set; }
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one author")]
+    [DisplayName("Authors")]
     public IList<int> AuthorIds { get; set; }
 
     public string? ErrorMessage { get; set; }

@@ -47,9 +47,7 @@ internal class BookService : BaseModelService<Book>, IBookService
 
     public async Task<BookDetailedResponse> GetBookAsync(int id)
     {
-        var specification = new BookDetailedByIdSpecification(id);
-
-        var book = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Book>(id);
+        var book = await GetDetailedBookAsync(id);
 
         var result = _mapper.Map<BookDetailedResponse>(book);
 
@@ -69,22 +67,20 @@ internal class BookService : BaseModelService<Book>, IBookService
 
 
         await _repository.AddAsync(book);
-
-        await _repository.SaveChangesAsync();
     }
 
     public async Task UpdateBookAsync(BookUpdateRequest request)
     { 
-        var book = await GetEntityAsync(request.Id);
+        var book = await GetDetailedBookAsync(request.Id);
 
         _mapper.Map(request, book);
-
 
         await AddOriginalLanguage(book, request.OriginalLanguageId);
 
         await AddGenres(book, request.GenreIds);
 
         await AddAuthors(book, request.AuthorIds);
+
 
         await _repository.UpdateAsync(book);
     }
@@ -102,15 +98,17 @@ internal class BookService : BaseModelService<Book>, IBookService
 
     private async Task AddGenres(Book book, int[] genreIds)
     {
-        // Fetch current genres for the book
-        var specificationByBookId = new GenresByBookIdSpecification(book.Id);
-
-        var currentGenres = await _genreRepository.ListAsync(specificationByBookId);
+        var currentGenres = book.Genres.ToArray();
 
         // Fetch new genres
         var specificationByGenreIds = new GenresByIdsSpecification(genreIds);
 
         var newGenres = await _genreRepository.ListAsync(specificationByGenreIds);
+
+        if (newGenres.Count != genreIds.Length)
+        {
+            throw new NotFoundException<Genre>(genreIds);
+        }
 
         // Determine genres to add and remove
         var genresToRemove = currentGenres.Except(newGenres);
@@ -133,15 +131,18 @@ internal class BookService : BaseModelService<Book>, IBookService
 
     private async Task AddAuthors(Book book, int[] authorIds)
     {
-        // Fetch current authors for the book
-        var specificationByBookId = new AuthorsByBookIdSpecification(book.Id);
-
-        var currentAuthors = await _authorRepository.ListAsync(specificationByBookId);
+        var currentAuthors = book.Authors.ToArray();
 
         // Fetch new authors
         var specificationByAuthorIds = new AuthorsByIdsSpecification(authorIds);
 
         var newAuthors = await _authorRepository.ListAsync(specificationByAuthorIds);
+
+        if (newAuthors.Count != authorIds.Length)
+        {
+            throw new NotFoundException<Author>(authorIds);
+        }
+
 
         // Determine authors to add and remove
         var authorsToRemove = currentAuthors.Except(newAuthors);
@@ -160,5 +161,14 @@ internal class BookService : BaseModelService<Book>, IBookService
         {
             book.Authors.Add(author);
         }
+    }
+
+    private async Task<Book> GetDetailedBookAsync(int id)
+    {
+        var specification = new BookDetailedByIdSpecification(id);
+
+        var book = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Book>(id);
+
+        return book;
     }
 }

@@ -115,4 +115,12 @@ public class GenresController : Controller
 
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetActiveGenrePreviews(string query)
+    {
+        var genres = await _genreService.GetActiveGenrePreviewsAsync();
+
+        return Ok(genres);
+    }
 }
