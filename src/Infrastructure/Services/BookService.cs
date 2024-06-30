@@ -9,6 +9,7 @@ using Nika1337.Library.Domain.Specifications.Books;
 using Nika1337.Library.Domain.Specifications.Genres;
 using Nika1337.Library.Domain.Specifications.Languages;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
@@ -101,31 +102,63 @@ internal class BookService : BaseModelService<Book>, IBookService
 
     private async Task AddGenres(Book book, int[] genreIds)
     {
-        var genreSpecification = new GenresWithIdsSpecification(genreIds);
+        // Fetch current genres for the book
+        var specificationByBookId = new GenresByBookIdSpecification(book.Id);
 
-        var genres = await _genreRepository.ListAsync(genreSpecification);
+        var currentGenres = await _genreRepository.ListAsync(specificationByBookId);
 
-        if (genreIds.Length != genres.Count)
+        // Fetch new genres
+        var specificationByGenreIds = new GenresByIdsSpecification(genreIds);
+
+        var newGenres = await _genreRepository.ListAsync(specificationByGenreIds);
+
+        // Determine genres to add and remove
+        var genresToRemove = currentGenres.Except(newGenres);
+
+        var genresToAdd = newGenres.Except(currentGenres);
+
+
+        // Remove genres
+        foreach (var genre in genresToRemove)
         {
-            throw new NotFoundException<Genre>(genreIds);
+            book.Genres.Remove(genre);
         }
 
-        book.Genres.Clear();
-        book.Genres.AddRange(genres);
+        // Add genres
+        foreach (var genre in genresToAdd)
+        {
+            book.Genres.Add(genre);
+        }
     }
 
     private async Task AddAuthors(Book book, int[] authorIds)
     {
-        var authorSpecification = new AuthorsWithIdsSpecification(authorIds);
+        // Fetch current authors for the book
+        var specificationByBookId = new AuthorsByBookIdSpecification(book.Id);
 
-        var authors = await _authorRepository.ListAsync(authorSpecification);
+        var currentAuthors = await _authorRepository.ListAsync(specificationByBookId);
 
-        if (authorIds.Length != authors.Count)
+        // Fetch new authors
+        var specificationByAuthorIds = new AuthorsByIdsSpecification(authorIds);
+
+        var newAuthors = await _authorRepository.ListAsync(specificationByAuthorIds);
+
+        // Determine authors to add and remove
+        var authorsToRemove = currentAuthors.Except(newAuthors);
+
+        var authorsToAdd = newAuthors.Except(currentAuthors);
+
+
+        // Remove authors
+        foreach (var author in authorsToRemove)
         {
-            throw new NotFoundException<Genre>(authorIds);
+            book.Authors.Remove(author);
         }
 
-        book.Authors.Clear();
-        book.Authors.AddRange(authors);
+        // Add authors
+        foreach (var author in authorsToAdd)
+        {
+            book.Authors.Add(author);
+        }
     }
 }

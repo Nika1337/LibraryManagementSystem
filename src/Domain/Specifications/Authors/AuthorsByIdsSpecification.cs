@@ -1,12 +1,13 @@
 ﻿using Ardalis.Specification;
 using Nika1337.Library.Domain.Entities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Nika1337.Library.Domain.Specifications.Authors;
 
-public class AuthorsWithIdsSpecification : Specification<Author>
+public class AuthorsByIdsSpecification : Specification<Author>
 {
-    public AuthorsWithIdsSpecification(int[] ids)
+    public AuthorsByIdsSpecification(IEnumerable<int> ids)
     {
         Query.Where(author => ids.Contains(author.Id));
     }
