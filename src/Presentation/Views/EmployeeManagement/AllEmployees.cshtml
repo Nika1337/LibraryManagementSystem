@@ -25,7 +25,7 @@
 @section Cards {
     @foreach (var employee in Model)
     {
-        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 employee-card" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth" style="text-decoration:none; color:black" href="/Employees/@employee.Id">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" data-username="@employee.Username" data-fullname="@(employee.FirstName + " " + employee.LastName)" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth" style="text-decoration:none; color:black" href="/Employees/@employee.Id">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@employee.FirstName @employee.LastName</span>
@@ -67,7 +67,7 @@
     }
 }
 @section Table {
-    <table id="employeeTable" class="table table-striped">
+    <table id="table" class="table table-striped">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -84,7 +84,7 @@
         <tbody>
             @foreach (var employee in Model)
             {
-                <tr class="employee-row" data-username="@employee.Username" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth">
+                <tr class="table-row" data-username="@employee.Username" data-fullname="@(employee.FirstName + " " + employee.LastName)" data-firstname="@employee.FirstName" data-lastname="@employee.LastName" data-startdate="@employee.StartDate" data-active="@employee.IsActive" data-dateofbirth="@employee.DateOfBirth">
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Username</td>

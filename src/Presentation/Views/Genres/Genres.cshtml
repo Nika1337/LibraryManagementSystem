@@ -17,7 +17,7 @@
 @section Cards {
     @foreach (var genre in Model)
     {
-        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 genre-card" data-name="@genre.Name" data-active="@(!genre.DeletedDate.HasValue)" href="/Books/Genres/@genre.Id" style="text-decoration:none; color:black">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" data-name="@genre.Name" data-active="@(!genre.DeletedDate.HasValue)" href="/Books/Genres/@genre.Id" style="text-decoration:none; color:black">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@genre.Name</span>
@@ -41,7 +41,7 @@
 }
 
 @section Table {
-    <table id="genreTable" class="table table-striped">
+    <table id="table" class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
@@ -53,7 +53,7 @@
         <tbody>
             @foreach (var genre in Model)
             {
-                <tr class="genre-row" data-name="@genre.Name" data-active="@(!genre.DeletedDate.HasValue)">
+                <tr class="table-row" data-name="@genre.Name" data-active="@(!genre.DeletedDate.HasValue)">
                     <td>@genre.Name</td>
                     <td class="table-description">@genre.Description</td>
                     <td>
