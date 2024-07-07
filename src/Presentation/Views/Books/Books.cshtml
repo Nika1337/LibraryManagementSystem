@@ -3,17 +3,10 @@
 @{
     ViewData["Title"] = "Books";
     Layout = "_CardTableLayout";
-    var sortOptions = new Dictionary<string, string>
-    {
-        { "title", "Title: A - Z" },
-        { "titleDesc", "Title: Z - A" },
-        { "releaseDate", "Release Date: Ascending" },
-        { "releaseDateDesc", "Release Date: Descending" }
-    };
 }
 
 @section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
+    @await Html.PartialAsync("_SortFilterSearchSwitchPartial")
 }
 
 @section Cards {
@@ -103,56 +96,9 @@
 }
 
 @section Pagination {
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            @if (Model.MetaData.HasPrevious)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Books", new { pageNumber = Model.MetaData.CurrentPage - 1, pageSize = Model.MetaData.PageSize })" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            }
-
-            @for (var i = 1; i <= Model.MetaData.TotalPages; i++)
-            {
-                if (i == Model.MetaData.CurrentPage)
-                {
-                    <li class="page-item active"><a class="page-link" href="#">@i</a></li>
-                }
-                else
-                {
-                    <li class="page-item"><a class="page-link" href="@Url.Action("Books", new { pageNumber = i, pageSize = Model.MetaData.PageSize })">@i</a></li>
-                }
-            }
-
-            @if (Model.MetaData.HasNext)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Books", new { pageNumber = Model.MetaData.CurrentPage + 1, pageSize = Model.MetaData.PageSize })" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            }
-        </ul>
-    </nav>
+    @await Html.PartialAsync("_PaginationPartial", Model.MetaData)
 }
+
 
 @section Fab {
     <a href="/Books/AddBook" class="btn btn-primary btn-lg shadow-sm myfab">
@@ -161,8 +107,7 @@
 }
 
 @section Scripts {
-    <script src="~/js/Books/Books.js"></script>
-    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
+    <script src="~/js/Shared/SortFilterSearchSwitchPagination.js"></script>
 }
 
 @section Styles {

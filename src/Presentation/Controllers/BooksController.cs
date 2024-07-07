@@ -10,15 +10,26 @@ using Nika1337.Library.Presentation.Models.Books;
 using System.Linq.Expressions;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Nika1337.Library.Presentation.Models;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Librarian")]
 [Route("Books")]
-public class BooksController : BaseModelController
+public class BooksController : BaseModelController<Book>
 {
     private readonly IMapper _mapper;
     private readonly IBookService _bookService;
+
+    protected override Dictionary<string, SortOption<Book>> SortOptions =>
+        new()
+        {
+            { "title", new("Title: A - Z", book => book.Title) },
+            { "titleDesc", new("Title: Z - A", book => book.Title, true) },
+            { "releaseDate", new( "Release Date: Ascending", book => book.OriginalReleaseDate) },
+            { "releaseDateDesc", new( "Release Date: Descending", book => book.OriginalReleaseDate, true) }
+        };
 
     public BooksController(
         IMapper mapper,
@@ -86,42 +97,5 @@ public class BooksController : BaseModelController
         await _bookService.UpdateBookAsync(request);
 
         return RedirectToRoute("Books");
-    }
-
-    private static BaseModelPagedRequest<Book> ConstructBaseModelPagedRequest(int pageNumber, int pageSize, string? searchTerm, string? sortField)
-    {
-
-        Expression<Func<Book, object?>>? orderBy = null;
-        bool isDescending = false;
-
-        switch (sortField)
-        {
-            case "titleDesc":
-                orderBy = book => book.Title;
-                isDescending = true;
-                break;
-            case "title":
-                orderBy = book => book.Title;
-                isDescending = false;
-                break;
-            case "releaseDateDesc":
-                orderBy = book => book.OriginalReleaseDate;
-                isDescending = true;
-                break;
-            case "releaseDate":
-                orderBy = book => book.OriginalReleaseDate;
-                isDescending = false;
-                break;
-        }
-
-
-        return new BaseModelPagedRequest<Book>
-        {
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            SearchTerm = searchTerm,
-            OrderBy = orderBy,
-            IsDescending = isDescending
-        };
     }
 }

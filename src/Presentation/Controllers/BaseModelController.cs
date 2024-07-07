@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library;
+using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Presentation.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
-public abstract class BaseModelController : Controller
+public abstract class BaseModelController<T> : Controller where T : BaseModel
 {
     private readonly IBaseModelService _service;
-
+    protected abstract Dictionary<string, SortOption<T>> SortOptions { get; }
     protected BaseModelController(IBaseModelService service)
     {
         _service = service;
@@ -27,5 +34,35 @@ public abstract class BaseModelController : Controller
         await _service.RenewAsync(id);
 
         return Ok();
+    }
+
+    [HttpGet("SortOptions")]
+    public IActionResult GetSortOptions()
+    {
+        var sortOptions = SortOptions.Select(kvp => new
+        {
+            kvp.Key,
+            kvp.Value.DisplayString
+        }).ToArray();
+
+        return Ok(sortOptions);
+    }
+
+    protected BaseModelPagedRequest<T> ConstructBaseModelPagedRequest(int pageNumber, int pageSize, string? searchTerm, string? sortField)
+    {
+        var sortOptions = sortField == null ? null : SortOptions[sortField];
+
+        Expression<Func<T, object?>>? orderBy = sortOptions?.Selector;
+        bool isDescending = sortOptions?.IsDescending ?? false;
+
+
+        return new BaseModelPagedRequest<T>
+        {
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            SearchTerm = searchTerm,
+            OrderBy = orderBy,
+            IsDescending = isDescending
+        };
     }
 }

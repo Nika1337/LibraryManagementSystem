@@ -16,7 +16,14 @@ public abstract class BaseModelSpecification<T> : Specification<T> where T : Bas
     {
         if (parameters.OrderBy != null)
         {
-            Query.OrderBy(parameters.OrderBy);
+            if (parameters.IsDescending)
+            {
+                Query.OrderByDescending(parameters.OrderBy);
+            }
+            else
+            {
+                Query.OrderBy(parameters.OrderBy);
+            }
         }
 
         if (!string.IsNullOrWhiteSpace(parameters.SearchTerm) && FieldSelectors.Length != 0)

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
+using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Genres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,10 +14,12 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
 [Route("Books/Genres")]
-public class GenresController : BaseModelController
+public class GenresController : BaseModelController<Genre>
 {
     private readonly IMapper _mapper;
     private readonly IGenreService _genreService;
+
+    protected override Dictionary<string, SortOption<Genre>> SortOptions => [];
 
     public GenresController(
         IMapper mapper,

@@ -3,18 +3,23 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
+using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Authors;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
 [Route("Books/Authors")]
-public class AuthorsController : BaseModelController
+public class AuthorsController : BaseModelController<Author>
 {
     private readonly IMapper _mapper;
     private readonly IAuthorService _authorService;
+
+    protected override Dictionary<string, SortOption<Author>> SortOptions => [];
 
     public AuthorsController(
         IMapper mapper,

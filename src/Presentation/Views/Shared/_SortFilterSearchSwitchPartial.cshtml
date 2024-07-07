@@ -1,5 +1,4 @@
-﻿@model Dictionary<string, string>
-
+﻿
 
 <h2 class="text-center m-3">@ViewData["Title"]</h2>
 <div class="row justify-content-between">
@@ -10,11 +9,8 @@
                     Sort
                 </span>
             </button>
-            <ul class="dropdown-menu" style="width: fit-content">
-                @foreach (var (key, value) in Model)
-                {
-                    <li><a class="dropdown-item sort-option" data-sort="@key">@value</a></li>
-                }
+            <ul class="dropdown-menu" style="width: fit-content" id="sortOptionsMenu">
+                <!-- Sort options will be populated here -->
             </ul>
         </div>
     </div>
@@ -25,7 +21,7 @@
                     <div class="col-md-8" style="width: fit-content">
                         <div class="input-group">
                             <input type="text" id="searchTerm" class="form-control" placeholder="Search...">
-                            <button class="btn btn-outline-secondary" type="button" onclick="filter()">Search</button>
+                            <button class="btn btn-outline-secondary" type="button" onclick="search()">Search</button>
                         </div>
                     </div>
                     <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
@@ -43,4 +39,3 @@
         </div>
     </div>
 </div>
-
