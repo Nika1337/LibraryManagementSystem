@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications.Authors;
 using Nika1337.Library.Domain.Specifications.Books;
 using Nika1337.Library.Domain.Specifications.Genres;
 using Nika1337.Library.Domain.Specifications.Languages;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,13 +35,16 @@ internal class BookService : BaseModelService<Book>, IBookService
         _authorRepository = authorRepository;
     }
 
-    public async Task<IEnumerable<BookPreviewResponse>> GetBooksAsync()
+    public async Task<PagedList<BookPreviewResponse>> GetPagedBooksAsync(BaseModelPagedRequest<Book> request)
     {
-        var specification = new BookPreviewSpecification();
+        var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Book>>(request);
 
-        var books = await _repository.ListAsync(specification);
+        var specification = new BookPreviewPagedSpecification(specificationParameters);
 
-        var result = _mapper.Map<IEnumerable<BookPreviewResponse>>(books);
+
+        var books = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
+
+        var result = _mapper.Map<PagedList<BookPreviewResponse>>(books);
 
         return result;
     }

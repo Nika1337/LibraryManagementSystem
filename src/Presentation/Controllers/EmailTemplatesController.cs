@@ -12,12 +12,14 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Operations Manager")]
 [Route("Operations/EmailTemplates")]
-public class EmailTemplatesController : Controller
+public class EmailTemplatesController : BaseModelController
 {
     private readonly IEmailTemplateService _emailTemplateService;
     private readonly IMapper _mapper;
 
-    public EmailTemplatesController(IEmailTemplateService emailTemplateService, IMapper mapper)
+    public EmailTemplatesController(
+        IEmailTemplateService emailTemplateService, 
+        IMapper mapper) : base(emailTemplateService)
     {
         _emailTemplateService = emailTemplateService;
         _mapper = mapper;
@@ -57,26 +59,6 @@ public class EmailTemplatesController : Controller
 
         return RedirectToAction(nameof(EmailTemplates));
     }
-
-    [HttpPost("[action]/{id:int}")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteEmailTemplate(int id)
-    {
-        await _emailTemplateService.DeleteAsync(id);
-
-        return Ok();
-    }
-
-
-    [HttpPost("[action]/{id:int}")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RenewEmailTemplate(int id)
-    {
-        await _emailTemplateService.RenewAsync(id);
-
-        return Ok();
-    }
-
 
     [HttpGet]
     public async Task<IActionResult> GetEmailTemplates()

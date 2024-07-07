@@ -11,14 +11,14 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
 [Route("Books/Authors")]
-public class AuthorsController : Controller
+public class AuthorsController : BaseModelController
 {
     private readonly IMapper _mapper;
     private readonly IAuthorService _authorService;
 
     public AuthorsController(
         IMapper mapper,
-        IAuthorService authorService)
+        IAuthorService authorService) : base(authorService)
     {
         _mapper = mapper;
         _authorService = authorService;
@@ -82,22 +82,6 @@ public class AuthorsController : Controller
         return RedirectToAction(nameof(Authors));
     }
 
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> DeleteAuthor(int id)
-    {
-        await _authorService.DeleteAsync(id);
-
-        return Ok();
-    }
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> RenewAuthor(int id)
-    {
-        await _authorService.RenewAsync(id);
-
-        return Ok();
-    }
 
     [HttpGet("[action]")]
     public async Task<IActionResult> GetActiveAuthorPreviews()

@@ -2,35 +2,40 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
+using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models.Books;
+using System.Linq.Expressions;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Librarian")]
 [Route("Books")]
-public class BooksController : Controller
+public class BooksController : BaseModelController
 {
     private readonly IMapper _mapper;
     private readonly IBookService _bookService;
 
     public BooksController(
         IMapper mapper,
-        IBookService bookService)
+        IBookService bookService) : base(bookService)
     {
         _mapper = mapper;
         _bookService = bookService;
     }
 
     [HttpGet(Name = "Books")]
-    public async Task<IActionResult> Books()
+    public async Task<IActionResult> Books(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null)
     {
-        var books = await _bookService.GetBooksAsync();
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField);
 
-        var model = _mapper.Map<IEnumerable<BookViewModel>>(books);
+        var books = await _bookService.GetPagedBooksAsync(request);
+
+        var model = _mapper.Map<PagedList<BookViewModel>>(books);
 
         return View(model);
     }
@@ -65,47 +70,12 @@ public class BooksController : Controller
         
         var model = _mapper.Map<BookDetailViewModel>(book);
 
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine("get");
-        Console.WriteLine(model.OriginalLanguageId);
-        Console.WriteLine(model.AuthorIds);
-        Console.WriteLine(model.GenreIds);
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-
         return View("Book", model);
     }
 
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Books(BookDetailViewModel model)
     {
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine("post");
-        Console.WriteLine(model.OriginalLanguageId);
-        Console.WriteLine(model.AuthorIds);
-        Console.WriteLine(model.GenreIds);
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
         if (!ModelState.IsValid)
         {
             return View("Book", model);
@@ -118,20 +88,40 @@ public class BooksController : Controller
         return RedirectToRoute("Books");
     }
 
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> DeleteBook(int id)
+    private static BaseModelPagedRequest<Book> ConstructBaseModelPagedRequest(int pageNumber, int pageSize, string? searchTerm, string? sortField)
     {
-        await _bookService.DeleteAsync(id);
 
-        return Ok();
-    }
+        Expression<Func<Book, object?>>? orderBy = null;
+        bool isDescending = false;
 
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> RenewBook(int id)
-    {
-        await _bookService.RenewAsync(id);
+        switch (sortField)
+        {
+            case "titleDesc":
+                orderBy = book => book.Title;
+                isDescending = true;
+                break;
+            case "title":
+                orderBy = book => book.Title;
+                isDescending = false;
+                break;
+            case "releaseDateDesc":
+                orderBy = book => book.OriginalReleaseDate;
+                isDescending = true;
+                break;
+            case "releaseDate":
+                orderBy = book => book.OriginalReleaseDate;
+                isDescending = false;
+                break;
+        }
 
-        return Ok();
+
+        return new BaseModelPagedRequest<Book>
+        {
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            SearchTerm = searchTerm,
+            OrderBy = orderBy,
+            IsDescending = isDescending
+        };
     }
 }

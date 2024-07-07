@@ -100,7 +100,6 @@ public static class Dependencies
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepository<>), typeof(LibraryEfRepository<>));
-        services.AddScoped(typeof(IReadRepository<>), typeof(LibraryEfRepository<>));
     }
 
     private static void AddServices(this IServiceCollection services)

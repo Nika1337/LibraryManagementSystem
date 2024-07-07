@@ -1,4 +1,5 @@
 ﻿using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;

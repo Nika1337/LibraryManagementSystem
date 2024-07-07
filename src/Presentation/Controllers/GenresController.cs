@@ -12,14 +12,14 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
 [Route("Books/Genres")]
-public class GenresController : Controller
+public class GenresController : BaseModelController
 {
     private readonly IMapper _mapper;
     private readonly IGenreService _genreService;
 
     public GenresController(
         IMapper mapper,
-        IGenreService genreService)
+        IGenreService genreService) : base(genreService)
     {
         _mapper = mapper;
         _genreService = genreService;
@@ -97,23 +97,6 @@ public class GenresController : Controller
         }
 
         return RedirectToAction(nameof(Genres));
-    }
-
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> DeleteGenre(int id)
-    {
-        await _genreService.DeleteAsync(id);
-
-        return Ok();
-    }
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> RenewGenre(int id)
-    {
-        await _genreService.RenewAsync(id);
-
-        return Ok();
     }
 
     [HttpGet("[action]")]

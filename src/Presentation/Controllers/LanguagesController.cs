@@ -12,14 +12,14 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
 [Route("Books/Languages")]
-public class LanguagesController : Controller
+public class LanguagesController : BaseModelController
 {
     private readonly IMapper _mapper;
     private readonly ILanguageService _languageService;
 
     public LanguagesController(
         IMapper mapper,
-        ILanguageService languageService)
+        ILanguageService languageService) : base(languageService)
     {
         _mapper = mapper;
         _languageService = languageService;
@@ -99,22 +99,6 @@ public class LanguagesController : Controller
         return RedirectToAction(nameof(Languages));
     }
 
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> DeleteLanguage(int id)
-    {
-        await _languageService.DeleteAsync(id);
-
-        return Ok();
-    }
-
-    [HttpPost("[action]/{id:int}")]
-    public async Task<IActionResult> RenewLanguage(int id)
-    {
-        await _languageService.RenewAsync(id);
-
-        return Ok();
-    }
 
     [HttpGet("[action]")]
     public async Task<IActionResult> GetActiveLanguagePreviews()
