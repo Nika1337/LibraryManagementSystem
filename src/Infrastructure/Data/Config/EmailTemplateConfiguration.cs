@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Nika1337.Library.Domain.Entities;
 
-namespace Nika1337.Library.Infrastructure.Identity.Config
+namespace Nika1337.Library.Infrastructure.Data.Config
 {
     internal class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate>
     {
