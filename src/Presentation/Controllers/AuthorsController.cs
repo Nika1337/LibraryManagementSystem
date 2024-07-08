@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Authors;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
@@ -19,7 +19,14 @@ public class AuthorsController : BaseModelController<Author>
     private readonly IMapper _mapper;
     private readonly IAuthorService _authorService;
 
-    protected override Dictionary<string, SortOption<Author>> SortOptions => [];
+    protected override Dictionary<string, SortOption<Author>> SortOptions =>
+        new()
+        {
+            { "name", new("Name: A - Z", author => author.Name) },
+            { "nameDesc",new( "Name: Z - A", author => author.Name, true) },
+            { "dateOfBirth", new("Date of Birth: Ascending", author => author.DateOfBirth) },
+            { "dateOfBirthDesc",  new("Date of Birth: Descending", author => author.DateOfBirth, true) }
+        };
 
     public AuthorsController(
         IMapper mapper,
@@ -30,11 +37,13 @@ public class AuthorsController : BaseModelController<Author>
     }
 
     [HttpGet(Name = "Authors")]
-    public async Task<IActionResult> Authors()
+    public async Task<IActionResult> Authors(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
     {
-        var authors = await _authorService.GetAuthorsAsync();
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
 
-        var model = _mapper.Map<IEnumerable<AuthorViewModel>>(authors);
+        var authors = await _authorService.GetPagedAuthorsAsync(request);
+
+        var model = _mapper.Map<PagedList<AuthorViewModel>>(authors);
 
         return View(model);
     }

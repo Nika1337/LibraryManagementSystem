@@ -16,8 +16,6 @@
         </div>
     </div>
 
-    @RenderSection("Pagination", required: false)
-
     <div class="myfab-container">
         @RenderSection("Fab", required: false)
     </div>
@@ -25,10 +23,13 @@
 
 @section Scripts {
     <script src="~/js/Shared/CardTableList.js"></script>
+    <script src="~/js/Shared/SortFilterSearchSwitchPagination.js"></script>
     @RenderSection("Scripts", required: false)
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/Shared/CardTableList.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Shared/PaginationPartial.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 }

@@ -7,7 +7,6 @@ using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models.Books;
-using System.Linq.Expressions;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -40,9 +39,9 @@ public class BooksController : BaseModelController<Book>
     }
 
     [HttpGet(Name = "Books")]
-    public async Task<IActionResult> Books(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null)
+    public async Task<IActionResult> Books(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
     {
-        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField);
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
 
         var books = await _bookService.GetPagedBooksAsync(request);
 

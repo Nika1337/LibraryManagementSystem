@@ -1,8 +1,8 @@
-﻿
+﻿@model Nika1337.Library.Domain.RequestFeatures.MetaData
 
 <h2 class="text-center m-3">@ViewData["Title"]</h2>
 <div class="row justify-content-between">
-    <div class="col-md-6" style="width: fit-content">
+    <div class="col-md-4" style="width: fit-content">
         <div class="dropdown mb-4" style="width: fit-content">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 200px">
                 <span id="sortLabel">
@@ -14,7 +14,10 @@
             </ul>
         </div>
     </div>
-    <div class="col-md-6" style="width: fit-content">
+    <div class="col-md-4" style="width: fit-content">
+        @await Html.PartialAsync("_PaginationPartial", Model)
+    </div>
+    <div class="col-md-4" style="width: fit-content">
         <div class="row  mb-4">
             <div class="col-md-8" style="width: fit-content">
                 <div class="row flex-nowrap">

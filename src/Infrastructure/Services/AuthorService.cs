@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
+using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
+using Nika1337.Library.Domain.Specifications.Authors;
+using Nika1337.Library.Domain.Specifications.Books;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,13 +25,17 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AuthorResponse>> GetAuthorsAsync()
+    public async Task<PagedList<AuthorResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request)
     {
-        var authors = await _repository.ListAsync();
+        var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Author>>(request);
 
-        var response = _mapper.Map<IEnumerable<AuthorResponse>>(authors);
+        var specification = new AuthorPagedSpecification(specificationParameters);
 
-        return response;
+        var authors = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
+
+        var result = _mapper.Map<PagedList<AuthorResponse>>(authors);
+
+        return result;
     }
 
     public async Task<IEnumerable<AuthorPreviewResponse>> GetActiveAuthorPreviewsAsync()

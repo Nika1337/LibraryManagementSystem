@@ -1,15 +1,8 @@
-@model IEnumerable<Nika1337.Library.Presentation.Models.Authors.AuthorViewModel>
+@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.Authors.AuthorViewModel>
 
 @{
     ViewData["Title"] = "Authors";
     Layout = "_CardTableLayout";
-    var sortOptions = new Dictionary<string, string>
-    {
-        { "name", "Name: A - Z" },
-        { "nameDesc", "Name: Z - A" },
-        { "dateOfBirth", "Date of Birth: Ascending" },
-        { "dateOfBirthDesc", "Date of Birth: Descending" }
-    };
 
     string Truncate(string value, int maxLength)
     {
@@ -19,7 +12,7 @@
 }
 
 @section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
+    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", Model.MetaData)
 }
 
 @section Cards {
@@ -100,13 +93,8 @@
         Add Author
     </a>
 }
-
 @section Scripts {
-    <script src="~/js/Books/Authors/Authors.js"></script>
-    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
-}
-
-@section Styles {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/Books/Authors/Authors.css" asp-append-version="true" />
+    <script>
+        const viewName = "Authors";
+    </script>
 }

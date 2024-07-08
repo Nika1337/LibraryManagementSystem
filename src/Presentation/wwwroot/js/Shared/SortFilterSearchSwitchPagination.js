@@ -3,10 +3,12 @@ let currentSort = '';
 let currentSearch = '';
 let currentPage = 1;
 let currentPageSize = 10;
+let currentShouldIncludeDeleted = true;
 
 function updateUrl() {
     let url = new URL(window.location.href);
     url.searchParams.set('pageNumber', currentPage);
+    url.searchParams.set('shouldIncludeDeleted', currentShouldIncludeDeleted);
 
     if (currentSort) {
         url.searchParams.set('sortField', currentSort);
@@ -35,6 +37,12 @@ function search() {
     updateUrl();
 }
 
+function filter() {
+    const checkbox = document.getElementById('includeDeleted');
+    currentShouldIncludeDeleted = checkbox.checked;
+    updateUrl();
+}
+
 function changePage(pageNumber) {
     currentPage = pageNumber;
     updateUrl();
@@ -47,6 +55,8 @@ function changePageSize(pageSize) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    console.log('adding event listeners');
     getSortOptions();
     // Set up sort dropdown functionality
     let sortOptions = document.querySelectorAll('.sort-option');
@@ -78,6 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
     currentSearch = urlParams.get('searchTerm') || '';
     currentPage = parseInt(urlParams.get('pageNumber')) || 1;
     currentPageSize = parseInt(urlParams.get('pageSize')) || 10;
+    currentShouldIncludeDeleted = urlParams.get('shouldIncludeDeleted') !== 'false';
+
+    console.log(urlParams.get('shouldIncludeDeleted'));
+    console.log(currentShouldIncludeDeleted);
 
     // Update the sort dropdown label
     if (currentSort) {
@@ -91,6 +105,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (currentSearch) {
         document.getElementById('searchTerm').value = currentSearch;
     }
+
+    // Set the checkbox state
+    document.getElementById('includeDeleted').checked = currentShouldIncludeDeleted;
+
+    console.log(document.getElementById('includeDeleted').checked);
 });
 
 
@@ -99,7 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function getSortOptions() {
-    const cachedOptions = localStorage.getItem('sortOptions');
+    const cachedOptions = localStorage.getItem(`sortOptions${viewName}`);
+    console.log(cachedOptions);
     if (cachedOptions) {
         populateSortOptions(JSON.parse(cachedOptions));
     } else {
@@ -108,11 +128,11 @@ function getSortOptions() {
 }
 
 function fetchSortOptions() {
-    const controller = getControllerName();
-    fetch(`/${controller}/SortOptions`)
+    const path = getPath();
+    fetch(`${path}/SortOptions`)
         .then(response => response.json())
         .then(data => {
-            localStorage.setItem('sortOptions', JSON.stringify(data));
+            localStorage.setItem(`sortOptions${viewName}`, JSON.stringify(data));
             populateSortOptions(data);
         })
         .catch(error => console.error('Error fetching sort options:', error));
@@ -132,8 +152,7 @@ function populateSortOptions(options) {
     });
 }
 
-function getControllerName() {
+function getPath() {
     let url = new URL(window.location.href);
-    let parts = url.pathname.split('/').filter(part => part !== '');
-    return parts.length > 0 ? parts[0] : '';
+    return url.pathname;
 }
