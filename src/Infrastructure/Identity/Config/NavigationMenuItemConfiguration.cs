@@ -150,6 +150,13 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
                 Name = "Add Author",
                 Route = "/Books/Authors/AddAuthor",
                 ParentNavigationMenuItemId = 21
+            },
+            new()
+            {
+                Id = 24,
+                Name = "Audit Log",
+                Route = "/Operations/AuditLog",
+                ParentNavigationMenuItemId = 4
             }
         };
 

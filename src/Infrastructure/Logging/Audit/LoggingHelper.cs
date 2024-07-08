@@ -4,6 +4,7 @@ using Nika1337.Library.Domain.Entities;
 using System;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Nika1337.Library.Infrastructure.Logging.Audit;
 public static class LoggingHelper
@@ -30,9 +31,11 @@ public static class LoggingHelper
 
             var pk = string.Join(", ", keyParts);
 
+            string entityName = GetMeaningfulEntityName(modifiedEntity);
+
             var auditLog = new AuditLog
             {
-                EntityName = modifiedEntity!.Entity.GetType().Name,
+                EntityName = entityName,
                 ModifiedRowId = pk,
                 Action = modifiedEntity.State.ToString(),
                 Timestamp = DateTime.UtcNow,
@@ -59,5 +62,15 @@ public static class LoggingHelper
         }
 
         return changes.ToString();
+    }
+
+    private static string GetMeaningfulEntityName(EntityEntry entity)
+    {
+        if (entity.Metadata.ClrType == typeof(Dictionary<string, object>))
+        {
+            return entity.Metadata.Name;
+        }
+
+        return entity.Entity.GetType().Name;
     }
 }
