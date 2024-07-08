@@ -1,0 +1,16 @@
+﻿@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Domain.Entities.AuditLog>
+
+@{
+    ViewData["Title"] = "Audit Logs";
+    Layout = "_ServerSideCardTableLayout";
+}
+
+@section Paging {
+    @await Html.PartialAsync("_PagingPartial", Model.MetaData)
+}
+
+@section Scripts {
+    <script>
+        const viewName = "AuditLogs";
+    </script>
+}

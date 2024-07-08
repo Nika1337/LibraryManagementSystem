@@ -50,7 +50,7 @@ public abstract class BaseModelController<T> : Controller where T : BaseModel
         return Ok(sortOptions);
     }
 
-    protected PagedRequest<T> ConstructBaseModelPagedRequest(int pageNumber, int pageSize, string? searchTerm, string? sortField, bool shouldIncludeDeleted)
+    protected BaseModelPagedRequest<T> ConstructBaseModelPagedRequest(int pageNumber, int pageSize, string? searchTerm, string? sortField, bool shouldIncludeDeleted)
     {
         var sortOptions = sortField == null ? null : SortOptions[sortField];
 
@@ -58,7 +58,7 @@ public abstract class BaseModelController<T> : Controller where T : BaseModel
         bool isDescending = sortOptions?.IsDescending ?? false;
 
 
-        return new PagedRequest<T>
+        return new BaseModelPagedRequest<T>
         {
             PageNumber = pageNumber,
             PageSize = pageSize,

@@ -8,7 +8,7 @@ public class RequestFeaturesMappingProfile : Profile
 {
     public RequestFeaturesMappingProfile()
     {
-        CreateMap(typeof(PagedRequest<>), typeof(BaseModelSpecificationParameters<>));
+        CreateMap(typeof(BaseModelPagedRequest<>), typeof(BaseModelSpecificationParameters<>));
         CreateMap(typeof(PagedList<>), typeof(PagedList<>)).ConvertUsing(typeof(PagedListConverter<,>));
     }
 }

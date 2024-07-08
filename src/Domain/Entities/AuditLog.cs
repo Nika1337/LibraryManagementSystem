@@ -12,4 +12,11 @@ public class AuditLog
     public required string Action { get; set; }
     public DateTime Timestamp { get; set; }
     public required string Changes { get; set; }
+
+    public AuditLog UpdateApplicationName(string applicationName)
+    {
+        ApplicationName = applicationName;
+
+        return this;
+    }
 }

@@ -25,7 +25,7 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
         _mapper = mapper;
     }
 
-    public async Task<PagedList<AuthorResponse>> GetPagedAuthorsAsync(PagedRequest<Author> request)
+    public async Task<PagedList<AuthorResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Author>>(request);
 

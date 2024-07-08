@@ -35,7 +35,7 @@ internal class BookService : BaseModelService<Book>, IBookService
         _authorRepository = authorRepository;
     }
 
-    public async Task<PagedList<BookPreviewResponse>> GetPagedBooksAsync(PagedRequest<Book> request)
+    public async Task<PagedList<BookPreviewResponse>> GetPagedBooksAsync(BaseModelPagedRequest<Book> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Book>>(request);
 

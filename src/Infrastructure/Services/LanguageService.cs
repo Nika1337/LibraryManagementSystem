@@ -24,7 +24,7 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
         _mapper = mapper;
     }
 
-    public async Task<PagedList<LanguageResponse>> GetPagedLanguagesAsync(PagedRequest<Language> request)
+    public async Task<PagedList<LanguageResponse>> GetPagedLanguagesAsync(BaseModelPagedRequest<Language> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Language>>(request);
 

@@ -10,7 +10,7 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IBookService : IBaseModelService
 {
-    Task<PagedList<BookPreviewResponse>> GetPagedBooksAsync(PagedRequest<Book> request);
+    Task<PagedList<BookPreviewResponse>> GetPagedBooksAsync(BaseModelPagedRequest<Book> request);
     Task<BookDetailedResponse> GetBookAsync(int id);
     Task CreateBookAsync(BookCreateRequest request);
     Task UpdateBookAsync(BookUpdateRequest request);
