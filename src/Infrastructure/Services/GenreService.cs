@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Genres;
 using System.Collections.Generic;
@@ -22,13 +24,18 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<GenreResponse>> GetGenresAsync()
+    public async Task<PagedList<GenreResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request)
     {
-        var genres = await _repository.ListAsync();
+        var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Genre>>(request);
 
-        var response = _mapper.Map<IEnumerable<GenreResponse>>(genres);
+        var specification = new GenrePagedSpecification(specificationParameters);
 
-        return response;
+
+        var genres = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
+
+        var result = _mapper.Map<PagedList<GenreResponse>>(genres);
+
+        return result;
     }
 
     public async Task<IEnumerable<GenrePreviewResponse>> GetActiveGenrePreviewsAsync()

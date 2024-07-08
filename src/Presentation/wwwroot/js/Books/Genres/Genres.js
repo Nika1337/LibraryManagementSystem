@@ -1,6 +1,0 @@
-
-
-
-function filter() {
-    filterByFields(['name']);
-}

@@ -16,18 +16,5 @@
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\css\Books\Genres\" />
-    <Folder Include="wwwroot\css\Books\Authors\" />
-    <Folder Include="wwwroot\css\Shared\" />
-    <Folder Include="wwwroot\js\Books\Genres\" />
-    <Folder Include="wwwroot\js\Books\Languages\" />
-    <Folder Include="wwwroot\js\Books\Authors\" />
-  </ItemGroup>
-
-
-
-
-
 
 </Project>

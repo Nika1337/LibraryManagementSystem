@@ -5,7 +5,9 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
+using Nika1337.Library.Presentation.Models.Genres;
 using Nika1337.Library.Presentation.Models.Genres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +21,12 @@ public class GenresController : BaseModelController<Genre>
     private readonly IMapper _mapper;
     private readonly IGenreService _genreService;
 
-    protected override Dictionary<string, SortOption<Genre>> SortOptions => [];
+    protected override Dictionary<string, SortOption<Genre>> SortOptions =>
+     new()
+     {
+            { "name", new("Name: A - Z", genre => genre.Name) },
+            { "nameDesc",new( "Name: Z - A", genre => genre.Name, true) }
+     };
 
     public GenresController(
         IMapper mapper,
@@ -30,11 +37,13 @@ public class GenresController : BaseModelController<Genre>
     }
 
     [HttpGet(Name = "Genres")]
-    public async Task<IActionResult> Genres()
+    public async Task<IActionResult> Genres(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
     {
-        var genres = await _genreService.GetGenresAsync();
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
 
-        var model = _mapper.Map<IEnumerable<GenreViewModel>>(genres);
+        var genres = await _genreService.GetPagedGenresAsync(request);
+
+        var model = _mapper.Map<PagedList<GenreViewModel>>(genres);
 
         return View(model);
     }

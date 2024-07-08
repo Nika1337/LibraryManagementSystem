@@ -1,17 +1,12 @@
-@model IEnumerable<Nika1337.Library.Presentation.Models.Genres.GenreViewModel>
+@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.Genres.GenreViewModel>
 
 @{
     ViewData["Title"] = "Genres";
     Layout = "_CardTableLayout";
-    var sortOptions = new Dictionary<string, string>
-    {
-        { "name", "Name: A - Z" },
-        { "nameDesc", "Name: Z - A" },
-    };
 }
 
 @section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
+    @await Html.PartialAsync("_SortFilterSearchSwitchPagingPartial", Model.MetaData)
 }
 
 @section Cards {
@@ -82,11 +77,11 @@
 }
 
 @section Scripts {
-    <script src="~/js/Books/Genres/Genres.js"></script>
-    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
+    <script>
+        const viewName = "Genres";
+    </script>
 }
 
 @section Styles {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/Books/Genres/Genres.css" asp-append-version="true" />
 }
