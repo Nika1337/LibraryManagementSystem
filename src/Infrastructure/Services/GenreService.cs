@@ -24,7 +24,7 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
         _mapper = mapper;
     }
 
-    public async Task<PagedList<GenreResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request)
+    public async Task<PagedList<GenreResponse>> GetPagedGenresAsync(PagedRequest<Genre> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Genre>>(request);
 

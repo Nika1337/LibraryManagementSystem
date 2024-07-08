@@ -5,7 +5,7 @@ using System;
 
 namespace Nika1337.Library.Application.DataTransferObjects.Library;
 
-public record BaseModelPagedRequest<T>
+public record PagedRequest<T>
 {
     const int maxPageSize = 50;
     public int PageNumber { get; set; } = 1;
