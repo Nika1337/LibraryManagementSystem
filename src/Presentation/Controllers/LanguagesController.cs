@@ -5,7 +5,9 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
+using Nika1337.Library.Presentation.Models.Authors;
 using Nika1337.Library.Presentation.Models.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +21,13 @@ public class LanguagesController : BaseModelController<Language>
     private readonly IMapper _mapper;
     private readonly ILanguageService _languageService;
 
-    protected override Dictionary<string, SortOption<Language>> SortOptions => [];
+    protected override Dictionary<string, SortOption<Language>> SortOptions =>
+     new()
+     {
+            { "name", new("Name: A - Z", language => language.Name) },
+            { "nameDesc",new( "Name: Z - A", language => language.Name, true) }
+     };
+
 
     public LanguagesController(
         IMapper mapper,
@@ -30,11 +38,13 @@ public class LanguagesController : BaseModelController<Language>
     }
 
     [HttpGet(Name = "Languages")]
-    public async Task<IActionResult> Languages()
+    public async Task<IActionResult> Languages(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
     {
-        var languages = await _languageService.GetLanguagesAsync();
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
 
-        var model = _mapper.Map<IEnumerable<LanguageViewModel>>(languages);
+        var languages = await _languageService.GetPagedLanguagesAsync(request);
+
+        var model = _mapper.Map<PagedList<LanguageViewModel>>(languages);
 
         return View(model);
     }

@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.Abstractions;
-using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
+using Nika1337.Library.Domain.Specifications.Books;
 using Nika1337.Library.Domain.Specifications.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,13 +25,18 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<LanguageResponse>> GetLanguagesAsync()
+    public async Task<PagedList<LanguageResponse>> GetPagedLanguagesAsync(BaseModelPagedRequest<Language> request)
     {
-        var languages = await _repository.ListAsync();
+        var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Language>>(request);
 
-        var response = _mapper.Map<IEnumerable<LanguageResponse>>(languages);
+        var specification = new LanguagePagedSpecification(specificationParameters);
 
-        return response;
+
+        var languages = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
+
+        var result = _mapper.Map<PagedList<LanguageResponse>>(languages);
+
+        return result;
     }
 
     public async Task<IEnumerable<LanguagePreviewResponse>> GetActiveLanguagePreviewsAsync()

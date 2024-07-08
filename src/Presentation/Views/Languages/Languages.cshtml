@@ -1,17 +1,12 @@
-﻿@model IEnumerable<Nika1337.Library.Presentation.Models.Languages.LanguageViewModel>
+﻿@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.Languages.LanguageViewModel>
 
 @{
     ViewData["Title"] = "Languages";
     Layout = "_CardTableLayout";
-    var sortOptions = new Dictionary<string, string>
-    {
-        { "name", "Name: A - Z" },
-        { "nameDesc", "Name: Z - A" },
-    };
 }
 
 @section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
+    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", Model.MetaData)
 }
 
 @section Cards {
@@ -75,10 +70,7 @@
 }
 
 @section Scripts {
-    <script src="~/js/Books/Languages/Languages.js"></script>
-    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
-}
-
-@section Styles {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <script>
+        const viewName = "Languages";
+    </script>
 }
