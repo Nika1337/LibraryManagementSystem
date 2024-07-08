@@ -2,11 +2,11 @@
 
 @{
     ViewData["Title"] = "Books";
-    Layout = "_CardTableLayout";
+    Layout = "_ServerSideCardTableLayout";
 }
 
-@section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPagingPartial", Model.MetaData)
+@section Paging {
+    @await Html.PartialAsync("_PagingPartial", Model.MetaData)
 }
 
 @section Cards {

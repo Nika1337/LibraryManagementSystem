@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Authors";
-    Layout = "_CardTableLayout";
+    Layout = "_ServerSideCardTableLayout";
 
     string Truncate(string value, int maxLength)
     {
@@ -11,8 +11,8 @@
     }
 }
 
-@section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPagingPartial", Model.MetaData)
+@section Paging {
+    @await Html.PartialAsync("_PagingPartial", Model.MetaData)
 }
 
 @section Cards {

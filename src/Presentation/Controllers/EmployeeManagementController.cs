@@ -6,6 +6,7 @@ using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Presentation.Models.EmployeeManagement;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
@@ -17,6 +18,20 @@ public class EmployeeManagementController : Controller
     private readonly IEmployeeService _employeeService;
     private readonly IEmployeeRoleService _employeeRoleService;
     private readonly IMapper _mapper;
+    private readonly Dictionary<string, string> sortOptions = new()
+        {
+            { "username", "Username: A - Z" },
+            { "usernameDesc", "Username: Z - A" },
+            { "firstName", "First name: A - Z" },
+            { "firstNameDesc", "First name: Z - A" },
+            { "lastName", "Last name: A - Z" },
+            { "lastNameDesc", "Last name: Z - A" },
+            { "startDate", "Start Date: Ascending" },
+            { "startDateDesc", "Start Date: Descending" },
+            { "dateOfBirth", "Date Of Birth: Ascending" },
+            { "dateOfBirthDesc", "Date Of Birth: Descending" }
+        };
+
     public EmployeeManagementController(
         IEmployeeService employeeService,
         IEmployeeRoleService employeeRoleService,
@@ -31,7 +46,7 @@ public class EmployeeManagementController : Controller
     [HttpGet("[action]")]
     public async Task<IActionResult> RegisterEmployee()
     {
-        var avaliableRoleNames = await GetAvaliableRoleNames();
+        var avaliableRoleNames = await GetAvailableRoleNames();
 
         var model = new EmployeeRegistrationViewModel
         {
@@ -69,7 +84,7 @@ public class EmployeeManagementController : Controller
     {
         var employee = await _employeeService.GetDetailedEmployeeAsync(id);
 
-        var avaliableRoleNames = await GetAvaliableRoleNames();
+        var avaliableRoleNames = await GetAvailableRoleNames();
 
         var model = _mapper.Map<EmployeeProfileViewModel>(employee);
         model.AvailableRoles = avaliableRoleNames;
@@ -97,7 +112,7 @@ public class EmployeeManagementController : Controller
             return View(model);
         }
 
-        return RedirectToAction(nameof(AllEmployees));
+        return RedirectToAction(nameof(Employees));
     }
 
     [HttpPost("[action]/{id}")]
@@ -120,9 +135,8 @@ public class EmployeeManagementController : Controller
 
 
     [HttpGet]
-    public async Task<IActionResult> AllEmployees()
+    public async Task<IActionResult> Employees()
     {
-
         var allEmployees = await _employeeService.GetAllEmployeesAsync();
 
         var model = _mapper.Map<IEnumerable<EmployeeViewModel>>(allEmployees);
@@ -130,7 +144,19 @@ public class EmployeeManagementController : Controller
         return View(model);
     }
 
-    private async Task<string[]> GetAvaliableRoleNames()
+    [HttpGet("SortOptions")]
+    public IActionResult GetSortOptions()
+    {
+        var sortOptions = this.sortOptions.Select(kvp => new
+        {
+            kvp.Key,
+            kvp.Value
+        }).ToArray();
+
+        return Ok(sortOptions);
+    }
+
+    private async Task<string[]> GetAvailableRoleNames()
     {
         var avaliableRoles = await _employeeRoleService.GetAllEmployeeRoleNamesAsync();
 

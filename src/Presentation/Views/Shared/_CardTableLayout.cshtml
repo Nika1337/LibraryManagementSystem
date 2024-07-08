@@ -4,7 +4,33 @@
 }
 
 <div class="container-fluid p-5">
-    @RenderSection("SortFilterSearchSwitch", required: true)
+    <h2 class="text-center m-3">@ViewData["Title"]</h2>
+    <div class="row justify-content-between">
+        <div class="col-md-4" style="width: fit-content">
+            @await Html.PartialAsync("_SortPartial")
+        </div>
+        <div class="col-md-4" style="width: fit-content">
+            @RenderSection("Paging", required: false)
+        </div>
+        <div class="col-md-4" style="width: fit-content">
+            <div class="row  mb-4">
+                <div class="col-md-8" style="width: fit-content">
+                    <div class="row flex-nowrap">
+                        <div class="col-md-8" style="width: fit-content">
+                            @await Html.PartialAsync("_SearchPartial")
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
+
+                            @await Html.PartialAsync("_SwitchPartial")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
+                    @await Html.PartialAsync("_IncludeDeletedPartial")
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="cardView" class="row d-none">
         @RenderSection("Cards", required: true)
@@ -23,7 +49,6 @@
 
 @section Scripts {
     <script src="~/js/Shared/CardTableList.js"></script>
-    <script src="~/js/Shared/SortFilterSearchSwitchPagination.js"></script>
     @RenderSection("Scripts", required: false)
 }
 

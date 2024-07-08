@@ -1,0 +1,26 @@
+﻿@{
+
+    Layout = "_CardTableLayout.cshtml";
+}
+
+@section Cards {
+    @RenderSection("Cards", required: true)
+}
+
+@section Table {
+    @RenderSection("Table", required: true)
+}
+
+@section Fab {
+    @RenderSection("Fab", required: false)
+}
+
+
+@section Scripts {
+    <script src="~/js/Shared/ClientSideCardTableList.js"></script>
+    @RenderSection("Scripts", required: false)
+}
+
+@section Styles {
+    @RenderSection("Styles", required: false)
+}

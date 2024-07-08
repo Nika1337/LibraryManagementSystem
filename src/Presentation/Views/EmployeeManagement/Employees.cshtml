@@ -2,25 +2,9 @@
 
 @{
     ViewData["Title"] = "Employees";
-    Layout = "_CardTableLayout";
-    var sortOptions = new Dictionary<string, string>
-    {
-        { "username", "Username: A - Z" },
-        { "usernameDesc", "Username: Z - A" },
-        { "firstName", "First name: A - Z" },
-        { "firstNameDesc", "First name: Z - A" },
-        { "lastName", "Last name: A - Z" },
-        { "lastNameDesc", "Last name: Z - A" },
-        { "startDate", "Start Date: Ascending" },
-        { "startDateDesc", "Start Date: Descending" },
-        { "dateOfBirth", "Date Of Birth: Ascending" },
-        { "dateOfBirthDesc", "Date Of Birth: Descending" }
-    };
+    Layout = "_ClientSideCardTableLayout";
 }
 
-@section SortFilterSearchSwitch {
-    @await Html.PartialAsync("_SortFilterSearchSwitchPartial", sortOptions)
-}
 
 @section Cards {
     @foreach (var employee in Model)
@@ -118,10 +102,5 @@
 }
 
 @section Scripts {
-    <script src="~/js/EmployeeManagement/AllEmployees.js"></script>
-    <script src="~/js/Shared/SortFilterSearchSwitch.js"></script>
-}
-
-@section Styles {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <script src="~/js/EmployeeManagement/Employees.js"></script>
 }

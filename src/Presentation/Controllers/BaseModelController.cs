@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
+
 namespace Nika1337.Library.Presentation.Controllers;
 
 public abstract class BaseModelController<T> : Controller where T : BaseModel
@@ -42,7 +44,7 @@ public abstract class BaseModelController<T> : Controller where T : BaseModel
         var sortOptions = SortOptions.Select(kvp => new
         {
             kvp.Key,
-            kvp.Value.DisplayString
+            Value = kvp.Value.DisplayString
         }).ToArray();
 
         return Ok(sortOptions);
