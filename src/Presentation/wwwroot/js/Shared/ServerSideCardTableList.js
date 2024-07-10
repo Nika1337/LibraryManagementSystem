@@ -4,6 +4,12 @@ let currentPage = 1;
 let currentPageSize = 10;
 let currentFilters = {}; // Object to store current filter selections
 
+
+function restoreParameters() {
+
+}
+
+
 function updateUrl() {
     let url = new URL(window.location.href);
     url.searchParams.set('pageNumber', currentPage);
@@ -31,13 +37,18 @@ function updateUrl() {
 
     // Add new filter parameters
     Object.entries(currentFilters).forEach(([key, value]) => {
+        // Remove white spaces from the key
+        var trimmedKey = removeWhiteSpaces(key);
+
         if (typeof value === 'boolean') {
-            url.searchParams.set(key, value);
+            url.searchParams.set(trimmedKey, value);
         } else if (typeof value === 'object' && 'start' in value && 'end' in value) {
-            if (value.start) url.searchParams.set(`${key}Start`, value.start);
-            if (value.end) url.searchParams.set(`${key}End`, value.end);
+            if (value.start) url.searchParams.set(`${trimmedKey}Start`, value.start);
+            if (value.end) url.searchParams.set(`${trimmedKey}End`, value.end);
         } else if (Array.isArray(value)) {
-            url.searchParams.set(key, value.join(','));
+            url.searchParams.set(trimmedKey, value.join(','));
+        } else {
+            url.searchParams.set(trimmedKey, value);
         }
     });
 
@@ -93,6 +104,7 @@ function filter() {
 
     updateUrl();
 }
+
 // Paging
 function changePage(pageNumber) {
     currentPage = pageNumber;
@@ -130,8 +142,6 @@ function initializeCurrentValues() {
 
     // Update UI based on initial filter values
     Object.entries(currentFilters).forEach(([filterName, filterValue]) => {
-        console.log(filterName);
-        console.log(filterValue);
         if (typeof filterValue === 'object' && ('start' in filterValue || 'end' in filterValue)) {
             // Handle range inputs
             const startInput = document.querySelector(`input.filter-input[data-filter="${filterName}"][id="${filterName}_start"]`);
@@ -142,22 +152,23 @@ function initializeCurrentValues() {
             if (endInput && filterValue.end) {
                 endInput.value = filterValue.end;
             }
-        } else if (Array.isArray(filterValue)) {
-            // Handle list filters (multiple checkboxes)
-            filterValue.forEach(value => {
-                const input = document.querySelector(`input.filter-input[data-filter="${filterName}"][value="${value}"]`);
-                console.log(input);
-                if (input) input.checked = true;
-                console.log(document.querySelector(`input.filter-input[data-filter="${filterName}"][value="${value}"]`));
-            });
-        } else {
+        } else if (filterValue === 'true' || filterValue === 'false') {
             // Handle boolean filters (single checkbox)
             const input = document.querySelector(`input.filter-input[data-filter="${filterName}"]`);
 
-            console.log(input);
             if (input && input.type === 'checkbox') {
                 input.checked = filterValue === 'true';
             }
+        } else if (Array.isArray(filterValue)) {
+
+            // Handle list filters (multiple checkboxes)
+            filterValue.forEach(value => {
+                const input = document.querySelector(`input.filter-input[data-filter="${filterName}"][value="${value}"]`);
+                if (input) input.checked = true;
+            });
+        } else {
+            const input = document.querySelector(`input.filter-input[data-filter="${filterName}"][value="${filterValue}"]`);
+            if (input) input.checked = true;
         }
     });
 

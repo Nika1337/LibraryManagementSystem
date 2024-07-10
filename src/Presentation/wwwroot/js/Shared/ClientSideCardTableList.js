@@ -1,3 +1,4 @@
+let currentFilters = {};
 
 function search() {
     filter();
@@ -8,25 +9,87 @@ function filter() {
     var cards = document.querySelectorAll('.list-card');
     var rows = document.querySelectorAll('.table-row');
 
-    cards.forEach(function (card) {
-        var matchesSearchTerm = searchableFieldNames.some(field => card.dataset[field].toLowerCase().includes(searchTerm));
-        var isActive = card.dataset.active === undefined || card.dataset.active === 'True';
+    // Update currentFilters based on filter inputs
+    updateCurrentFilters();
 
-        if (matchesSearchTerm) {
-            card.style.display = '';
-        } else {
-            card.style.display = 'none';
-        }
+    console.log(currentFilters);
+    function checkElement(element) {
+        console.log(element);
+        // Check search term
+        var matchesSearch = searchableFieldNames.some(field =>
+            element.dataset[field].toLowerCase().includes(searchTerm)
+        );
+
+        // Check filters
+        var matchesFilters = Object.entries(currentFilters).every(([filterName, filterValue]) => {
+            var formattedFilterName = removeWhiteSpaces(filterName).toLowerCase();
+            console.log(formattedFilterName);
+            console.log(filterValue)
+
+            if (typeof filterValue === 'boolean') {
+                return element.dataset[formattedFilterName] === filterValue.toString();
+            } else if (typeof filterValue === 'object' && 'start' in filterValue && 'end' in filterValue) {
+                let value = element.dataset[formattedFilterName];
+                let start = filterValue.start ? filterValue.start : -Infinity;
+                let end = filterValue.end ? filterValue.start : Infinity;
+                console.log(value);
+                console.log(start);
+                console.log(end);
+                console.log(value >= start && value <= end)
+                return value >= start && value <= end;
+            } else if (Array.isArray(filterValue)) {
+                return filterValue.includes(element.dataset[formattedFilterName]);
+            }
+            return true;
+        });
+
+        return matchesSearch && matchesFilters;
+    }
+
+    cards.forEach(function (card) {
+        card.style.display = checkElement(card) ? '' : 'none';
     });
 
     rows.forEach(function (row) {
-        var matchesSearchTerm = searchableFieldNames.some(field => row.dataset[field].toLowerCase().includes(searchTerm));
-        var isActive = row.dataset.active === undefined || row.dataset.active === 'True';
+        row.style.display = checkElement(row) ? '' : 'none';
+    });
+}
 
-        if (matchesSearchTerm) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
+function updateCurrentFilters() {
+    currentFilters = {};
+
+    document.querySelectorAll('.filter-input').forEach(input => {
+        const filterName = input.dataset.filter;
+        const filterType = input.dataset.filterType;
+
+        console.log(input);
+        console.log(filterName);
+        console.log(filterType);
+
+        switch (filterType) {
+            case 'checkbox':
+                if (input.checked) {
+                    currentFilters[filterName] = true;
+                }
+                break;
+            case 'range':
+                if (!currentFilters[filterName]) {
+                    currentFilters[filterName] = {};
+                }
+                if (input.id.endsWith('_start')) {
+                    currentFilters[filterName].start = input.value;
+                } else if (input.id.endsWith('_end')) {
+                    currentFilters[filterName].end = input.value;
+                }
+                break;
+            case 'list':
+                if (!currentFilters[filterName]) {
+                    currentFilters[filterName] = [];
+                }
+                if (input.checked) {
+                    currentFilters[filterName].push(input.value);
+                }
+                break;
         }
     });
 }
@@ -34,17 +97,12 @@ function filter() {
 function sort(element) {
     var sortType = element.getAttribute('data-sort');
     var sortLabel = document.getElementById('sortLabel');
-
     sortLabel.innerText = element.innerText;
-
     var cards = Array.from(document.querySelectorAll('.list-card'));
     var rows = Array.from(document.querySelectorAll('.table-row'));
-
     var sortFunction = getSortFunction(sortType);
-
     cards.sort(sortFunction);
     rows.sort(sortFunction);
-
     updateView('#cardView', cards);
     updateView('#table tbody', rows);
 }
@@ -53,18 +111,6 @@ function getSortFunction(sortType) {
     return function (a, b) {
         var aData, bData;
         switch (sortType) {
-            case 'title':
-                return compareStrings(a.dataset.title, b.dataset.title);
-            case 'titleDesc':
-                return compareStrings(b.dataset.title, a.dataset.title);
-            case 'releaseDate':
-                return compareDates(a.dataset.releasedate, b.dataset.releasedate);
-            case 'releaseDateDesc':
-                return compareDates(b.dataset.releasedate, a.dataset.releasedate);
-            case 'name':
-                return compareStrings(a.dataset.name, b.dataset.name);
-            case 'nameDesc':
-                return compareStrings(b.dataset.name, a.dataset.name);
             case 'dateOfBirth':
                 return compareDates(a.dataset.dateofbirth, b.dataset.dateofbirth);
             case 'dateOfBirthDesc':

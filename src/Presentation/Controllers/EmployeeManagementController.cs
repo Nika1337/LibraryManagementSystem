@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects;
 using Nika1337.Library.Domain.Exceptions;
+using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.EmployeeManagement;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,21 @@ public class EmployeeManagementController : Controller
             { "dateOfBirth", "Date Of Birth: Ascending" },
             { "dateOfBirthDesc", "Date Of Birth: Descending" }
         };
+
+    private readonly FilterOption[] _filterOptions =
+        [
+            new BoolFilterOption {
+                Name = "Include Deleted"
+            },
+            new RangeFilterOption {
+                Name = "Date Of Birth",
+                RangeFilterOptionType = RangeFilterOptionType.DateTime
+            },
+            new RangeFilterOption {
+                Name = "Start Date",
+                RangeFilterOptionType = RangeFilterOptionType.DateTime
+            }
+        ];
 
     public EmployeeManagementController(
         IEmployeeService employeeService,
@@ -154,6 +170,14 @@ public class EmployeeManagementController : Controller
         }).ToArray();
 
         return Ok(sortOptions);
+    }
+
+    [HttpGet("FilterOptions")]
+    public virtual IActionResult GetFilterOptions()
+    {
+        var filterOptions = _filterOptions.Select(option => option.ToJsonString());
+
+        return Ok(filterOptions);
     }
 
     private async Task<string[]> GetAvailableRoleNames()

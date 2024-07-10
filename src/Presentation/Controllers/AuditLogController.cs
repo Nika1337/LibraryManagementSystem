@@ -25,9 +25,6 @@ public class AuditLogsController : Controller
 
     private readonly FilterOption[] _filterOptions =
         [
-            new BoolFilterOption {
-                Name = "Include Deleted"
-            },
             new RangeFilterOption {
                 Name = "Timestamp",
                 RangeFilterOptionType = RangeFilterOptionType.DateTime,
@@ -67,11 +64,9 @@ public class AuditLogsController : Controller
              [FromQuery] string? sortField = null,
              [FromQuery] DateTime? timestampStart = null,
              [FromQuery] DateTime? timestampEnd = null,
-             [FromQuery] bool includeDeleted = false,
              [FromQuery] string? applications = null,
              [FromQuery] string? actions = null)
     {
-        Console.WriteLine(includeDeleted);
         var sortOption = sortField == null ? null
             : _sortOptions[sortField];
 

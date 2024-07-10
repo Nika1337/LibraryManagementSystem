@@ -8,7 +8,6 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Genres;
-using Nika1337.Library.Presentation.Models.Genres;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,9 +36,9 @@ public class GenresController : BaseModelController<Genre>
     }
 
     [HttpGet(Name = "Genres")]
-    public async Task<IActionResult> Genres(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
+    public async Task<IActionResult> Genres(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool includeDeleted = false)
     {
-        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, includeDeleted);
 
         var genres = await _genreService.GetPagedGenresAsync(request);
 

@@ -16,6 +16,13 @@ public abstract class BaseModelController<T> : Controller where T : BaseModel
 {
     private readonly IBaseModelService _service;
     protected abstract Dictionary<string, SortOption<T>> SortOptions { get; }
+
+    protected readonly FilterOption[] _filterOptions =
+        [
+            new BoolFilterOption {
+                Name = "Include Deleted"
+            }
+        ];
     protected BaseModelController(IBaseModelService service)
     {
         _service = service;
@@ -48,6 +55,14 @@ public abstract class BaseModelController<T> : Controller where T : BaseModel
         }).ToArray();
 
         return Ok(sortOptions);
+    }
+
+    [HttpGet("FilterOptions")]
+    public virtual IActionResult GetFilterOptions()
+    {
+        var filterOptions = _filterOptions.Select(option => option.ToJsonString());
+
+        return Ok(filterOptions);
     }
 
     protected BaseModelPagedRequest<T> ConstructBaseModelPagedRequest(int pageNumber, int pageSize, string? searchTerm, string? sortField, bool shouldIncludeDeleted)

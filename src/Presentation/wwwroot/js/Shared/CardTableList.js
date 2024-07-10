@@ -117,6 +117,7 @@ function getFilterChoices() {
     } else {
         fetchFilterOptions();
     }
+    fetchFilterOptions();
 }
 
 function fetchFilterOptions() {
@@ -144,7 +145,7 @@ function populateFilterOptions(options) {
             case 'bool':
                 filterGroup.innerHTML = `
                     <div class="form-check">
-                        <input class="form-check-input filter-input" type="checkbox" value="${option.Name}" id="${option.Name}" data-filter="${option.Name}" data-filter-type="checkbox">
+                        <input class="form-check-input filter-input" type="checkbox" value="${option.Name}" id="${option.Name}" data-filter="${removeWhiteSpaces(option.Name)}" data-filter-type="checkbox">
                         <label class="form-check-label" for="${option.Name}">${option.Name}</label>
                     </div>
                 `;
@@ -153,8 +154,8 @@ function populateFilterOptions(options) {
                 filterGroup.innerHTML = `
                     <h6>${option.Name}</h6>
                     <div class="input-group">
-                        <input type="date" class="form-control filter-input" id="${option.Name}_start" data-filter="${option.Name}" data-filter-type="range" placeholder="Start Date">
-                        <input type="date" class="form-control filter-input" id="${option.Name}_end" data-filter="${option.Name}" data-filter-type="range" placeholder="End Date">
+                        <input type="${option.RangeFilterOptionType}" class="form-control filter-input" id="${option.Name}_start" data-filter="${option.Name}" data-filter-type="range" placeholder="Start">
+                        <input type="${option.RangeFilterOptionType}" class="form-control filter-input" id="${option.Name}_end" data-filter="${option.Name}" data-filter-type="range" placeholder="End">
                     </div>
                 `;
                 break;
@@ -189,8 +190,6 @@ function setUpSearchFunctionality() {
     }
 }
 
-
-
-
-
-
+function removeWhiteSpaces(text) {
+    return text.replace(/\s+/g, '');
+}

@@ -39,13 +39,15 @@ public class BooksController : BaseModelController<Book>
     }
 
     [HttpGet(Name = "Books")]
-    public async Task<IActionResult> Books(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
+    public async Task<IActionResult> Books(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = false)
     {
         var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
 
         var books = await _bookService.GetPagedBooksAsync(request);
 
         var model = _mapper.Map<PagedList<BookViewModel>>(books);
+
+        TempData["ReturnUrl"] = Url.Action("Books", new { pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted });
 
         return View(model);
     }
@@ -95,6 +97,13 @@ public class BooksController : BaseModelController<Book>
 
         await _bookService.UpdateBookAsync(request);
 
-        return RedirectToRoute("Books");
+        var returnUrl = TempData["ReturnUrl"] as string;
+
+        if (string.IsNullOrEmpty(returnUrl))
+        {
+            return RedirectToRoute("Books");
+        }
+
+        return Redirect(returnUrl);
     }
 }
