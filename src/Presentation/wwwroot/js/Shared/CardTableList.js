@@ -12,15 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setUpSortDropdown();
 
+    setUpFilteringChoices();
+
     setUpSearchFunctionality();
 
     initializeCurrentValues();
-
-    updateSortDropdownLabel();
-
-    updateSearchInputValue();
-
-    setCheckboxState();
 });
 
 
@@ -92,7 +88,6 @@ function populateSortOptions(options) {
     const sortOptionsMenu = document.getElementById('sortOptionsMenu');
     sortOptionsMenu.innerHTML = '';
     options.forEach(option => {
-        console.log(option);
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.className = 'dropdown-item sort-option';
@@ -106,6 +101,78 @@ function populateSortOptions(options) {
 function getPath() {
     let url = new URL(window.location.href);
     return url.pathname;
+}
+
+
+
+function setUpFilteringChoices() {
+    getFilterChoices();
+}
+
+function getFilterChoices() {
+    const cachedOptions = localStorage.getItem(`filterOptions${viewName}`);
+
+    if (cachedOptions) {
+        populateFilterOptions(JSON.parse(cachedOptions));
+    } else {
+        fetchFilterOptions();
+    }
+}
+
+function fetchFilterOptions() {
+    const path = getPath();
+    fetch(`${path}/FilterOptions`)
+        .then(response => response.json())
+        .then(data => {
+            localStorage.setItem(`filterOptions${viewName}`, JSON.stringify(data));
+            populateFilterOptions(data);
+            initializeCurrentValues();
+        })
+        .catch(error => console.error('Error fetching filter options:', error));
+}
+
+function populateFilterOptions(options) {
+    const filterOptionsContainer = document.getElementById('filterOptions');
+    filterOptionsContainer.innerHTML = '';
+
+    options.forEach(optionJson => {
+        const option = JSON.parse(optionJson);
+        let filterGroup = document.createElement('div');
+        filterGroup.className = 'mb-3';
+
+        switch (option.Type) {
+            case 'bool':
+                filterGroup.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input filter-input" type="checkbox" value="${option.Name}" id="${option.Name}" data-filter="${option.Name}" data-filter-type="checkbox">
+                        <label class="form-check-label" for="${option.Name}">${option.Name}</label>
+                    </div>
+                `;
+                break;
+            case 'range':
+                filterGroup.innerHTML = `
+                    <h6>${option.Name}</h6>
+                    <div class="input-group">
+                        <input type="date" class="form-control filter-input" id="${option.Name}_start" data-filter="${option.Name}" data-filter-type="range" placeholder="Start Date">
+                        <input type="date" class="form-control filter-input" id="${option.Name}_end" data-filter="${option.Name}" data-filter-type="range" placeholder="End Date">
+                    </div>
+                `;
+                break;
+            case 'list':
+                filterGroup.innerHTML = `<h6>${option.Name}</h6>`;
+                option.Choices.forEach(choice => {
+                    filterGroup.innerHTML += `
+                        <div class="form-check">
+                            <input class="form-check-input filter-input" type="checkbox" value="${choice}" id="${option.Name}_${choice}" data-filter="${option.Name}" data-filter-type="list">
+                            <label class="form-check-label" for="${option.Name}_${choice}">${choice}</label>
+                        </div>
+                    `;
+                });
+                break;
+        }
+
+        filterOptionsContainer.appendChild(filterGroup);
+    });
 }
 
 
@@ -124,25 +191,6 @@ function setUpSearchFunctionality() {
 
 
 
-function updateSortDropdownLabel() {
-    if (currentSort) {
-        let sortOption = document.querySelector(`[data-sort="${currentSort}"]`);
-        if (sortOption) {
-            document.getElementById('sortLabel').textContent = sortOption.textContent;
-        }
-    }
-}
 
 
-function updateSearchInputValue() {
-    if (currentSearch) {
-        document.getElementById('searchTerm').value = currentSearch;
-    }
-}
-
-
-
-function setCheckboxState() {
-    document.getElementById('includeDeleted').checked = currentShouldIncludeDeleted;
-}
 

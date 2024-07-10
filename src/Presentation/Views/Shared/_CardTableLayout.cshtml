@@ -7,26 +7,25 @@
     <h2 class="text-center m-3">@ViewData["Title"]</h2>
     <div class="row justify-content-between">
         <div class="col-md-4" style="width: fit-content">
-            @await Html.PartialAsync("_SortPartial")
+            <div class="row flex-nowrap mb-4">
+                <div class="col-auto">
+                    @await Html.PartialAsync("_FilterPartial")
+                </div>
+                <div class="col-auto">
+                    @await Html.PartialAsync("_SortPartial")
+                </div>
+            </div>
         </div>
         <div class="col-md-4" style="width: fit-content">
             @RenderSection("Paging", required: false)
         </div>
         <div class="col-md-4" style="width: fit-content">
-            <div class="row  mb-4">
-                <div class="col-md-8" style="width: fit-content">
-                    <div class="row flex-nowrap">
-                        <div class="col-md-8" style="width: fit-content">
-                            @await Html.PartialAsync("_SearchPartial")
-                        </div>
-                        <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
-
-                            @await Html.PartialAsync("_SwitchPartial")
-                        </div>
-                    </div>
+            <div class="row flex-nowrap mb-4">
+                <div class="col-auto">
+                    @await Html.PartialAsync("_SearchPartial")
                 </div>
-                <div class="col-md-4 d-flex justify-content-center align-items-center" style="width: fit-content">
-                    @await Html.PartialAsync("_IncludeDeletedPartial")
+                <div class="col-auto d-flex justify-content-center align-items-center">
+                    @await Html.PartialAsync("_SwitchPartial")
                 </div>
             </div>
         </div>
@@ -45,7 +44,10 @@
     <div class="myfab-container">
         @RenderSection("Fab", required: false)
     </div>
+
+    @RenderSection("Body", required: false)
 </div>
+
 
 @section Scripts {
     <script src="~/js/Shared/CardTableList.js"></script>

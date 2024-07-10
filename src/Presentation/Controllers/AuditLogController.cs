@@ -13,19 +13,36 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Operations Manager")]
 [Route("Operations/AuditLogs")]
-public class AuditLogController : Controller
+public class AuditLogsController : Controller
 {
     private readonly IAuditLogService _auditLogService;
     private readonly Dictionary<string, SortOption<AuditLog>> _sortOptions =
         new()
         {
             { "timestamp", new("Timestamp: Ascending", log => log.Timestamp) },
-            { "timestampDesc",new( "Timestamp: Descending", log => log.Timestamp, true) },
+            { "timestampDesc", new( "Timestamp: Descending", log => log.Timestamp, true) },
         };
-    private readonly string[] _applicationNames = ["Library", "Identity"];
-    private readonly string[] _actions = ["Added", "Modified"];
 
-    public AuditLogController(IAuditLogService auditLogService)
+    private readonly FilterOption[] _filterOptions =
+        [
+            new BoolFilterOption {
+                Name = "Include Deleted"
+            },
+            new RangeFilterOption {
+                Name = "Timestamp",
+                RangeFilterOptionType = RangeFilterOptionType.DateTime,
+            },
+            new ListFilterOption {
+                Name = "Applications",
+                Choices = ["Library", "Identity"]
+            },
+            new ListFilterOption {
+                Name = "Actions",
+                Choices = ["Added", "Modified", "Deleted"]
+            }
+        ];
+
+    public AuditLogsController(IAuditLogService auditLogService)
     {
         _auditLogService = auditLogService;
     }
@@ -47,15 +64,16 @@ public class AuditLogController : Controller
              [FromQuery] int pageNumber = 1,
              [FromQuery] int pageSize = 10,
              [FromQuery] string? searchTerm = null,
-             [FromQuery] string? orderBy = null,
-             [FromQuery] bool isDescending = false,
-             [FromQuery] DateTime? startTime = null,
-             [FromQuery] DateTime? endTime = null,
-             [FromQuery] string[]? applicationNames = null,
-             [FromQuery] string[]? actions = null)
+             [FromQuery] string? sortField = null,
+             [FromQuery] DateTime? timestampStart = null,
+             [FromQuery] DateTime? timestampEnd = null,
+             [FromQuery] bool includeDeleted = false,
+             [FromQuery] string? applications = null,
+             [FromQuery] string? actions = null)
     {
-        var sortOption = orderBy == null ? null
-            : _sortOptions[orderBy];
+        Console.WriteLine(includeDeleted);
+        var sortOption = sortField == null ? null
+            : _sortOptions[sortField];
 
         var request = new AuditLogPagedRequest
         {
@@ -63,11 +81,11 @@ public class AuditLogController : Controller
             PageSize = pageSize,
             SearchTerm = searchTerm,
             OrderBy = sortOption?.Selector,
-            IsDescending = isDescending,
-            StartTime = startTime,
-            EndTime = endTime,
-            ApplicationNames = applicationNames,
-            Actions = actions
+            IsDescending = sortOption?.IsDescending ?? false,
+            StartTime = timestampStart,
+            EndTime = timestampEnd,
+            ApplicationNames = applications?.Split(","),
+            Actions = actions?.Split(",")
         };
 
         var pagedLogs = await _auditLogService.GetPagedAuditLogsAsync(request);
@@ -75,15 +93,13 @@ public class AuditLogController : Controller
         return View(pagedLogs);
     }
 
-    [HttpGet("ApplicationNames")]
-    public IActionResult GetApplicationNames()
+    [HttpGet("FilterOptions")]
+    public IActionResult GetFilterOptions()
     {
-        return Ok(_applicationNames);
+        var filterOptions = _filterOptions.Select(option => option.ToJsonString());
+
+        return Ok(filterOptions);
     }
 
-    [HttpGet("Actions")]
-    public IActionResult GetActions()
-    {
-        return Ok(_actions);
-    }
+
 }

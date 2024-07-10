@@ -5,7 +5,6 @@ function search() {
 
 function filter() {
     var searchTerm = document.getElementById('searchTerm').value.toLowerCase();
-    var includeDeleted = document.getElementById('includeDeleted').checked;
     var cards = document.querySelectorAll('.list-card');
     var rows = document.querySelectorAll('.table-row');
 
@@ -13,7 +12,7 @@ function filter() {
         var matchesSearchTerm = searchableFieldNames.some(field => card.dataset[field].toLowerCase().includes(searchTerm));
         var isActive = card.dataset.active === undefined || card.dataset.active === 'True';
 
-        if (matchesSearchTerm && (includeDeleted || isActive)) {
+        if (matchesSearchTerm) {
             card.style.display = '';
         } else {
             card.style.display = 'none';
@@ -24,7 +23,7 @@ function filter() {
         var matchesSearchTerm = searchableFieldNames.some(field => row.dataset[field].toLowerCase().includes(searchTerm));
         var isActive = row.dataset.active === undefined || row.dataset.active === 'True';
 
-        if (matchesSearchTerm && (includeDeleted || isActive)) {
+        if (matchesSearchTerm) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
