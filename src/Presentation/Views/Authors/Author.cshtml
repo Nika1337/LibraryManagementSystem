@@ -41,8 +41,8 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6 d-flex flex-md-column justify-content-end">
+                    <div class="row">
+                        <div class="col-md-6 d-flex flex-md-column justify-content-end  mb-3">
                             <div class="form-group">
                                 <div class="form-check">
                                     <input asp-for="IsAlive" class="form-check-input" type="checkbox" />
@@ -51,7 +51,7 @@
                                 <span asp-validation-for="IsAlive" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6  mb-3">
                             <div class="form-group">
                                 <label asp-for="DeletedDate" class="form-label"></label>
                                 <input asp-for="DeletedDate" class="form-control" type="date" readonly />

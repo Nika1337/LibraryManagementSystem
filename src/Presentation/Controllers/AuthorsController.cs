@@ -37,9 +37,14 @@ public class AuthorsController : BaseModelController<Author>
     }
 
     [HttpGet(Name = "Authors")]
-    public async Task<IActionResult> Authors(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
+    public async Task<IActionResult> Authors(
+        int pageNumber = 1,
+        int pageSize = 10,
+        string? searchTerm = null, 
+        string? sortField = null,
+        bool doNotIncludeDeleted = false)
     {
-        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, !doNotIncludeDeleted);
 
         var authors = await _authorService.GetPagedAuthorsAsync(request);
 

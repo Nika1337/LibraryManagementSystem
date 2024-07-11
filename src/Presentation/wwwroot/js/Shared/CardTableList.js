@@ -117,6 +117,7 @@ function getFilterChoices() {
     } else {
         fetchFilterOptions();
     }
+    fetchFilterOptions();
 }
 
 function fetchFilterOptions() {

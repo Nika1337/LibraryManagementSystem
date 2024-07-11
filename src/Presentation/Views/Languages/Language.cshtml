@@ -15,11 +15,17 @@
                 <div class="card-body">
                     <input type="hidden" asp-for="Id" />
                     <div class="row">
-                        <div class=" mb-3">
+                        <div class="col-md-6 mb-3">
                             <div class="form-group">
                                 <label asp-for="Name" class="form-label"></label>
                                 <input asp-for="Name" class="form-control" />
                                 <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="DeletedDate" class="form-label"></label>
+                                <input asp-for="DeletedDate" class="form-control" type="date" readonly />
                             </div>
                         </div>
                     </div>

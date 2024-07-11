@@ -38,9 +38,14 @@ public class LanguagesController : BaseModelController<Language>
     }
 
     [HttpGet(Name = "Languages")]
-    public async Task<IActionResult> Languages(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = true)
+    public async Task<IActionResult> Languages(
+        int pageNumber = 1, 
+        int pageSize = 10,
+        string? searchTerm = null, 
+        string? sortField = null,
+        bool doNotIncludeDeleted = false)
     {
-        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, !doNotIncludeDeleted);
 
         var languages = await _languageService.GetPagedLanguagesAsync(request);
 

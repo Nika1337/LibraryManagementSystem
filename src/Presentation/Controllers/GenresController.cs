@@ -36,9 +36,14 @@ public class GenresController : BaseModelController<Genre>
     }
 
     [HttpGet(Name = "Genres")]
-    public async Task<IActionResult> Genres(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool includeDeleted = false)
+    public async Task<IActionResult> Genres(
+        int pageNumber = 1, 
+        int pageSize = 10, 
+        string? searchTerm = null, 
+        string? sortField = null,
+        bool doNotIncludeDeleted = false)
     {
-        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, includeDeleted);
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, !doNotIncludeDeleted);
 
         var genres = await _genreService.GetPagedGenresAsync(request);
 

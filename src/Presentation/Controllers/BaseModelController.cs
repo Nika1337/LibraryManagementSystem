@@ -20,7 +20,7 @@ public abstract class BaseModelController<T> : Controller where T : BaseModel
     protected readonly FilterOption[] _filterOptions =
         [
             new BoolFilterOption {
-                Name = "Include Deleted"
+                Name = "Do Not Include Deleted"
             }
         ];
     protected BaseModelController(IBaseModelService service)

@@ -39,15 +39,20 @@ public class BooksController : BaseModelController<Book>
     }
 
     [HttpGet(Name = "Books")]
-    public async Task<IActionResult> Books(int pageNumber = 1, int pageSize = 10, string? searchTerm = null, string? sortField = null, bool shouldIncludeDeleted = false)
+    public async Task<IActionResult> Books(
+        int pageNumber = 1, 
+        int pageSize = 10, 
+        string? searchTerm = null, 
+        string? sortField = null,
+        bool doNotIncludeDeleted = false)
     {
-        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted);
+        var request = ConstructBaseModelPagedRequest(pageNumber, pageSize, searchTerm, sortField, !doNotIncludeDeleted);
 
         var books = await _bookService.GetPagedBooksAsync(request);
 
         var model = _mapper.Map<PagedList<BookViewModel>>(books);
 
-        TempData["ReturnUrl"] = Url.Action("Books", new { pageNumber, pageSize, searchTerm, sortField, shouldIncludeDeleted });
+        TempData["ReturnUrl"] = Url.Action("Books", new { pageNumber, pageSize, searchTerm, sortField, doNotIncludeDeleted });
 
         return View(model);
     }
