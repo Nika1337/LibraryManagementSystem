@@ -157,6 +157,31 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
                 Name = "Audit Log",
                 Route = "/Operations/AuditLog",
                 ParentNavigationMenuItemId = 4
+            },
+            new()
+            {
+                Id = 25,
+                Name = "Location",
+            },
+            new()
+            {
+                Id = 26,
+                Name = "Rooms",
+                ParentNavigationMenuItemId = 25
+            },
+            new()
+            {
+                Id = 27,
+                Name = "All Rooms",
+                Route = "/Location/Rooms",
+                ParentNavigationMenuItemId = 26
+            },
+            new()
+            {
+                Id = 28,
+                Name = "Add Room",
+                Route = "/Locatiom/Rooms/AddRoom",
+                ParentNavigationMenuItemId = 26
             }
         };
 
