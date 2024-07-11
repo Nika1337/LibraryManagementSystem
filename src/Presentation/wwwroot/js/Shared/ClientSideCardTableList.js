@@ -27,16 +27,48 @@ function filter() {
             console.log(filterValue)
 
             if (typeof filterValue === 'boolean') {
-                return element.dataset[formattedFilterName] === filterValue.toString();
+                console.log(`filterValue - ${filterValue}`)
+                console.log(`element.dataset[formattedFilterName] - ${element.dataset[formattedFilterName]}`)
+                return !filterValue || element.dataset[formattedFilterName] === 'true';
             } else if (typeof filterValue === 'object' && 'start' in filterValue && 'end' in filterValue) {
                 let value = element.dataset[formattedFilterName];
                 let start = filterValue.start ? filterValue.start : -Infinity;
-                let end = filterValue.end ? filterValue.start : Infinity;
+                let end = filterValue.end ? filterValue.end : Infinity;
+
+
+                // Convert value to appropriate type based on range type
+                let rangeType = element.dataset[`${formattedFilterName}_rangetype`];
+
+                console.log(rangeType);
+
+                switch (rangeType) {
+                    case 'datetime-local':
+                    case 'date':
+                        value = new Date(value).getTime();
+                        start = new Date(start).getTime();
+                        end = new Date(end).getTime();
+                        break;
+                    case 'number':
+                        value = parseFloat(value);
+                        start = parseFloat(start);
+                        end = parseFloat(end);
+                        break;
+                }
+
+                
                 console.log(value);
                 console.log(start);
                 console.log(end);
-                console.log(value >= start && value <= end)
-                return value >= start && value <= end;
+                console.log(isNaN(start) && isNaN(end));
+                console.log(isNaN(start));
+                console.log(isNaN(end));
+
+
+                if (isNaN(start) && isNaN(end)) return true;
+                else if (isNaN(start)) return value <= end;
+                else if (isNaN(end)) return value >= start;
+                else return value >= start && value <= end;
+
             } else if (Array.isArray(filterValue)) {
                 return filterValue.includes(element.dataset[formattedFilterName]);
             }
@@ -62,15 +94,13 @@ function updateCurrentFilters() {
         const filterName = input.dataset.filter;
         const filterType = input.dataset.filterType;
 
-        console.log(input);
-        console.log(filterName);
-        console.log(filterType);
+        console.log(`input - ${input.innerHTML}`);
+        console.log(`filterName - ${filterName}`);
+        console.log(`filterType - ${filterType}`);
 
         switch (filterType) {
             case 'checkbox':
-                if (input.checked) {
-                    currentFilters[filterName] = true;
-                }
+                currentFilters[filterName] = input.checked;
                 break;
             case 'range':
                 if (!currentFilters[filterName]) {

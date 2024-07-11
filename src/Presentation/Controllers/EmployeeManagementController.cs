@@ -36,15 +36,15 @@ public class EmployeeManagementController : Controller
     private readonly FilterOption[] _filterOptions =
         [
             new BoolFilterOption {
-                Name = "Include Deleted"
+                Name = "Do Not Include Deleted"
             },
             new RangeFilterOption {
                 Name = "Date Of Birth",
-                RangeFilterOptionType = RangeFilterOptionType.DateTime
+                RangeFilterOptionType = RangeFilterOptionType.Date
             },
             new RangeFilterOption {
                 Name = "Start Date",
-                RangeFilterOptionType = RangeFilterOptionType.DateTime
+                RangeFilterOptionType = RangeFilterOptionType.Date
             }
         ];
 
