@@ -28,7 +28,7 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Language>>(request);
 
-        var specification = new LanguagePagedSpecification(specificationParameters);
+        var specification = new LanguagesSpecification(specificationParameters);
 
 
         var languages = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
@@ -99,7 +99,7 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
 
     private async Task ThrowIfNameExistsAsync(string name)
     {
-        var specification = new LanguageWithNameSpecification(name);
+        var specification = new LanguageByNameSpecification(name);
 
         var isNameUsed = await _repository.AnyAsync(specification);
 
@@ -111,7 +111,7 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
 
     private async Task ThrowIfLanguageWithGivenNameHasDifferentIdAsync(string name, int id)
     {
-        var specification = new LanguageWithNameSpecification(name);
+        var specification = new LanguageByNameSpecification(name);
 
         var language = await _repository.SingleOrDefaultAsync(specification);
 

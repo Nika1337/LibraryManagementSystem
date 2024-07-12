@@ -6,9 +6,9 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Books;
 
-public class BookPreviewPagedSpecification : BaseModelSpecification<Book>
+public class BookPreviewsSpecification : BaseModelSpecification<Book>
 {
-    public BookPreviewPagedSpecification(BaseModelSpecificationParameters<Book> parameters) : base(parameters)
+    public BookPreviewsSpecification(BaseModelSpecificationParameters<Book> parameters) : base(parameters)
     {
         Query.Include(book => book.Authors);
 

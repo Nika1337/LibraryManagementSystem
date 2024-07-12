@@ -50,7 +50,7 @@ internal class EmailTemplateService : BaseModelService<EmailTemplate>, IEmailTem
 
     private async Task ThrowIfTemplateWithGivenNameHasDifferentId(string name, int id)
     {
-        var specification = new EmailTemplateWithNameSpecification(name);
+        var specification = new EmailTemplateByNameSpecification(name);
 
         var template = await _repository.SingleOrDefaultAsync(specification);
 

@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Nika1337.Library.Domain.Specifications.Genres;
 
-public class GenreWithNameSpecification : SingleResultSpecification<Genre>
+public class GenreByNameSpecification : SingleResultSpecification<Genre>
 {
-    public GenreWithNameSpecification(string name)
+    public GenreByNameSpecification(string name)
     {
         Query
             .Where(et => et.Name == name);

@@ -39,7 +39,7 @@ internal class BookService : BaseModelService<Book>, IBookService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Book>>(request);
 
-        var specification = new BookPreviewPagedSpecification(specificationParameters);
+        var specification = new BookPreviewsSpecification(specificationParameters);
 
 
         var books = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
@@ -93,9 +93,7 @@ internal class BookService : BaseModelService<Book>, IBookService
 
     private async Task AddOriginalLanguage(Book book, int languageId)
     {
-        var specification = new LanguageWithIdSpecification(languageId);
-
-        var language = await _languageRepository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Language>(languageId);
+        var language = await _languageRepository.GetByIdAsync(languageId) ?? throw new NotFoundException<Language>(languageId);
 
         book.OriginalLanguage = language;
     }

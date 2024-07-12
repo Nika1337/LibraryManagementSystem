@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Genres;
 
-public class GenrePagedSpecification : BaseModelSpecification<Genre>
+public class GenresSpecification : BaseModelSpecification<Genre>
 {
     protected override Expression<Func<Genre, string>>[] FieldSelectors => [genre => genre.Name, genre => genre.Description];
 
-    public GenrePagedSpecification(BaseModelSpecificationParameters<Genre> parameters) : base(parameters)
+    public GenresSpecification(BaseModelSpecificationParameters<Genre> parameters) : base(parameters)
     {
 
     }

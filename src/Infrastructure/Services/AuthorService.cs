@@ -29,7 +29,7 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Author>>(request);
 
-        var specification = new AuthorPagedSpecification(specificationParameters);
+        var specification = new AuthorsSpecification(specificationParameters);
 
         var authors = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 

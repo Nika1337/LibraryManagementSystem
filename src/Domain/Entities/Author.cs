@@ -8,7 +8,7 @@ public class Author : BaseModel
 {
     public required string Name { get; set; }
     public required DateTime DateOfBirth { get; set; }
-    public bool IsAlive { get; set; } = true;
-    public string Biography { get; set; }
+    public required bool IsAlive { get; set; }
+    public required string Biography { get; set; }
     public ICollection<Book> Books { get; } = [];
 }

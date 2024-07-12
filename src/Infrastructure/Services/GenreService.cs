@@ -28,7 +28,7 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Genre>>(request);
 
-        var specification = new GenrePagedSpecification(specificationParameters);
+        var specification = new GenresSpecification(specificationParameters);
 
 
         var genres = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
@@ -81,7 +81,7 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
 
     private async Task ThrowIfNameExistsAsync(string name)
     {
-        var specification = new GenreWithNameSpecification(name);
+        var specification = new GenreByNameSpecification(name);
 
         var isNameUsed = await _repository.AnyAsync(specification);
 
@@ -93,7 +93,7 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
 
     private async Task ThrowIfGenreWithGivenNameHasDifferentIdAsync(string name, int id)
     {
-        var specification = new GenreWithNameSpecification(name);
+        var specification = new GenreByNameSpecification(name);
 
         var genre = await _repository.SingleOrDefaultAsync(specification);
 
