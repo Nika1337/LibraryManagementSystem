@@ -114,6 +114,7 @@ public static class Dependencies
         services.AddScoped<IEmailTemplateService, EmailTemplateService>();
         services.AddScoped<IBookService, BookService>();
         services.AddScoped<IAuditLogService, AuditLogService>();
+        services.AddScoped<IRoomService, RoomService>();
 
         services.AddScoped<INavigationMenuService, NavigationMenuService>();
         services.AddScoped<IEmailService, EmailService>();
