@@ -2,13 +2,11 @@
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
-using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Authors;
-using Nika1337.Library.Domain.Specifications.Books;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
