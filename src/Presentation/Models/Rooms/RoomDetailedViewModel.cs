@@ -23,4 +23,5 @@ public class RoomDetailedViewModel
 
     public required int BookShelfsCount { get; init; }
     public required DateTime? DeletedDate { get; init; }
+    public string? ErrorMessage { get; set; }
 }

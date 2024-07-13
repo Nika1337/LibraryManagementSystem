@@ -16,4 +16,5 @@ public class RoomCreateViewModel
 
     [DisplayName("Max Capacity Of People")]
     public int? MaxCapacityOfPeople { get; set; }
+    public string? ErrorMessage { get; set; }
 }
