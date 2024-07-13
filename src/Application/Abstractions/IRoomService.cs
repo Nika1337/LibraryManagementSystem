@@ -11,7 +11,7 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IRoomService : IBaseModelService
 {
-    Task<IEnumerable<RoomPrimitiveResponse>> GetActiveBooksAsync();
+    Task<IEnumerable<RoomPrimitiveResponse>> GetActiveRoomsAsync();
     Task<PagedList<RoomPreviewResponse>> GetPagedRoomsAsync(BaseModelPagedRequest<Room> request);
     Task<RoomDetailedResponse> GetRoomAsync(int id);
     Task CreateRoomAsync(RoomCreateRequest request);

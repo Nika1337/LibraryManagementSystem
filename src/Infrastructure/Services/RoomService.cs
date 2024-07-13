@@ -24,7 +24,7 @@ internal class RoomService : BaseModelService<Room>, IRoomService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<RoomPrimitiveResponse>> GetActiveBooksAsync()
+    public async Task<IEnumerable<RoomPrimitiveResponse>> GetActiveRoomsAsync()
     {
         var specification = new NonDeletedSpecification<Room>();
 
@@ -58,6 +58,8 @@ internal class RoomService : BaseModelService<Room>, IRoomService
 
     public async Task CreateRoomAsync(RoomCreateRequest request)
     {
+        await ThrowIfRoomNumberExistsAsync(request.RoomNumber);
+
         var room = _mapper.Map<Room>(request);
 
         await _repository.AddAsync(room);
@@ -65,6 +67,8 @@ internal class RoomService : BaseModelService<Room>, IRoomService
 
     public async Task UpdateRoomAsync(RoomUpdateRequest request)
     {
+        await ThrowIfRoomWithGivenNumberHasDifferentIdAsync(request.RoomNumber, request.Id);
+
         var room = await GetEntityAsync(request.Id);
 
         _mapper.Map(request, room);
@@ -79,5 +83,31 @@ internal class RoomService : BaseModelService<Room>, IRoomService
         var room = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Room>(id);
 
         return room;
+    }
+
+    private async Task ThrowIfRoomNumberExistsAsync(string roomNumber)
+    {
+        var specification = new RoomByRoomNumberSpecification(roomNumber);
+
+        var isRoomNumberUsed = await _repository.AnyAsync(specification);
+
+        if (isRoomNumberUsed)
+        {
+            throw new NameDuplicateException($"Room with number '{roomNumber}' already exists");
+        }
+    }
+
+    private async Task ThrowIfRoomWithGivenNumberHasDifferentIdAsync(string roomNumber, int id)
+    {
+        var specification = new RoomByRoomNumberSpecification(roomNumber);
+
+        var room = await _repository.SingleOrDefaultAsync(specification);
+
+        var isRoomNumberUsedByDifferentRoom = room is not null && room.Id == id;
+
+        if (isRoomNumberUsedByDifferentRoom)
+        {
+            throw new NameDuplicateException($"Room with number '{roomNumber}' already exists");
+        }
     }
 }
