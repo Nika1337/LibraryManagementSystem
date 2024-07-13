@@ -77,7 +77,14 @@ public class BooksController : BaseModelController<Book>
 
         await _bookService.CreateBookAsync(request);
 
-        return RedirectToRoute("Books");
+        var returnUrl = TempData["ReturnUrl"] as string;
+
+        if (string.IsNullOrEmpty(returnUrl))
+        {
+            return RedirectToRoute("Books");
+        }
+
+        return Redirect(returnUrl);
     }
 
     [HttpGet("{id:int}")]
