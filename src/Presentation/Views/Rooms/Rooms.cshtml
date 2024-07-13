@@ -66,6 +66,16 @@
                     <td>@room.MaxCapacityOfPeople</td>
                     <td>@room.BookshelfCount</td>
                     <td>
+                        @if (room.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                    </td>
+                    <td>
                         <a href="/Location/Rooms/@room.Id" class="btn btn-dark btn-sm no-wrap">View Details</a>
                     </td>
                 </tr>
