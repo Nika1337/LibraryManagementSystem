@@ -114,10 +114,10 @@ public class RoomsController : BaseModelController<Room>
         catch (DuplicateException)
         {
             model.ErrorMessage = $"Room With Number '{model.RoomNumber}' already exists";
-            return View(model);
+            return View("Room", model);
         }
 
-        return RedirectToAction("Rooms");
+        return RedirectToRoute("Rooms");
     }
 
 
