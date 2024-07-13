@@ -16,6 +16,7 @@ public class RoomMappingProfile : Profile
             .ForMember(rdr => rdr.BookshelfsCount, opts => opts.MapFrom(r => r.Bookshelves.Count));
 
         CreateMap<Room, RoomPreviewResponse>()
-            .ForMember(rpr => rpr.BookshelfsCount, opts => opts.MapFrom(r => r.Bookshelves.Count));
+            .ForMember(rpr => rpr.BookshelfsCount, opts => opts.MapFrom(r => r.Bookshelves.Count))
+            .ForMember(rpr => rpr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
     }
 }
