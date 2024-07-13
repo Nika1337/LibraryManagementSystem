@@ -59,13 +59,13 @@ public class LanguagesController : BaseModelController<Language>
     {
         var language = await _languageService.GetLanguageAsync(id);
 
-        var model = _mapper.Map<LanguageDetailViewModel>(language);
+        var model = _mapper.Map<LanguageDetailedViewModel>(language);
 
         return View("Language", model);
     }
 
     [HttpPost("{id:int}")]
-    public async Task<IActionResult> Languages(LanguageDetailViewModel model)
+    public async Task<IActionResult> Languages(LanguageDetailedViewModel model)
     {
         if (!ModelState.IsValid)
         {

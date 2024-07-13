@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Nika1337.Library.Presentation.Models.Languages;
 
-public class LanguageDetailViewModel
+public class LanguageDetailedViewModel
 {
     public required int Id { get; set; }
     [Required]
