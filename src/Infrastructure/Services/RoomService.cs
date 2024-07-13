@@ -93,7 +93,7 @@ internal class RoomService : BaseModelService<Room>, IRoomService
 
         if (isRoomNumberUsed)
         {
-            throw new NameDuplicateException($"Room with number '{roomNumber}' already exists");
+            throw new DuplicateException($"Room with number '{roomNumber}' already exists");
         }
     }
 
@@ -103,11 +103,11 @@ internal class RoomService : BaseModelService<Room>, IRoomService
 
         var room = await _repository.SingleOrDefaultAsync(specification);
 
-        var isRoomNumberUsedByDifferentRoom = room is not null && room.Id == id;
+        var isRoomNumberUsedByDifferentRoom = room is not null && room.Id != id;
 
         if (isRoomNumberUsedByDifferentRoom)
         {
-            throw new NameDuplicateException($"Room with number '{roomNumber}' already exists");
+            throw new DuplicateException($"Room with number '{roomNumber}' already exists");
         }
     }
 }

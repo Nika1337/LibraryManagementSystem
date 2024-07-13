@@ -115,7 +115,7 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
 
         var language = await _repository.SingleOrDefaultAsync(specification);
 
-        var isNameUsedByDifferentEntity = language is not null && language.Id == id;
+        var isNameUsedByDifferentEntity = language is not null && language.Id != id;
 
         if (isNameUsedByDifferentEntity)
         {
