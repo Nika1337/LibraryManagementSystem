@@ -1,0 +1,63 @@
+﻿@model Nika1337.Library.Presentation.Models.Rooms.RoomCreateViewModel
+
+@{
+    Layout = "_DetailLayout";
+    ViewData["Title"] = "Add Room";
+}
+
+
+<form asp-action="AddRoom" method="post" class="needs-validation" novalidate>
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <h5 class="card-header">Add Room</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Floor" class="form-label"></label>
+                                <input asp-for="Floor" class="form-control" type="number" />
+                                <span asp-validation-for="Floor" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="RoomNumber" class="form-label"></label>
+                                <input asp-for="RoomNumber" class="form-control" />
+                                <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="MaxCapacityOfPeople" class="form-label"></label>
+                                <input asp-for="MaxCapacityOfPeople" class="form-control" type="number" />
+                                <span asp-validation-for="MaxCapacityOfPeople" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-end justify-content-end myfab-container">
+                        <button type="submit" class="btn btn-primary myfab">Add Room</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name ="_ValidationScriptsPartial" />
+}
