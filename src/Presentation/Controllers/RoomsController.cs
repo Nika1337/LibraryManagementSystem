@@ -121,7 +121,7 @@ public class RoomsController : BaseModelController<Room>
     }
 
 
-    [HttpGet]
+    [HttpGet("[action]")]
     public async Task<IActionResult> GetActiveRooms()
     {
         var rooms = await _roomService.GetActiveRoomsAsync();
