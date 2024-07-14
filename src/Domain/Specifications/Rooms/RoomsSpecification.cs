@@ -8,10 +8,10 @@ namespace Nika1337.Library.Domain.Specifications.Rooms;
 
 public class RoomsSpecification : BaseModelSpecification<Room>
 {
-    protected override Expression<Func<Room, string>>[] FieldSelectors => [room => room.RoomNumber.ToString()];
+    protected override Expression<Func<Room, string>>[] FieldSelectors => [room => room.RoomNumber];
 
     public RoomsSpecification(BaseModelSpecificationParameters<Room> parameters) : base(parameters)
     {
-        Query.Include(room => room.Bookshelves);
+        Query.Include(room => room.Editions);
     }
 }

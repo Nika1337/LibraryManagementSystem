@@ -6,6 +6,6 @@ public class RoomByIdSpecification : BaseModelByIdSpecification<Room>
 {
     public RoomByIdSpecification(int id) : base(id)
     {
-        Query.Include(room => room.Bookshelves);
+        Query.Include(room => room.Editions);
     }
 }

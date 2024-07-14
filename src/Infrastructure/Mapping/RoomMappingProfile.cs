@@ -13,10 +13,10 @@ public class RoomMappingProfile : Profile
         CreateMap<RoomUpdateRequest, Room>();
 
         CreateMap<Room, RoomDetailedResponse>()
-            .ForMember(rdr => rdr.BookshelfsCount, opts => opts.MapFrom(r => r.Bookshelves.Count));
+            .ForMember(rdr => rdr.EditionsCount, opts => opts.MapFrom(r => r.Editions.Count));
 
         CreateMap<Room, RoomPreviewResponse>()
-            .ForMember(rpr => rpr.BookshelfsCount, opts => opts.MapFrom(r => r.Bookshelves.Count))
+            .ForMember(rpr => rpr.EditionsCount, opts => opts.MapFrom(r => r.Editions.Count))
             .ForMember(rpr => rpr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
     }
 }

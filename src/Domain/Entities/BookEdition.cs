@@ -10,6 +10,6 @@ public class BookEdition : BaseModel
     public required Publisher Publisher { get; set; }
     public required DateTime PublicationDate { get; set; }
     public required Language Language { get; set; }
-    public required Shelf Shelf { get; set; }
+    public required Room Room { get; set; }
     public ICollection<BookCopy> Copies { get; } = [];
 }
