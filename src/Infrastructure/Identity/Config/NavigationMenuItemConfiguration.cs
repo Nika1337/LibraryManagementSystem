@@ -180,8 +180,28 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             {
                 Id = 28,
                 Name = "Add Room",
-                Route = "/Locatiom/Rooms/AddRoom",
+                Route = "/Location/Rooms/AddRoom",
                 ParentNavigationMenuItemId = 26
+            },
+            new()
+            {
+                Id = 29,
+                Name = "Publishers",
+                ParentNavigationMenuItemId = 6
+            },
+            new()
+            {
+                Id = 30,
+                Name = "All Publishers",
+                Route = "/Books/Publishers",
+                ParentNavigationMenuItemId = 29
+            },
+            new()
+            {
+                Id = 31,
+                Name = "Add Publisher",
+                Route = "/Books/Publishers/AddPublisher",
+                ParentNavigationMenuItemId = 29
             }
         };
 
