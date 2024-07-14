@@ -26,7 +26,7 @@ internal class BookEditionConfiguration : IEntityTypeConfiguration<BookEdition>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
-            .HasOne(be => be.Shelf)
+            .HasOne(be => be.Room)
             .WithMany(sh => sh.BookEditions)
             .HasForeignKey("ShelfId")
             .OnDelete(DeleteBehavior.Restrict);

@@ -12,6 +12,6 @@ public class RoomsSpecification : BaseModelSpecification<Room>
 
     public RoomsSpecification(BaseModelSpecificationParameters<Room> parameters) : base(parameters)
     {
-        Query.Include(room => room.Editions);
+        Query.Include(room => room.BookEditions);
     }
 }

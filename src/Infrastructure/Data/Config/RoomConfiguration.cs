@@ -10,6 +10,7 @@ internal class RoomConfiguration : IEntityTypeConfiguration<Room>
 {
     public void Configure(EntityTypeBuilder<Room> builder)
     {
-        // For now empty
+        builder.Property(room => room.RoomNumber)
+            .HasMaxLength(50);
     }
 }

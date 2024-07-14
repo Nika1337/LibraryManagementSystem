@@ -19,8 +19,6 @@ internal class LibraryContext(
     public DbSet<Book> Books { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
     public DbSet<Room> Rooms { get; set; }
-    public DbSet<Bookshelf> Bookshelves { get; set; }
-    public DbSet<Shelf> Shelves { get; set; }
     public DbSet<BookEdition> BookEditions { get; set; }
     public DbSet<BookCopy> BookCopies { get; set; }
     public DbSet<Account> Accounts { get; set; }
@@ -42,7 +40,6 @@ internal class LibraryContext(
         builder.ApplyConfiguration(new BookConfiguration());
         builder.ApplyConfiguration(new BookCopyConfiguration());
         builder.ApplyConfiguration(new BookEditionConfiguration());
-        builder.ApplyConfiguration(new BookshelfConfiguration());
         builder.ApplyConfiguration(new CheckoutConfiguration());
         builder.ApplyConfiguration(new CompanyAccountConfiguration());
         builder.ApplyConfiguration(new GenreConfiguration());
@@ -50,7 +47,6 @@ internal class LibraryContext(
         builder.ApplyConfiguration(new PersonalAccountConfiguration());
         builder.ApplyConfiguration(new PublisherConfiguration());
         builder.ApplyConfiguration(new RoomConfiguration());
-        builder.ApplyConfiguration(new ShelfConfiguration());
 
     }
 
