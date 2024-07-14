@@ -29,6 +29,8 @@ public class RoomsController : BaseModelController<Room>
             { "floorDesc", new("Floor: Descending", room => room.Floor, true) },
             { "maxCap", new("Max Capacity Of People: Ascending", room => room.MaxCapacityOfPeople) },
             { "maxCapDesc", new("Max Capacity Of People: Descending", room => room.MaxCapacityOfPeople, true) },
+            { "editionsCount", new("Editions Released Count: Ascending", room => room.BookEditions.Count) },
+            { "editionsCountDesc", new("Editions Released Count: Descending", room => room.BookEditions.Count, true) },
      };
 
     public RoomsController(
