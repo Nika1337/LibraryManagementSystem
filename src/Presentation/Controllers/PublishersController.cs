@@ -37,7 +37,7 @@ public class PublishersController : BaseModelController<Publisher>
         _publisherService = service;
     }
 
-    [HttpGet("Publishers")]
+    [HttpGet(Name = "Publishers")]
     public async Task<IActionResult> Publishers(
         int pageNumber = 1,
         int pageSize = 10,
