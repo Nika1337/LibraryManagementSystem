@@ -8,25 +8,20 @@ namespace Nika1337.Library.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<EmailTemplate> builder)
         {
-            // Configure the Name property
             builder.Property(e => e.Name)
-                .HasMaxLength(100); // Adjust the max length as necessary
+                .HasMaxLength(100);
 
-            // Configure the Separator property
             builder.Property(e => e.Separator)
-                .HasMaxLength(10); // Adjust the max length as necessary
+                .HasMaxLength(10);
 
-            // Configure the Subject property
             builder.Property(e => e.Subject)
-                .HasMaxLength(200); // Adjust the max length as necessary
+                .HasMaxLength(200);
 
-            // Configure the Body property
             builder.Property(e => e.Body)
                 .IsRequired();
 
-            // Configure the FromEmail property
             builder.Property(e => e.FromEmail)
-                .HasMaxLength(100); // Adjust the max length as necessary
+                .HasMaxLength(100);
 
         }
     }

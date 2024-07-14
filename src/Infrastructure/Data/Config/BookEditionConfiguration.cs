@@ -21,14 +21,14 @@ internal class BookEditionConfiguration : IEntityTypeConfiguration<BookEdition>
 
         builder
             .HasOne(be => be.Publisher)
-            .WithMany(pu => pu.PublishedBooks)
+            .WithMany(pu => pu.PublishedBookEditions)
             .HasForeignKey("PublisherId")
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(be => be.Room)
-            .WithMany(sh => sh.BookEditions)
-            .HasForeignKey("ShelfId")
+            .WithMany(r => r.BookEditions)
+            .HasForeignKey("RoomId")
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
