@@ -1,0 +1,90 @@
+﻿@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.Publishers.PublisherPreviewViewModel>
+
+@{
+    ViewData["Title"] = "Publishers";
+    Layout = "_ServerSideCardTableLayout";
+}
+
+@section Paging {
+    @await Html.PartialAsync("_PagingPartial", Model.MetaData)
+}
+
+@section Cards {
+    @foreach (var publisher in Model)
+    {
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" style="text-decoration:none; color:black" href="/Books/Publishers/@publisher.Id">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+                <div class="card-header d-flex justify-content-between align-items-center text-white">
+                    <span class="card-header-name">@publisher.PublisherName</span>
+                    @if (publisher.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Deleted</span>
+                    }
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div class="property">
+                        <span class="text-muted">Website Address:</span>
+                        <span>@publisher.WebsiteAddress</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Published Book Editions:</span>
+                        <span>@publisher.PublishedBookEditionsCount</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+}
+
+@section Table {
+    <table id="table" class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Publisher Name</th>
+                <th>Website Address</th>
+                <th>Published Book Editions</th>
+                <th>Status</th>
+                <th style="width: 8%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var publisher in Model)
+            {
+                <tr class="table-row">
+                    <td>@publisher.PublisherName</td>
+                    <td>@publisher.WebsiteAddress</td>
+                    <td>@publisher.PublishedBookEditionsCount</td>
+                    <td>
+                        @if (publisher.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Books/Publishers/@publisher.Id" class="btn btn-dark btn-sm no-wrap">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Fab {
+    <a href="/Books/Publishers/AddPublisher" class="btn btn-primary btn-lg shadow-sm myfab">
+        Add Publisher
+    </a>
+}
+
+@section Scripts {
+    <script>
+        const viewName = "Publishers";
+    </script>
+}
