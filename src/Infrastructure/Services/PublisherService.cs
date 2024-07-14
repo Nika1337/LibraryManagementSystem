@@ -37,7 +37,7 @@ internal class PublisherService : BaseModelService<Publisher>, IPublisherService
         return response;
     }
 
-    public async Task<PagedList<PublisherPreviewResponse>> GetPagedBooksAsync(BaseModelPagedRequest<Publisher> request)
+    public async Task<PagedList<PublisherPreviewResponse>> GetPagedPublishersAsync(BaseModelPagedRequest<Publisher> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Publisher>>(request);
 
