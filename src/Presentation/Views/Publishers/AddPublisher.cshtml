@@ -29,17 +29,17 @@
 
                     <div class="mb-3">
                         <div class="form-group">
-                            <label asp-for="ContactInformationViewModel.Email" class="form-label"></label>
-                            <input asp-for="ContactInformationViewModel.Email" class="form-control" type="email" />
-                            <span asp-validation-for="ContactInformationViewModel.Email" class="text-danger"></span>
+                            <label asp-for="ContactInformation.Email" class="form-label"></label>
+                            <input asp-for="ContactInformation.Email" class="form-control" type="email" />
+                            <span asp-validation-for="ContactInformation.Email" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <div class="form-group">
-                            <label asp-for="ContactInformationViewModel.PhoneNumber" class="form-label"></label>
-                            <input asp-for="ContactInformationViewModel.PhoneNumber" class="form-control"  />
-                            <span asp-validation-for="ContactInformationViewModel.PhoneNumber" class="text-danger"></span>
+                            <label asp-for="ContactInformation.PhoneNumber" class="form-label"></label>
+                            <input asp-for="ContactInformation.PhoneNumber" class="form-control"  />
+                            <span asp-validation-for="ContactInformation.PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="col-lg-4">
-            @await Html.PartialAsync("_AddressPartial", Model.ContactInformationViewModel.AddressViewModel)
+            @await Html.PartialAsync("_AddressPartial", Model.ContactInformation.Address)
         </div>
     </div>
 

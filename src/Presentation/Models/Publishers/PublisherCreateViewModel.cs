@@ -17,7 +17,7 @@ public class PublisherCreateViewModel
     [DisplayName("Website Address")]
     public string? WebsiteAddress { get; set; }
 
-    public ContactInformationViewModel ContactInformationViewModel { get; set; } = new();
+    public ContactInformationViewModel ContactInformation { get; set; } = new();
 
     public string? ErrorMessage { get; set; }
 }

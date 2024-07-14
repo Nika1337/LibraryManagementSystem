@@ -19,7 +19,7 @@ public class PublisherDetailedViewModel
     [DisplayName("Website Address")]
     public required string? WebsiteAddress { get; set; }
 
-    public required ContactInformationViewModel ContactInformationViewModel { get; set; }
+    public required ContactInformationViewModel ContactInformation { get; set; }
 
     public required int PublishedBookEditionsCount { get; init; }
 
