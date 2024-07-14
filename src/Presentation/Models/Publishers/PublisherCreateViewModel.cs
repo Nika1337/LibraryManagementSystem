@@ -18,4 +18,6 @@ public class PublisherCreateViewModel
     public string? WebsiteAddress { get; set; }
 
     public ContactInformationViewModel ContactInformationViewModel { get; set; } = new();
+
+    public string? ErrorMessage { get; set; }
 }
