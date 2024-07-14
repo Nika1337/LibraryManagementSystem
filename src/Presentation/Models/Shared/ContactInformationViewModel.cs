@@ -17,5 +17,5 @@ public class ContactInformationViewModel
     [Phone(ErrorMessage = "Please enter a valid phone number.")]
     [StringLength(15, ErrorMessage = "Phone Number cannot be longer than 15 characters.")]
     public string PhoneNumber { get; set; }
-    public AddressViewModel Address { get; set; }
+    public AddressViewModel Address { get; set; } = new();
 }
