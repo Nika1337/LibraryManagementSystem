@@ -8,6 +8,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Publishers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -103,6 +104,33 @@ public class PublishersController : BaseModelController<Publisher>
             return View("Publisher", model);
         }
 
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine(model.ContactInformation.PhoneNumber);
+        Console.WriteLine(model.ContactInformation.Email);
+        Console.WriteLine(model.ContactInformation.Address.Country);
+        Console.WriteLine(model.ContactInformation.Address.State);
+        Console.WriteLine(model.ContactInformation.Address.City);
+        Console.WriteLine(model.ContactInformation.Address.Street);
+        Console.WriteLine(model.ContactInformation.Address.PostalCode);
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+
         var request = _mapper.Map<PublisherUpdateRequest>(model);
 
         try
@@ -115,7 +143,7 @@ public class PublishersController : BaseModelController<Publisher>
             return View("Publisher", model);
         }
 
-        return RedirectToRoute("Publisher");
+        return RedirectToRoute("Publishers");
     }
 
     [HttpGet("[action]")]
