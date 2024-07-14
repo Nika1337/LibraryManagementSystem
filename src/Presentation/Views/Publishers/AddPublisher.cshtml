@@ -1,0 +1,72 @@
+﻿@model Nika1337.Library.Presentation.Models.Publishers.PublisherCreateViewModel
+
+@{
+    Layout = "_DetailLayout";
+    ViewData["Title"] = "Add Publisher";
+}
+
+<form asp-action="AddPublisher" method="post" class="needs-validation" novalidate>
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <h5 class="card-header">Add Room</h5>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label asp-for="PublisherName" class="form-label"></label>
+                            <input asp-for="PublisherName" class="form-control" />
+                            <span asp-validation-for="PublisherName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label asp-for="WebsiteAddress" class="form-label"></label>
+                            <input asp-for="WebsiteAddress" class="form-control" />
+                            <span asp-validation-for="WebsiteAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label asp-for="ContactInformationViewModel.Email" class="form-label"></label>
+                            <input asp-for="ContactInformationViewModel.Email" class="form-control" type="email" />
+                            <span asp-validation-for="ContactInformationViewModel.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label asp-for="ContactInformationViewModel.PhoneNumber" class="form-label"></label>
+                            <input asp-for="ContactInformationViewModel.PhoneNumber" class="form-control"  />
+                            <span asp-validation-for="ContactInformationViewModel.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            @await Html.PartialAsync("_AddressPartial", Model.ContactInformationViewModel.AddressViewModel)
+        </div>
+    </div>
+
+    <div class="d-flex align-items-end justify-content-end myfab-container">
+        <button type="submit" class="btn btn-primary myfab">Add Publisher</button>
+    </div>
+</form>
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
