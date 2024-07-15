@@ -22,8 +22,6 @@ internal class LibraryContext(
     public DbSet<BookEdition> BookEditions { get; set; }
     public DbSet<BookCopy> BookCopies { get; set; }
     public DbSet<Account> Accounts { get; set; }
-    public DbSet<CompanyAccount> CompanyAccounts { get; set; }
-    public DbSet<PersonalAccount> PersonalAccounts { get; set; }
     public DbSet<Checkout> Checkouts { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
@@ -41,10 +39,8 @@ internal class LibraryContext(
         builder.ApplyConfiguration(new BookCopyConfiguration());
         builder.ApplyConfiguration(new BookEditionConfiguration());
         builder.ApplyConfiguration(new CheckoutConfiguration());
-        builder.ApplyConfiguration(new CompanyAccountConfiguration());
         builder.ApplyConfiguration(new GenreConfiguration());
         builder.ApplyConfiguration(new LanguageConfiguration());
-        builder.ApplyConfiguration(new PersonalAccountConfiguration());
         builder.ApplyConfiguration(new PublisherConfiguration());
         builder.ApplyConfiguration(new RoomConfiguration());
 
