@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Nika1337.Library.Application.DataTransferObjects.Library.Account;
 using Nika1337.Library.Domain.Entities;
+using System;
 using System.Linq;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
@@ -9,7 +10,8 @@ public class AccountMappingProfile : Profile
 {
     public AccountMappingProfile()
     {
-        CreateMap<AccountCreateRequest, Account>();
+        CreateMap<AccountCreateRequest, Account>()
+            .ForMember(ac => ac.AccountCreationDate, opts => opts.MapFrom(acr => DateTime.UtcNow));
 
         CreateMap<AccountUpdateRequest, Account>();
 
