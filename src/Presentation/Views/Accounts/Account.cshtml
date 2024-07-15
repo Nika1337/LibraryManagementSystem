@@ -1,36 +1,32 @@
-﻿@model Nika1337.Library.Presentation.Models.Publishers.PublisherDetailedViewModel
-
+@model Nika1337.Library.Presentation.Models.Accounts.AccountDetailedViewModel
 @{
     Layout = "_DetailLayout";
-    ViewData["Title"] = Model.PublisherName;
+    ViewData["Title"] = Model.AccountName;
     var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
     var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
 }
 
-<form asp-route="Books/Publishers/" method="post" class="needs-validation" novalidate>
+<form asp-route="Accounts/" method="post" class="needs-validation" novalidate>
     <div class="row justify-content-center">
         <div class="col-lg-4">
             <div class="card mb-4">
-                <h5 class="card-header">Add Room</h5>
+                <h5 class="card-header">Account Details</h5>
                 <div class="card-body">
-                    <input type="hidden" asp-for="Id" />
-
+                    <input type="hidden" asp-for="AccountCreationDate" />
                     <div class="mb-3">
                         <div class="form-group">
-                            <label asp-for="PublisherName" class="form-label"></label>
-                            <input asp-for="PublisherName" class="form-control" />
-                            <span asp-validation-for="PublisherName" class="text-danger"></span>
+                            <label asp-for="AccountName" class="form-label"></label>
+                            <input asp-for="AccountName" class="form-control" />
+                            <span asp-validation-for="AccountName" class="text-danger"></span>
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <div class="form-group">
-                            <label asp-for="WebsiteAddress" class="form-label"></label>
-                            <input asp-for="WebsiteAddress" class="form-control" />
-                            <span asp-validation-for="WebsiteAddress" class="text-danger"></span>
+                            <label asp-for="CustomerIdentification" class="form-label"></label>
+                            <input asp-for="CustomerIdentification" class="form-control" />
+                            <span asp-validation-for="CustomerIdentification" class="text-danger"></span>
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <div class="form-group">
                             <label asp-for="ContactInformation.Email" class="form-label"></label>
@@ -38,7 +34,6 @@
                             <span asp-validation-for="ContactInformation.Email" class="text-danger"></span>
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <div class="form-group">
                             <label asp-for="ContactInformation.PhoneNumber" class="form-label"></label>
@@ -55,21 +50,37 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-4">
             <partial name="_AddressPartial" for="@Model.ContactInformation.Address" />
+            <div class="card mb-4">
+                <h5 class="card-header">Account Statistics</h5>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="AccountCreationDate" class="form-label"></label>
+                        <input asp-for="AccountCreationDate" class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="TotalCheckouts" class="form-label"></label>
+                        <input asp-for="TotalCheckouts" class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ActiveCheckouts" class="form-label"></label>
+                        <input asp-for="ActiveCheckouts" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
         </div>
-
         <div class="d-flex align-items-end justify-content-end myfab-container">
             <div class="d-flex flex-column">
                 <button type="submit" class="btn btn-primary myfab mb-2">Save Changes</button>
                 <button type="button" class="btn @actionButtonClass myfab" data-bs-toggle="modal" data-bs-target="#actionModal">@userAction</button>
             </div>
         </div>
+    </div>
 </form>
 
 @section ActionModal {
-    @await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Publisher"));
+    @await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Account"))
 }
 
 @section Error {
@@ -87,7 +98,7 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script src="~/js/Shared/ActionModal.js"></script>
-    <script src="~/js/Library/Publishers/Publisher.js"></script>
+    <script src="~/js/Library/Accounts/Account.js"></script>
 
     <script>
         const id = '@Model.Id';

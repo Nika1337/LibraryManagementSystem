@@ -8,6 +8,7 @@ using System;
 namespace Nika1337.Library.Presentation.Models.Accounts;
 public class AccountDetailedViewModel
 {
+    public required int Id { get; init; }
     [Required]
     [DisplayName("Account Name")]
     [StringLength(80)]

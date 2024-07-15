@@ -202,6 +202,25 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
                 Name = "Add Publisher",
                 Route = "/Books/Publishers/AddPublisher",
                 ParentNavigationMenuItemId = 29
+            },
+            new()
+            {
+                Id = 32,
+                Name = "Accounts",
+            },
+            new()
+            {
+                Id = 33,
+                Name = "All Accounts",
+                Route = "/Accounts",
+                ParentNavigationMenuItemId = 32
+            },
+            new()
+            {
+                Id = 34,
+                Name = "Add Account",
+                Route = "/Accounts/AddAccount",
+                ParentNavigationMenuItemId = 32
             }
         };
 
