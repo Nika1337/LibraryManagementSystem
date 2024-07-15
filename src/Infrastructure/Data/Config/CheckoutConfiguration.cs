@@ -12,7 +12,7 @@ internal class CheckoutConfiguration : IEntityTypeConfiguration<Checkout>
     {
         builder
             .HasOne(ch => ch.Account)
-            .WithMany()
+            .WithMany(ac => ac.Checkouts)
             .HasForeignKey("AccountId")
             .OnDelete(DeleteBehavior.Restrict);
 

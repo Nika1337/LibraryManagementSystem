@@ -17,6 +17,6 @@ public class AccountCreateViewModel
     [DisplayName("Customer Identification")]
     [StringLength(30)]
     public string CustomerIdentification { get; set; }
-    public ContactInformationViewModel ContactInformation { get; set; }
+    public ContactInformationViewModel ContactInformation { get; set; } = new();
     public string? ErrorMessage { get; set; }
 }

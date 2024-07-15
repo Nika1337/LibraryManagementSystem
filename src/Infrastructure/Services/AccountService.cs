@@ -53,7 +53,7 @@ internal class AccountService : BaseModelService<Account>, IAccountService
 
     public async Task<AccountDetailedResponse> GetAccountAsync(int id)
     {
-        var account = GetDetailedAccountAsync(id);
+        var account = await GetDetailedAccountAsync(id);
 
         var response = _mapper.Map<AccountDetailedResponse>(account);
 
