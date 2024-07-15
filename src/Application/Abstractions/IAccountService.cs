@@ -13,4 +13,7 @@ public interface IAccountService : IBaseModelService
 {
     Task<IEnumerable<AccountPrimitiveResponse>> GetActiveAccountsAsync();
     Task<PagedList<AccountPreviewResponse>> GetPagedAccountsAsync(BaseModelPagedRequest<Account> request);
+    Task<AccountDetailedResponse> GetAccountAsync(int id);
+    Task CreateAccountAsync(AccountCreateRequest request);
+    Task UpdateAccountAsync(AccountUpdateRequest request);
 }

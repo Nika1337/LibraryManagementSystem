@@ -5,7 +5,7 @@ using System;
 
 namespace Nika1337.Library.Application.DataTransferObjects.Library.Account;
 
-public abstract record AccountDetailedResponse
+public record AccountDetailedResponse
 {
     public required int Id { get; init; }
     public required string AccountName { get; init; }
