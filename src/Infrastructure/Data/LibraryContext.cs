@@ -43,6 +43,7 @@ internal class LibraryContext(
         builder.ApplyConfiguration(new LanguageConfiguration());
         builder.ApplyConfiguration(new PublisherConfiguration());
         builder.ApplyConfiguration(new RoomConfiguration());
+        builder.ApplyConfiguration(new BookCopyCheckoutConfiguration());
 
     }
 
