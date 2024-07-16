@@ -4,6 +4,7 @@ using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.BookEditions;
 using Nika1337.Library.Domain.Abstractions;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications.BookEditions;
 using Nika1337.Library.Domain.Specifications.BookEditions.Results;
@@ -57,9 +58,13 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
         return response;
     }
 
-    public Task<BookEditionDetailedResponse> GetBookEditionAsync(int bookId, int id)
+    public async Task<BookEditionDetailedResponse> GetBookEditionAsync(int bookId, int id)
     {
-        throw new System.NotImplementedException();
+        var bookEdition = await GetDetailedBookEditionAsync(bookId, id);
+
+        var response = _mapper.Map<BookEditionDetailedResponse>(bookEdition);
+        
+        return response;
     }
 
     public Task CreateBookEditionAsync(int bookId, BookEditionCreateRequest request)
@@ -71,5 +76,15 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
     public Task UpdateBookEditionAsync(int bookId, BookEditionUpdateRequest request)
     {
         throw new System.NotImplementedException();
+    }
+
+    private async Task<BookEditionByIdResult> GetDetailedBookEditionAsync(int bookId, int id)
+    {
+        var specification = new BookEditionByIdSpecification(bookId, id);
+
+        var bookEdition = await _repository.SingleOrDefaultAsync(specification)
+            ?? throw new NotFoundException<BookEdition>($"No Book Edition Found with Book Id '{bookId}' and Id '{id}'");
+
+        return bookEdition;
     }
 }
