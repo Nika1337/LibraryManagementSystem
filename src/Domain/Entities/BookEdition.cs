@@ -11,5 +11,5 @@ public class BookEdition : BaseModel
     public required DateTime PublicationDate { get; set; }
     public required Language Language { get; set; }
     public required Room Room { get; set; }
-    public ICollection<BookCopy> Copies { get; } = [];
+    public List<BookCopy> Copies { get; set; } = [];
 }
