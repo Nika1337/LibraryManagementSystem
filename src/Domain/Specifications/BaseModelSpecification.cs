@@ -8,8 +8,17 @@ using Nika1337.Library.Domain.RequestFeatures;
 
 namespace Nika1337.Library.Domain.Specifications;
 
-public abstract class BaseModelSpecification<T> : Specification<T> where T : BaseModel
+public abstract class BaseModelSpecification<T> : BaseModelSpecification<T, T> where T : BaseModel
 {
+    public BaseModelSpecification(BaseModelSpecificationParameters<T> parameters) : base(parameters)
+    {
+    }
+}
+
+
+public abstract class BaseModelSpecification<T, TResult> : Specification<T, TResult> where T : BaseModel
+{
+
     protected abstract Expression<Func<T, string>>[] FieldSelectors { get; }
 
     public BaseModelSpecification(BaseModelSpecificationParameters<T> parameters)

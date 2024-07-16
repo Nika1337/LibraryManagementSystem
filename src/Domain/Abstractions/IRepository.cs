@@ -7,5 +7,5 @@ namespace Nika1337.Library.Domain.Abstractions;
 
 public interface IRepository<T> : IRepositoryBase<T> where T : class 
 {
-    Task<PagedList<T>> PagedListAsync(ISpecification<T> specification, int pageNumber, int pageSize, CancellationToken cancellationToken = default);
+    Task<PagedList<TResult>> PagedListAsync<TResult>(ISpecification<T, TResult> specification, int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 }

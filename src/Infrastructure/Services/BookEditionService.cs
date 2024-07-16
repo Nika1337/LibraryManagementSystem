@@ -44,9 +44,17 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
 
         return response;
     }
-    public Task<PagedList<BookEditionPreviewResponse>> GetPagedBookEditionsAsync(int bookId, BaseModelPagedRequest<BookEdition> request)
+    public async Task<PagedList<BookEditionPreviewResponse>> GetPagedBookEditionsAsync(int bookId, BaseModelPagedRequest<BookEdition> request)
     {
-        throw new System.NotImplementedException();
+        var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<BookEdition>>(request);
+
+        var specification = new BookEditionSpecification(bookId, specificationParameters);
+
+        var bookEditions = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
+
+        var response = _mapper.Map<PagedList<BookEditionPreviewResponse>>(bookEditions);
+
+        return response;
     }
 
     public Task<BookEditionDetailedResponse> GetBookEditionAsync(int bookId, int id)

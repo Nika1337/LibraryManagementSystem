@@ -1,10 +1,9 @@
 ﻿
-
 using System;
 
-namespace Nika1337.Library.Application.DataTransferObjects.Library.BookEditions;
+namespace Nika1337.Library.Domain.Specifications.BookEditions.Results;
 
-public record BookEditionPreviewResponse
+public class BookEditionResult
 {
     public required int Id { get; init; }
     public required string BookTitle { get; init; }
@@ -15,5 +14,5 @@ public record BookEditionPreviewResponse
     public required int? PageCount { get; init; }
     public required DateTime PublicationDate { get; init; }
     public required int AvaliableCopiesCount { get; init; }
-    public required bool IsActive { get; init; }
+    public required DateTime? DeletedDate { get; init; }
 }

@@ -22,7 +22,7 @@ public class AvailableBookEditionsSpecification : Specification<BookEdition, Ava
 
         Query.Where(be => be.DeletedDate == null);
 
-        Query.Where(be => be.Copies.Any(c => IsBookCopyAvaliable(c)));
+        Query.Where(be => be.Copies.Any(c => c.IsAvaliable()));
 
 
         Query.Select(be => new AvaliableBookEditionResult
@@ -31,16 +31,7 @@ public class AvailableBookEditionsSpecification : Specification<BookEdition, Ava
             BookTitle = be.Book.Title,
             PublisherName = be.Publisher.PublisherName,
             LanguageName = be.Language.Name,
-            AvaliableCopiesCount = be.Copies.Count(c => IsBookCopyAvaliable(c))
+            AvaliableCopiesCount = be.Copies.Count(c => c.IsAvaliable())
         });
-    }
-
-    private static bool IsBookCopyAvaliable(BookCopy bookCopy)
-    {
-        var isCopyLentOut = bookCopy.BookCopyCheckouts.Any(bcc => bcc.BookCopyCheckoutCloseTime == null);
-
-        var isCopyUsable = bookCopy.BookCopyCondition == BookCopyCondition.Usable;
-
-        return !isCopyLentOut && isCopyUsable;
     }
 }
