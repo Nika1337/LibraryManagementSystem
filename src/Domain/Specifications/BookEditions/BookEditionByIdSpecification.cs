@@ -11,6 +11,17 @@ public class BookEditionByIdSpecification : BaseModelByIdSpecification<BookEditi
 {
     public BookEditionByIdSpecification(int bookId, int id) : base(id)
     {
+        Query.Include(be => be.Book);
+
+        Query.Include(be => be.Publisher);
+
+        Query.Include(be => be.Language);
+
+        Query.Include(be => be.Room);
+
+        Query.Include(be => be.Copies)
+             .ThenInclude(c => c.BookCopyCheckouts);
+
         Query.Where(be => be.Book.Id == bookId);
 
         Query.Select(be => new BookEditionByIdResult

@@ -32,6 +32,9 @@ public class BookEditionSpecification : BaseModelSpecification<BookEdition, Book
 
         Query.Include(be => be.Room);
 
+        Query.Include(be => be.Copies)
+             .ThenInclude(c => c.BookCopyCheckouts);
+
         Query.Where(be => be.Book.Id == bookId);
 
         Query.Select(be => new BookEditionResult
