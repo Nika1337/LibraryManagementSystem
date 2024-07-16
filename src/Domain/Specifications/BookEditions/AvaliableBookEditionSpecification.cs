@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Nika1337.Library.Domain.Specifications.BookEditions;
 
-public class AvailableBookEditionsSpecification : Specification<BookEdition, AvaliableBookEditionResult>
+public class AvailableBookEditionsSpecification : NonDeletedSpecification<BookEdition, AvaliableBookEditionResult>
 {
     public AvailableBookEditionsSpecification(int bookId)
     {
@@ -19,8 +19,6 @@ public class AvailableBookEditionsSpecification : Specification<BookEdition, Ava
              .ThenInclude(c => c.BookCopyCheckouts);
 
         Query.Where(be => be.Book.Id == bookId);
-
-        Query.Where(be => be.DeletedDate == null);
 
         Query.Where(be => be.Copies.Any(c => c.IsAvaliable()));
 
