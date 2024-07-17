@@ -33,5 +33,8 @@ public class BookMappingProfile : Profile
             .ForMember(bpr => bpr.EditionsCount, opts => opts.MapFrom(b => b.Editions.Count))
             .ForMember(bpr => bpr.OriginalLanguageName, opts => opts.MapFrom(b => b.OriginalLanguage.Name))
             .ForMember(bpr => bpr.AuthorNames, opts => opts.MapFrom(b => b.Authors.Select(author => author.Name).ToArray()));
+
+        CreateMap<Book, BookPrimitiveResponse>()
+            .ForMember(bpr => bpr.AuthorNames, opts => opts.MapFrom(b => b.Authors.Select(author => author.Name).ToArray()));
     }
 }

@@ -19,5 +19,7 @@ public class PublisherMappingProfile : Profile
         CreateMap<Publisher, PublisherPreviewResponse>()
             .ForMember(pdr => pdr.PublishedBookEditionsCount, opts => opts.MapFrom(r => r.PublishedBookEditions.Count))
             .ForMember(ppr => ppr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
+
+        CreateMap<Publisher, PublisherPrimitiveResponse>();
     }
 }

@@ -18,5 +18,7 @@ public class RoomMappingProfile : Profile
         CreateMap<Room, RoomPreviewResponse>()
             .ForMember(rpr => rpr.EditionsCount, opts => opts.MapFrom(r => r.BookEditions.Count))
             .ForMember(rpr => rpr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
+
+        CreateMap<Room, RoomPrimitiveResponse>();
     }
 }
