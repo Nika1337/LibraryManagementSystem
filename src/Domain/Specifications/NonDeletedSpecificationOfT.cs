@@ -8,6 +8,7 @@ public class NonDeletedSpecification<T> : NonDeletedSpecification<T, T> where T 
 {
     public NonDeletedSpecification() : base()
     {
+        Query.Select(entity => entity);
     }
 }
 

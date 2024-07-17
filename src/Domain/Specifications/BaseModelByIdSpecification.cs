@@ -8,6 +8,7 @@ public abstract class BaseModelByIdSpecification<T> : BaseModelByIdSpecification
 {
     protected BaseModelByIdSpecification(int id) : base(id)
     {
+        Query.Select(entity => entity);
     }
 }
 

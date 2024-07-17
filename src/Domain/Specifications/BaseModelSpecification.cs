@@ -10,8 +10,9 @@ namespace Nika1337.Library.Domain.Specifications;
 
 public abstract class BaseModelSpecification<T> : BaseModelSpecification<T, T> where T : BaseModel
 {
-    public BaseModelSpecification(BaseModelSpecificationParameters<T> parameters) : base(parameters)
+    protected BaseModelSpecification(BaseModelSpecificationParameters<T> parameters) : base(parameters)
     {
+        Query.Select(entity => entity);
     }
 }
 
