@@ -30,7 +30,7 @@ public class BookEditionByIdSpecification : BaseModelByIdSpecification<BookEditi
             Isbn = be.Isbn,
             PageCount = be.PageCount,
             PublicationDate = be.PublicationDate,
-            BookId = be.Book.Id,
+            BookTitle = be.Book.Title,
             LanguageId = be.Language.Id,
             PublisherId = be.Publisher.Id,
             RoomId = be.Room.Id,
