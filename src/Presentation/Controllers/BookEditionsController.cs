@@ -86,7 +86,7 @@ public class BookEditionsController : BaseModelController<BookEdition>
             return View(model);
         }
 
-        return RedirectToAction(nameof(BookEditions));
+        return RedirectToRoute("BookEditions", new { bookId });
     }
 
     [HttpGet("{id:int}")]
