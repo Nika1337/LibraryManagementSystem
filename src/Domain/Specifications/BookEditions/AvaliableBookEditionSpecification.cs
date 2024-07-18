@@ -20,7 +20,7 @@ public class AvailableBookEditionsSpecification : NonDeletedSpecification<BookEd
 
         Query.Where(be => be.Book.Id == bookId);
 
-        Query.Where(be => be.Copies.Any(c => c.IsAvaliable()));
+        Query.Where(be => be.Copies.AsQueryable().Any(Extensions.IsAvaliable));
 
 
         Query.Select(be => new AvaliableBookEditionResult
@@ -29,7 +29,7 @@ public class AvailableBookEditionsSpecification : NonDeletedSpecification<BookEd
             BookTitle = be.Book.Title,
             PublisherName = be.Publisher.PublisherName,
             LanguageName = be.Language.Name,
-            AvaliableCopiesCount = be.Copies.Count(c => c.IsAvaliable())
+            AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsAvaliable)
         });
     }
 }

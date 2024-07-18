@@ -35,7 +35,7 @@ public class BookEditionByIdSpecification : BaseModelByIdSpecification<BookEditi
             PublisherId = be.Publisher.Id,
             RoomId = be.Room.Id,
             TotalCopiesCount = be.Copies.Count(c => c.DeletedDate == null),
-            AvaliableCopiesCount = be.Copies.Count(c => c.IsAvaliable()),
+            AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsAvaliable),
             DeletedDate = be.DeletedDate
         });
     }

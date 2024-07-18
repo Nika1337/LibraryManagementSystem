@@ -24,16 +24,12 @@ public class BookEditionSpecification : BaseModelSpecification<BookEdition, Book
         int bookId,
         BaseModelSpecificationParameters<BookEdition> parameters) : base(parameters)
     {
-        Query.Include(be => be.Book);
-
-        Query.Include(be => be.Publisher);
-
-        Query.Include(be => be.Language);
-
-        Query.Include(be => be.Room);
-
-        Query.Include(be => be.Copies)
-             .ThenInclude(c => c.BookCopyCheckouts);
+        Query.Include(be => be.Book)
+            .Include(be => be.Publisher)
+            .Include(be => be.Language)
+            .Include(be => be.Room)
+            .Include(be => be.Copies)
+            .ThenInclude(c => c.BookCopyCheckouts);
 
         Query.Where(be => be.Book.Id == bookId);
 
@@ -48,7 +44,7 @@ public class BookEditionSpecification : BaseModelSpecification<BookEdition, Book
             PageCount = be.PageCount,
             Isbn = be.Isbn,
             DeletedDate = be.DeletedDate,
-            AvaliableCopiesCount = be.Copies.Count(c => c.IsAvaliable())
+            AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsAvaliable)
         });
     }
 }
