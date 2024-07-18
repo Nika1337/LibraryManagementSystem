@@ -2,6 +2,7 @@
 using AutoMapper;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications.Books.Results;
 using System.Linq;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
@@ -29,10 +30,7 @@ public class BookMappingProfile : Profile
             .ForMember(bdr => bdr.AuthorIds, opts => opts.MapFrom(b => b.Authors.Select(author => author.Id)))
             .ForMember(bdr => bdr.OriginalLanguageId, opts => opts.MapFrom(b => b.OriginalLanguage.Id));
 
-        CreateMap<Book, BookPreviewResponse>()
-            .ForMember(bpr => bpr.EditionsCount, opts => opts.MapFrom(b => b.Editions.Count))
-            .ForMember(bpr => bpr.OriginalLanguageName, opts => opts.MapFrom(b => b.OriginalLanguage.Name))
-            .ForMember(bpr => bpr.AuthorNames, opts => opts.MapFrom(b => b.Authors.Select(author => author.Name).ToArray()));
+        CreateMap<BookPreviewResult, BookPreviewResponse>();
 
         CreateMap<Book, BookPrimitiveResponse>()
             .ForMember(bpr => bpr.AuthorNames, opts => opts.MapFrom(b => b.Authors.Select(author => author.Name).ToArray()));
