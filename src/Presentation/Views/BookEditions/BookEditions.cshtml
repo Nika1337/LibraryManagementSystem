@@ -1,0 +1,107 @@
+﻿@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.BookEditions.BookEditionPreviewViewModel>
+@{
+    ViewData["Title"] = "Book Editions";
+    Layout = "_ServerSideCardTableLayout";
+    var bookId = ViewContext.RouteData.Values["bookId"] as string;
+}
+@section Paging {
+    @await Html.PartialAsync("_PagingPartial", Model.MetaData)
+}
+@section Cards {
+    @foreach (var bookEdition in Model)
+    {
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" style="text-decoration:none; color:black" href="/Books/@bookId/BookEditions/@bookEdition.Id">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+                <div class="card-header d-flex justify-content-between align-items-center text-white">
+                    <span class="card-header-name">@bookEdition.BookTitle</span>
+                    @if (bookEdition.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Deleted</span>
+                    }
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div class="property">
+                        <span class="text-muted">Publisher:</span>
+                        <span>@bookEdition.PublisherName</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Language:</span>
+                        <span>@bookEdition.LanguageName</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">ISBN:</span>
+                        <span>@bookEdition.Isbn</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Publication Date:</span>
+                        <span>@bookEdition.PublicationDate.ToShortDateString()</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">Avaliable Copies Count:</span>
+                        <span>@bookEdition.AvaliableCopiesCount</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+}
+@section Table {
+    <table id="table" class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Publisher</th>
+                <th>Language</th>
+                <th>ISBN</th>
+                <th>Room Number</th>
+                <th>Page Count</th>
+                <th>Publication Date</th>
+                <th>Avaliable Copies Count</th>
+                <th>Status</th>
+                <th style="width: 8%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bookEdition in Model)
+            {
+                <tr class="table-row">
+                    <td>@bookEdition.BookTitle</td>
+                    <td>@bookEdition.PublisherName</td>
+                    <td>@bookEdition.LanguageName</td>
+                    <td>@bookEdition.Isbn</td>
+                    <td>@bookEdition.RoomNumber</td>
+                    <td>@bookEdition.PageCount</td>
+                    <td>@bookEdition.PublicationDate.ToShortDateString()</td>
+                    <td>@bookEdition.AvaliableCopiesCount</td>
+                    <td>
+                        @if (bookEdition.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Books/@bookId/BookEditions/@bookEdition.Id" class="btn btn-dark btn-sm no-wrap">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@section Fab {
+    <a href="/Books/@bookId/BookEditions/AddBookEdition" class="btn btn-primary btn-lg shadow-sm myfab">
+        Add Book Edition
+    </a>
+}
+@section Scripts {
+    <script>
+        const viewName = "BookEditions";
+    </script>
+}

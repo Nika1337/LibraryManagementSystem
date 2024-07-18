@@ -14,5 +14,6 @@ public class BookEditionPreviewViewModel
     public required string Isbn { get; init; }
     public required int? PageCount { get; init; }
     public required DateTime PublicationDate { get; init; }
+    public required int AvaliableCopiesCount { get; init; }
     public required bool IsActive { get; init; }
 }

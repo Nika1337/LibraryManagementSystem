@@ -16,5 +16,9 @@
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\Library\BookEditions\" />
+  </ItemGroup>
+
 
 </Project>

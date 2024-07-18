@@ -83,9 +83,10 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
 
         await _repository.AddAsync(bookEdition);
     }
+
     public async Task UpdateBookEditionAsync(int bookId, BookEditionUpdateRequest request)
     {
-        await ThrowIfBookEditionWithGivenIsbnHasDifferentIdAsync(request.Isbn, bookId);
+        await ThrowIfBookEditionWithGivenIsbnHasDifferentIdAsync(request.Isbn, request.Id);
 
         var bookEdition = await GetEntityAsync(request.Id);
 

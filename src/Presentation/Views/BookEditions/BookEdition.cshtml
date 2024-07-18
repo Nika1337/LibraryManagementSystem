@@ -1,0 +1,144 @@
+@model Nika1337.Library.Presentation.Models.BookEditions.BookEditionDetailedViewModel
+
+@{
+    Layout = "_DetailLayout";
+    ViewData["Title"] = $"Book Edition - {Model.BookTitle}";
+    var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
+    var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+    var bookId = ViewContext.RouteData.Values["bookId"] as string;
+}
+
+<form method="post" class="needs-validation" novalidate>
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <h5 class="card-header">Book Edition Details</h5>
+                <div class="card-body">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Isbn" class="form-label"></label>
+                                <input asp-for="Isbn" class="form-control" />
+                                <span asp-validation-for="Isbn" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="PageCount" class="form-label"></label>
+                                <input asp-for="PageCount" class="form-control" type="number" min="1" />
+                                <span asp-validation-for="PageCount" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="PublicationDate" class="form-label"></label>
+                                <input asp-for="PublicationDate" class="form-control" type="date" />
+                                <span asp-validation-for="PublicationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="DeletedDate" class="form-label"></label>
+                                <input asp-for="DeletedDate" class="form-control" type="date" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="LanguageId" class="form-label"></label>
+                                <select asp-for="LanguageId" id="LanguageId" class="form-select"></select>
+                                <span asp-validation-for="LanguageId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="PublisherId" class="form-label"></label>
+                                <select asp-for="PublisherId" id="PublisherId" class="form-select"></select>
+                                <span asp-validation-for="PublisherId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="RoomId" class="form-label"></label>
+                                <select asp-for="RoomId" id="RoomId" class="form-select"></select>
+                                <span asp-validation-for="RoomId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="BookTitle" class="form-label"></label>
+                                <input asp-for="BookTitle" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-group">
+                                <label asp-for="TotalCopiesCount" class="form-label"></label>
+                                <input asp-for="TotalCopiesCount" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-group">
+                                <label asp-for="AvaliableCopiesCount" class="form-label"></label>
+                                <input asp-for="AvaliableCopiesCount" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-end justify-content-end myfab-container">
+                        <div class="d-flex flex-column">
+                            <button type="submit" class="btn btn-primary myfab mb-2">Save Changes</button>
+                            <button type="button" class="btn @actionButtonClass myfab" data-bs-toggle="modal" data-bs-target="#actionModal">@userAction</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section ActionModal {
+    @await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Book Edition"));
+}
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Include Choices JavaScript (latest) -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script src="~/js/Shared/ActionModal.js"></script>
+    <script src="~/js/Library/BookEditions/BookEdition.js"></script>
+
+    <script>
+        const bookId = '@bookId';
+        const id = '@Model.Id';
+        const userAction = '@userAction';
+        const preselectedLanguage = @Model.LanguageId;
+        const preselectedPublisher = @Model.PublisherId;
+        const preselectedRoom = @Model.RoomId;
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+}
