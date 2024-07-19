@@ -1,0 +1,19 @@
+@model List<Nika1337.Library.Presentation.Models.BreadcrumbItem>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-3 mt-3 rounded custom-breadcrumb">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            if (i == Model.Count - 1)
+            {
+                <li class="breadcrumb-item active" aria-current="page">@Model[i].Label</li>
+            }
+            else
+            {
+                <li class="breadcrumb-item">
+                    <a href="@Model[i].Url">@Model[i].Label</a>
+                </li>
+            }
+        }
+    </ol>
+</nav>

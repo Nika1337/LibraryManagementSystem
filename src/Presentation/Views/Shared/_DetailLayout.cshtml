@@ -2,14 +2,19 @@
     Layout = "_Layout.cshtml";
 }
 
-<div class="container-fluid pt-5">
+<div class="pt-5">
     @RenderSection("Error", required: false)
     
     @RenderBody()
 </div>
 
 
+
 @RenderSection("ActionModal", required: false)
+
+@section Breadcrumb {
+    @RenderSection("Breadcrumb", required: false)
+}
 
 @section Scripts {
     @RenderSection("Scripts", required: false)

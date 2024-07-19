@@ -3,10 +3,34 @@
     ViewData["Title"] = "Book Editions";
     Layout = "_ServerSideCardTableLayout";
     var bookId = ViewContext.RouteData.Values["bookId"] as string;
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Books",
+            Url = "/Books"
+        },
+        new()
+        {
+            Label = "Book",
+            Url = $"/Books/{bookId}"
+        },
+        new()
+        {
+            Label = "Book Editions",
+            Url = $"/Books/{bookId}/BookEditions"
+        }
+    };
 }
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
 @section Paging {
     @await Html.PartialAsync("_PagingPartial", Model.MetaData)
 }
+
 @section Cards {
     @foreach (var bookEdition in Model)
     {
@@ -88,7 +112,7 @@
                         }
                     </td>
                     <td>
-                        <a href="/Books/@bookId/BookEditions/@bookEdition.Id" class="btn btn-dark btn-sm no-wrap">View Details</a>
+                        <a href="/Books/@bookId/BookEditions/@bookEdition.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
                     </td>
                 </tr>
             }

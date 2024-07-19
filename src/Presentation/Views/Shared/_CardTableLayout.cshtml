@@ -3,8 +3,7 @@
     Layout = "_Layout.cshtml";
 }
 
-<div class="container-fluid p-5">
-    <h2 class="text-center m-3">@ViewData["Title"]</h2>
+<div>
     <div class="row justify-content-between">
         <div class="col-md-4" style="width: fit-content">
             <div class="row flex-nowrap mb-4">
@@ -48,6 +47,10 @@
     @RenderSection("Body", required: false)
 </div>
 
+
+@section Breadcrumb {
+    @RenderSection("Breadcrumb", required: false)
+}
 
 @section Scripts {
     <script src="~/js/Shared/CardTableList.js"></script>

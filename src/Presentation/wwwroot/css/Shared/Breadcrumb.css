@@ -1,0 +1,15 @@
+
+.custom-breadcrumb {
+    font-size: 1.25rem; /* Equivalent to fs-5 */
+    font-weight: bold; /* Equivalent to fw-bold */
+    color: #343a40; /* Equivalent to text-dark */
+}
+
+.custom-breadcrumb a {
+    text-decoration: none;
+    color: var(--bs-primary);
+}
+
+.custom-breadcrumb a:hover {
+    text-decoration: underline;
+}

@@ -28,7 +28,6 @@
 }
 
 .text-muted {
-    color: #6c757d;
     font-size: 0.8rem;
 }
 
@@ -54,5 +53,5 @@
 }
 
 .toggle-icon.selected {
-    color: #784EF1;
+    color: var(--bs-secondary)
 }
