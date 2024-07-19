@@ -21,8 +21,8 @@
 .list-group-item.selected {
     z-index: 2;
     color: #fff;
-    background-color: #784EF1;
-    border-color: #784EF1;
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
 }
 
 .loading-indicator {

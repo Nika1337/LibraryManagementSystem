@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
-[Route("Books/Genres")]
+[Route("Genres")]
 public class GenresController : BaseModelController<Genre>
 {
     private readonly IMapper _mapper;

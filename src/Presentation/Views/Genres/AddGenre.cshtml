@@ -2,8 +2,24 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = Model.Name;
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Genres",
+            Url = "/Genres"
+        },
+        new()
+        {
+            Label = "Add",
+            Url = "/Genres/AddGenre"
+        }
+    };
 }
 
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
 
 <form asp-route="Books/Genres/AddGenre" method="post" class="needs-validation" novalidate>
     <div class="row justify-content-center">

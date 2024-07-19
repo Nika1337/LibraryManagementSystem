@@ -3,6 +3,19 @@
 @{
     ViewData["Title"] = "Languages";
     Layout = "_ServerSideCardTableLayout";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Languages",
+            Url = "/Languages"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 @section Paging {
@@ -13,7 +26,7 @@
 @section Cards {
     @foreach (var language in Model)
     {
-        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" data-name="@language.Name" data-active="@(!language.DeletedDate.HasValue)" href="/Books/Languages/@language.Id" style="text-decoration:none">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" href="/Languages/@language.Id" style="text-decoration:none">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white" style="border-bottom:unset">
                     <span class="card-header-name">@language.Name</span>
@@ -43,7 +56,7 @@
         <tbody>
             @foreach (var language in Model)
             {
-                <tr class="table-row" data-name="@language.Name" data-active="@(!language.DeletedDate.HasValue)">
+                <tr class="table-row">
                     <td>@language.Name</td>
                     <td>
                         @if (!language.DeletedDate.HasValue)
@@ -56,7 +69,7 @@
                         }
                     </td>
                     <td class="no-wrap">
-                        <a href="/Books/Languages/@language.Id" class="btn btn-info btn-sm">View Details</a>
+                        <a href="/Languages/@language.Id" class="btn btn-info btn-sm">View Details</a>
                     </td>
                 </tr>
             }
@@ -65,7 +78,7 @@
 }
 
 @section Fab {
-    <a href="/Books/Languages/AddLanguage" class="btn btn-primary btn-lg shadow-sm myfab">
+    <a href="/Languages/AddLanguage" class="btn btn-primary btn-lg shadow-sm myfab">
         Add Language
     </a>
 }

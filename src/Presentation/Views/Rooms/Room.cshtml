@@ -5,6 +5,24 @@
     ViewData["Title"] = Model.RoomNumber;
     var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
     var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Rooms",
+            Url = "/Rooms"
+        },
+        new()
+        {
+            Label = Model.Id.ToString(),
+            Url = $"/Rooms/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form asp-route="Location/Rooms/" method="post" class="needs-validation" novalidate>

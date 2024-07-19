@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    loadDropdownData('/Books/Languages/GetActiveLanguagePreviews', languageChoices);
-    loadDropdownData('/Books/Genres/GetActiveGenrePreviews', genreChoices);
-    loadDropdownData('/Books/Authors/GetActiveAuthorPreviews', authorChoices);
+    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices);
+    loadDropdownData('/Genres/GetActiveGenrePreviews', genreChoices);
+    loadDropdownData('/Authors/GetActiveAuthorPreviews', authorChoices);
 });

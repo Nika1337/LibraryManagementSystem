@@ -3,8 +3,25 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = "Add Room";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Rooms",
+            Url = "/Rooms"
+        },
+        new()
+        {
+            Label = "Add",
+            Url = "/Rooms/AddRoom"
+        }
+    };
 }
 
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
 
 <form asp-action="AddRoom" method="post" class="needs-validation" novalidate>
     <div class="row justify-content-center">

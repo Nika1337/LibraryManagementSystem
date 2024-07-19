@@ -1,7 +1,7 @@
 document.getElementById('confirmAction').addEventListener('click', function () {
 
-    var fetchPath = `/Books/Authors/${userAction}/${id}`;
-    var afterFetchPath = `/Books/Authors`;
+    var fetchPath = `/Authors/${userAction}/${id}`;
+    var afterFetchPath = `/Authors`;
 
     performAction(fetchPath, afterFetchPath);
 });

@@ -1,7 +1,7 @@
 document.getElementById('confirmAction').addEventListener('click', function () {
 
-    var fetchPath = `/Location/Rooms/${userAction}/${id}`;
-    var afterFetchPath = `/Location/Rooms`;
+    var fetchPath = `/Rooms/${userAction}/${id}`;
+    var afterFetchPath = `/Rooms`;
 
     performAction(fetchPath, afterFetchPath);
 });

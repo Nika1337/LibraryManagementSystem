@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    loadDropdownData('/Books/Languages/GetActiveLanguagePreviews', languageChoices, [preselectedLanguage]);
-    loadDropdownData('/Books/Genres/GetActiveGenrePreviews', genreChoices, preselectedGenres);
-    loadDropdownData('/Books/Authors/GetActiveAuthorPreviews', authorChoices, preselectedAuthors);
+    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, [preselectedLanguage]);
+    loadDropdownData('/Genres/GetActiveGenrePreviews', genreChoices, preselectedGenres);
+    loadDropdownData('/Authors/GetActiveAuthorPreviews', authorChoices, preselectedAuthors);
 });

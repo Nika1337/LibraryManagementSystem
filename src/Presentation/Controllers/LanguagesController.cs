@@ -7,7 +7,6 @@ using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
-using Nika1337.Library.Presentation.Models.Authors;
 using Nika1337.Library.Presentation.Models.Languages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
-[Route("Books/Languages")]
+[Route("Languages")]
 public class LanguagesController : BaseModelController<Language>
 {
     private readonly IMapper _mapper;

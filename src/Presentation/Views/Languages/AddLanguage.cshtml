@@ -2,8 +2,25 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = Model.Name;
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Languages",
+            Url = "/Languages"
+        },
+        new()
+        {
+            Label = "Add",
+            Url = "/Languages/AddLanguage"
+        }
+    };
 }
 
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
 
 <form asp-route="Books/Languages/AddLanguage" method="post" class="needs-validation" novalidate>
     <div class="row justify-content-center">

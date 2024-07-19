@@ -8,7 +8,6 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.Publishers;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +15,7 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 
 [Authorize(Roles = "Core Librarian")]
-[Route("Books/Publishers")]
+[Route("Publishers")]
 public class PublishersController : BaseModelController<Publisher>
 {
     private readonly IMapper _mapper;

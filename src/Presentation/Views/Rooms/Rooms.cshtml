@@ -3,6 +3,19 @@
 @{
     ViewData["Title"] = "Rooms";
     Layout = "_ServerSideCardTableLayout";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Rooms",
+            Url = "/Rooms"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 @section Paging {
@@ -12,7 +25,7 @@
 @section Cards {
     @foreach (var room in Model)
     {
-        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" style="text-decoration:none; color:black" href="/Location/Rooms/@room.Id">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" style="text-decoration:none; color:black" href="/Rooms/@room.Id">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@room.RoomNumber</span>
@@ -76,7 +89,7 @@
                         }
                     </td>
                     <td>
-                        <a href="/Location/Rooms/@room.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
+                        <a href="/Rooms/@room.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
                     </td>
                 </tr>
             }
@@ -87,7 +100,7 @@
 
 
 @section Fab {
-    <a href="/Location/Rooms/AddRoom" class="btn btn-primary btn-lg shadow-sm myfab">
+    <a href="/Rooms/AddRoom" class="btn btn-primary btn-lg shadow-sm myfab">
         Add Room
     </a>
 }

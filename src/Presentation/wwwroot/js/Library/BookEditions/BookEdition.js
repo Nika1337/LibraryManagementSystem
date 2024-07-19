@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    loadDropdownData('/Books/Languages/GetActiveLanguagePreviews', languageChoices, preselectedLanguage);
-    loadDropdownData('/Location/Rooms/GetActiveRooms', roomChoices, preselectedRoom);
-    loadDropdownData('/Books/Publishers/GetActivePublishers', publisherChoices, preselectedPublisher);
+    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, preselectedLanguage);
+    loadDropdownData('/Rooms/GetActiveRooms', roomChoices, preselectedRoom);
+    loadDropdownData('/Publishers/GetActivePublishers', publisherChoices, preselectedPublisher);
 });

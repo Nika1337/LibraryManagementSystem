@@ -3,8 +3,20 @@
 @{
     ViewData["Title"] = "Employees";
     Layout = "_ClientSideCardTableLayout";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Employees",
+            Url = "/Employees"
+        },
+    };
 }
 
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
 
 @section Cards {
     @foreach (var employee in Model)
@@ -17,7 +29,7 @@
             data-lastname="@employee.LastName"
             data-startdate="@employee.StartDate"
             data-startdate_rangetype="datetime-local"
-           data-donotincludedeleted="@employee.IsActive.ToString().ToLower()"
+            data-donotincludedeleted="@employee.IsActive.ToString().ToLower()"
             data-dateofbirth="@employee.DateOfBirth"
             data-dateofbirth_rangetype="datetime-local"
             style="text-decoration:none; color:black" 

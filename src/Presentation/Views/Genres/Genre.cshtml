@@ -4,6 +4,24 @@
     ViewData["Title"] = Model.Name;
     var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
     var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Genres",
+            Url = "/Genres"
+        },
+        new()
+        {
+            Label = Model.Id.ToString(),
+            Url = $"/Genres/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 

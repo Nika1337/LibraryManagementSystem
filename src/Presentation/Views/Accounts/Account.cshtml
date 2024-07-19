@@ -4,6 +4,24 @@
     ViewData["Title"] = Model.AccountName;
     var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
     var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Accounts",
+            Url = "/Accounts"
+        },
+        new()
+        {
+            Label = Model.Id.ToString(),
+            Url = $"/Accounts/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form asp-route="Accounts/" method="post" class="needs-validation" novalidate>

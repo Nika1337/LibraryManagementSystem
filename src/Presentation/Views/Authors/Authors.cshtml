@@ -9,7 +9,21 @@
         if (string.IsNullOrEmpty(value)) return value;
         return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
     }
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Authors",
+            Url = "/Authors"
+        }
+    };
 }
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
 
 @section Paging {
     @await Html.PartialAsync("_PagingPartial", Model.MetaData)
@@ -18,7 +32,7 @@
 @section Cards {
     @foreach (var author in Model)
     {
-        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" data-name="@author.Name" data-dateofbirth="@author.DateOfBirth" data-isalive="@author.IsAlive" data-active="@(!author.DeletedDate.HasValue)" href="/Books/Authors/@author.Id" style="text-decoration:none; color:black">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" href="/Authors/@author.Id" style="text-decoration:none; color:black">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@author.Name</span>
@@ -62,7 +76,7 @@
         <tbody>
             @foreach (var author in Model)
             {
-            <tr class="table-row" data-name="@author.Name" data-dateofbirth="@author.DateOfBirth" data-isalive="@author.IsAlive" data-active="@(!author.DeletedDate.HasValue)">
+            <tr class="table-row">
                     <td>@author.Name</td>
                     <td class="table-biography">@Truncate(author.Biography, 50)</td>
                     <td>@author.DateOfBirth.ToShortDateString()</td>
@@ -78,7 +92,7 @@
                         }
                     </td>
                     <td>
-                        <a href="/Books/Authors/@author.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
+                        <a href="/Authors/@author.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
                     </td>
                 </tr>
             }
@@ -87,7 +101,7 @@
 }
 
 @section Fab {
-    <a href="/Books/Authors/AddAuthor" class="btn btn-primary btn-lg shadow-sm myfab">
+    <a href="/Authors/AddAuthor" class="btn btn-primary btn-lg shadow-sm myfab">
         Add Author
     </a>
 }

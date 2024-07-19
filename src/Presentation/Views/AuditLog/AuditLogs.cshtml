@@ -16,6 +16,18 @@
         return badgeClass;
     }
 
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Audit Log",
+            Url = "/AuditLogs"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 @section Paging {

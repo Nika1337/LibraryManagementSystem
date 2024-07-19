@@ -5,6 +5,24 @@
     ViewData["Title"] = Model.PublisherName;
     var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
     var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Publishers",
+            Url = "/Publishers"
+        },
+        new()
+        {
+            Label = Model.Id.ToString(),
+            Url = $"/Publishers/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form asp-route="Books/Publishers/" method="post" class="needs-validation" novalidate>

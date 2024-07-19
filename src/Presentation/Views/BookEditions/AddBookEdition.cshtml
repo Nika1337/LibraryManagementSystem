@@ -3,6 +3,36 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = "Add Book Edition";
+
+    var bookId = ViewContext.RouteData.Values["bookId"] as string;
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Books",
+            Url = "/Books"
+        },
+        new()
+        {
+            Label = bookId ?? "Book",
+            Url = $"/Books/{bookId}"
+        },
+        new()
+        {
+            Label = "Book Editions",
+            Url = $"/Books/{bookId}/BookEditions"
+        },
+        new()
+        {
+            Label = "Add",
+            Url = $"/Books/{bookId}/BookEditions/AddBookEdition"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form asp-action="AddBookEdition" method="post" class="needs-validation" novalidate>

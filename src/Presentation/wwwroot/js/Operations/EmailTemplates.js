@@ -21,14 +21,14 @@ tinymce.init({
 });
 
 document.getElementById('confirmAction').addEventListener('click', function () {
-    var fetchPath = `/Operations/EmailTemplates/${userAction}/${id}`;
-    var afterFetchPath = `/Operations/EmailTemplates/${id}`;
+    var fetchPath = `/EmailTemplates/${userAction}/${id}`;
+    var afterFetchPath = `/EmailTemplates/${id}`;
 
     performAction(fetchPath, afterFetchPath);
 });
 function loadEmailTemplates() {
     $.ajax({
-        url: '/Operations/EmailTemplates',
+        url: '/EmailTemplates',
         method: 'GET',
         success: function (data) {
             var emailTemplatesList = $('#emailTemplatesList');
@@ -41,7 +41,7 @@ function loadEmailTemplates() {
             data.forEach(function (template) {
                 var isSelected = template.id == id;
                 var templateItem = `
-                                        <a href="/Operations/EmailTemplates/${template.id}" class="list-group-item list-group-item-action ${isSelected ? 'selected' : ''} py-3 lh-tight w-100">
+                                        <a href="/EmailTemplates/${template.id}" class="list-group-item list-group-item-action ${isSelected ? 'selected' : ''} py-3 lh-tight w-100">
                                             <div class="d-flex justify-content-between">
                                                 <div class="row">
                                                     <h5 class="mb-1">${template.name}</h5>

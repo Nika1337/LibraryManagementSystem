@@ -3,6 +3,7 @@
     ViewData["Title"] = "Book Editions";
     Layout = "_ServerSideCardTableLayout";
     var bookId = ViewContext.RouteData.Values["bookId"] as string;
+
     var breadcrumbItems = new List<BreadcrumbItem>
     {
         new()
@@ -12,7 +13,7 @@
         },
         new()
         {
-            Label = "Book",
+            Label = bookId ?? "Book",
             Url = $"/Books/{bookId}"
         },
         new()

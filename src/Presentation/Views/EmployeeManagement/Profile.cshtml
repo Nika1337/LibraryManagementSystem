@@ -4,6 +4,24 @@
     ViewData["Title"] = "Edit Employee";
     var userAction = Model.TerminationDate == null ? "Terminate" : "Renew";
     var actionButtonClass = Model.TerminationDate == null ? "btn-danger" : "btn-warning";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Employees",
+            Url = "/Employees"
+        },
+        new()
+        {
+            Label = Model.Id.ToString(),
+            Url = $"/Employees/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form asp-route="Employees/Profile" method="post" class="needs-validation" novalidate>

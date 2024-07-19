@@ -3,6 +3,19 @@
 @{
     ViewData["Title"] = "Accounts";
     Layout = "_ServerSideCardTableLayout";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Accounts",
+            Url = "/Accounts"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 @section Paging {

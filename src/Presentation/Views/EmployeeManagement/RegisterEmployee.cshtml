@@ -3,7 +3,26 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = "Register Employee";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Employees",
+            Url = "/Employees"
+        },
+        new()
+        {
+            Label = "Register",
+            Url = "/Employees/RegisterEmployee"
+        }
+    };
 }
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
 <div class="row justify-content-center">
    <div class="col-xl-8">
         <div class="card" style="">

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Location Manager")]
-[Route("Location/Rooms")]
+[Route("Rooms")]
 public class RoomsController : BaseModelController<Room>
 {
     private readonly IRoomService _roomService;

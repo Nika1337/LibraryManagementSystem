@@ -3,6 +3,19 @@
 @{
     ViewData["Title"] = "Publishers";
     Layout = "_ServerSideCardTableLayout";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Publishers",
+            Url = "/Publishers"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 @section Paging {
@@ -12,7 +25,7 @@
 @section Cards {
     @foreach (var publisher in Model)
     {
-        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" style="text-decoration:none; color:black" href="/Books/Publishers/@publisher.Id">
+        <a class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card" style="text-decoration:none; color:black" href="/Publishers/@publisher.Id">
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@publisher.PublisherName</span>
@@ -69,7 +82,7 @@
                         }
                     </td>
                     <td>
-                        <a href="/Books/Publishers/@publisher.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
+                        <a href="/Publishers/@publisher.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
                     </td>
                 </tr>
             }
@@ -78,7 +91,7 @@
 }
 
 @section Fab {
-    <a href="/Books/Publishers/AddPublisher" class="btn btn-primary btn-lg shadow-sm myfab">
+    <a href="/Publishers/AddPublisher" class="btn btn-primary btn-lg shadow-sm myfab">
         Add Publisher
     </a>
 }

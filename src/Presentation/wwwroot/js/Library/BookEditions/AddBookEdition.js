@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    loadDropdownData('/Books/Languages/GetActiveLanguagePreviews', languageChoices);
-    loadDropdownData('/Location/Rooms/GetActiveRooms', roomChoices);
-    loadDropdownData('/Books/Publishers/GetActivePublishers', publisherChoices);
+    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices);
+    loadDropdownData('/Rooms/GetActiveRooms', roomChoices);
+    loadDropdownData('/Publishers/GetActivePublishers', publisherChoices);
 });

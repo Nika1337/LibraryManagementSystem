@@ -3,6 +3,24 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = "Add Book";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Books",
+            Url = "/Books"
+        },
+        new()
+        {
+            Label = "Add",
+            Url = $"/Books/AddBook"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form asp-action="AddBook" method="post" class="needs-validation" novalidate>

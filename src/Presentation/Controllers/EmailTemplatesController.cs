@@ -14,7 +14,7 @@ namespace Nika1337.Library.Presentation.Controllers;
 
 
 [Authorize(Roles = "Operations Manager")]
-[Route("Operations/EmailTemplates")]
+[Route("EmailTemplates")]
 public class EmailTemplatesController : BaseModelController<EmailTemplate>
 {
     private readonly IEmailTemplateService _emailTemplateService;

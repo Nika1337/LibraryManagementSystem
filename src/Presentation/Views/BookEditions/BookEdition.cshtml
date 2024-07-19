@@ -5,7 +5,36 @@
     ViewData["Title"] = $"Book Edition - {Model.BookTitle}";
     var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
     var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+
     var bookId = ViewContext.RouteData.Values["bookId"] as string;
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Books",
+            Url = "/Books"
+        },
+        new()
+        {
+            Label = bookId ?? "Book",
+            Url = $"/Books/{bookId}"
+        },
+        new()
+        {
+            Label = "Book Editions",
+            Url = $"/Books/{bookId}/BookEditions"
+        },
+        new()
+        {
+            Label = Model.Id.ToString(),
+            Url = $"/Books/{bookId}/BookEditions/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 <form method="post" class="needs-validation" novalidate>

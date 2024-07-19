@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Operations Manager")]
-[Route("Operations/AuditLogs")]
-public class AuditLogsController : Controller
+[Route("AuditLog")]
+public class AuditLogController : Controller
 {
     private readonly IAuditLogService _auditLogService;
     private readonly Dictionary<string, SortOption<AuditLog>> _sortOptions =
@@ -39,7 +39,7 @@ public class AuditLogsController : Controller
             }
         ];
 
-    public AuditLogsController(IAuditLogService auditLogService)
+    public AuditLogController(IAuditLogService auditLogService)
     {
         _auditLogService = auditLogService;
     }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
 [Authorize(Roles = "Core Librarian")]
-[Route("Books/Authors")]
+[Route("Authors")]
 public class AuthorsController : BaseModelController<Author>
 {
     private readonly IMapper _mapper;
