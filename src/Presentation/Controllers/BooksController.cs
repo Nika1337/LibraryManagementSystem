@@ -27,7 +27,9 @@ public class BooksController : BaseModelController<Book>
             { "title", new("Title: A - Z", book => book.Title) },
             { "titleDesc", new("Title: Z - A", book => book.Title, true) },
             { "releaseDate", new( "Release Date: Ascending", book => book.OriginalReleaseDate) },
-            { "releaseDateDesc", new( "Release Date: Descending", book => book.OriginalReleaseDate, true) }
+            { "releaseDateDesc", new( "Release Date: Descending", book => book.OriginalReleaseDate, true) },
+            { "editionsCount", new("Total Editions Count: Ascending", book => book.Editions.Count) },
+            { "editionsCountDesc", new("Total Editions Count: Descending", book => book.Editions.Count, true) }
         };
 
     public BooksController(
