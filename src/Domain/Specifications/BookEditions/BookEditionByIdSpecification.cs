@@ -20,7 +20,8 @@ public class BookEditionByIdSpecification : BaseModelByIdSpecification<BookEditi
         Query.Include(be => be.Room);
 
         Query.Include(be => be.Copies)
-             .ThenInclude(c => c.BookCopyCheckouts);
+             .ThenInclude(c => c.BookCopyCheckouts)
+             .ThenInclude(bcc => bcc.Checkout);
 
         Query.Where(be => be.Book.Id == bookId);
 
@@ -34,7 +35,7 @@ public class BookEditionByIdSpecification : BaseModelByIdSpecification<BookEditi
             LanguageId = be.Language.Id,
             PublisherId = be.Publisher.Id,
             RoomId = be.Room.Id,
-            TotalCopiesCount = be.Copies.Count(c => c.DeletedDate == null),
+            TotalCopiesCount = be.Copies.AsQueryable().Count(Extensions.ShouldIncludeInTotal),
             AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsAvaliable),
             DeletedDate = be.DeletedDate
         });

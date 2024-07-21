@@ -16,7 +16,8 @@ public class AvailableBookEditionsSpecification : NonDeletedSpecification<BookEd
         Query.Include(be => be.Language);
 
         Query.Include(be => be.Copies)
-             .ThenInclude(c => c.BookCopyCheckouts);
+             .ThenInclude(c => c.BookCopyCheckouts)
+             .ThenInclude(bcc => bcc.Checkout);
 
         Query.Where(be => be.Book.Id == bookId);
 
