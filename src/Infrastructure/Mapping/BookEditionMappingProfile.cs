@@ -27,8 +27,7 @@ public class BookEditionMappingProfile : Profile
 
         CreateMap<BookEditionByIdResult, BookEditionDetailedResponse>();
 
-        CreateMap<BookEditionResult, BookEditionPreviewResponse>()
-            .ForMember(bepr => bepr.IsActive, opts => opts.MapFrom(ber => ber.DeletedDate == null));
+        CreateMap<BookEditionResult, BookEditionPreviewResponse>();
 
         CreateMap<AvaliableBookEditionResult, BookEditionPrimitiveResponse>();
     }

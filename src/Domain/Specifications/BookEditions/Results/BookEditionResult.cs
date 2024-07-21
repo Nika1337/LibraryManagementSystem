@@ -14,5 +14,5 @@ public class BookEditionResult
     public required int? PageCount { get; init; }
     public required DateTime PublicationDate { get; init; }
     public required int AvaliableCopiesCount { get; init; }
-    public required DateTime? DeletedDate { get; init; }
+    public required bool IsActive { get; init; }
 }

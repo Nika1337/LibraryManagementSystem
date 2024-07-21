@@ -7,5 +7,5 @@ public class Checkout : BaseModel
     public required Account Account { get; set; }
     public required DateTime CheckoutTime { get; set; }
     public required DateTime SupposedReturnTime { get; set; }
-    public ICollection<BookCopyCheckout> BookCopyCheckouts { get; set; } = [];
+    public List<BookCopyCheckout> BookCopyCheckouts { get; set; } = [];
 }

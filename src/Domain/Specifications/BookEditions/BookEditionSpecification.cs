@@ -44,8 +44,8 @@ public class BookEditionSpecification : BaseModelSpecification<BookEdition, Book
             PublicationDate = be.PublicationDate,
             PageCount = be.PageCount,
             Isbn = be.Isbn,
-            DeletedDate = be.DeletedDate,
-            AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsAvaliable)
+            AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsAvaliable),
+            IsActive = be.DeletedDate == null
         });
     }
 }

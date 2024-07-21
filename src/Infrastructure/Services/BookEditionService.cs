@@ -167,15 +167,12 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
 
     private static void AddCopies(BookEdition bookEdition, int copiesCount)
     {
-        var newBookCopies = new List<BookCopy>();
-
         for (int i = 0; i < copiesCount; i++)
         {
             var bookCopy = new BookCopy { BookEdition = bookEdition };
-            newBookCopies.Add(bookCopy);
-        }
 
-        bookEdition.Copies.AddRange(newBookCopies);
+            bookEdition.Copies.Add(bookCopy);
+        }
     }
 
 }
