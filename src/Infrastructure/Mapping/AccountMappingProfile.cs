@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Account;
 using Nika1337.Library.Domain.Entities;
 using System;
@@ -24,7 +25,7 @@ public class AccountMappingProfile : Profile
             .ForMember(apr => apr.TotalCheckouts, opts => opts.MapFrom(ac => ac.Checkouts.Count()))
             .ForMember(apr => apr.IsActive, opts => opts.MapFrom(ac => ac.DeletedDate == null));
 
-        CreateMap<Account, AccountPrimitiveResponse>()
+        CreateMap<Account, PrimitiveResponse>()
             .ForMember(apr => apr.Name, opts => opts.MapFrom(ac => ac.AccountName));
 
     }

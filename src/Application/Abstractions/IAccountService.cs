@@ -11,7 +11,7 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IAccountService : IBaseModelService
 {
-    Task<IEnumerable<AccountPrimitiveResponse>> GetActiveAccountsAsync();
+    Task<IEnumerable<PrimitiveResponse>> GetActiveAccountsAsync();
     Task<PagedList<AccountPreviewResponse>> GetPagedAccountsAsync(BaseModelPagedRequest<Account> request);
     Task<AccountDetailedResponse> GetAccountAsync(int id);
     Task CreateAccountAsync(AccountCreateRequest request);

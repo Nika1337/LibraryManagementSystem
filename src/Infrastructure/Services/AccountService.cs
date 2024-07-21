@@ -8,10 +8,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Accounts;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Infrastructure.Services;
@@ -27,13 +24,13 @@ internal class AccountService : BaseModelService<Account>, IAccountService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AccountPrimitiveResponse>> GetActiveAccountsAsync()
+    public async Task<IEnumerable<PrimitiveResponse>> GetActiveAccountsAsync()
     {
         var specification = new NonDeletedSpecification<Account>();
 
         var accounts = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<AccountPrimitiveResponse>>(accounts);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(accounts);
 
         return response;
     }
