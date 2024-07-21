@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
-using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Books;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models.Books;
-using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Nika1337.Library.Presentation.Models;
@@ -119,5 +117,13 @@ public class BooksController : BaseModelController<Book>
         }
 
         return Redirect(returnUrl);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAvaliableBooks()
+    {
+        var books = await _bookService.GetAvaliableBooksAsync();
+
+        return Ok(books);
     }
 }

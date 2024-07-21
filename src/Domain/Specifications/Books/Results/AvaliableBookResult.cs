@@ -1,7 +1,7 @@
 ﻿
-namespace Nika1337.Library.Application.DataTransferObjects.Library.Books;
+namespace Nika1337.Library.Domain.Specifications.Books.Results;
 
-public record BookPrimitiveResponse
+public class AvaliableBookResult
 {
     public required int Id { get; init; }
     public required string Title { get; init; }

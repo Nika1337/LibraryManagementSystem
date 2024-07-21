@@ -12,6 +12,6 @@ public class BookEditionWithAvailableCopies : BaseModelByIdSpecification<BookEdi
     {
         Query.Where(be => be.Book.Id == bookId);
 
-        Query.Include(be => be.Copies.AsQueryable().Where(Extensions.IsAvaliable));
+        Query.Include(be => be.Copies.AsQueryable().Where(Extensions.IsBookCopyAvaliable));
     }
 }

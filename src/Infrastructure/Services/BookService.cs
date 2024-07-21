@@ -9,6 +9,7 @@ using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications.Authors;
 using Nika1337.Library.Domain.Specifications.Books;
 using Nika1337.Library.Domain.Specifications.Genres;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,6 +33,17 @@ internal class BookService : BaseModelService<Book>, IBookService
         _languageRepository = languageRepository;
         _genreRepository = genreRepository;
         _authorRepository = authorRepository;
+    }
+
+    public async Task<IEnumerable<PrimitiveResponse>> GetAvaliableBooksAsync()
+    {
+        var specification = new AvaliableBooksSpecification();
+
+        var books = await _repository.ListAsync(specification);
+
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(books);
+
+        return response;
     }
 
     public async Task<PagedList<BookPreviewResponse>> GetPagedBooksAsync(BaseModelPagedRequest<Book> request)
