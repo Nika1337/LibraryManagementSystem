@@ -24,7 +24,8 @@ public class AccountMappingProfile : Profile
             .ForMember(apr => apr.TotalCheckouts, opts => opts.MapFrom(ac => ac.Checkouts.Count()))
             .ForMember(apr => apr.IsActive, opts => opts.MapFrom(ac => ac.DeletedDate == null));
 
-        CreateMap<Account, AccountPrimitiveResponse>();
+        CreateMap<Account, AccountPrimitiveResponse>()
+            .ForMember(apr => apr.Name, opts => opts.MapFrom(ac => ac.AccountName));
 
     }
 

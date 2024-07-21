@@ -126,4 +126,11 @@ public class AccountsController : BaseModelController<Account>
         return RedirectToRoute("Accounts");
     }
 
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetActiveAccounts()
+    {
+        var accounts = await _accountService.GetActiveAccountsAsync();
+
+        return Ok(accounts);
+    }
 }
