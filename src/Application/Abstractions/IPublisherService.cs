@@ -11,7 +11,7 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IPublisherService : IBaseModelService
 {
-    Task<IEnumerable<PublisherPrimitiveResponse>> GetActivePublishersAsync();
+    Task<IEnumerable<PrimitiveResponse>> GetActivePublishersAsync();
     Task<PagedList<PublisherPreviewResponse>> GetPagedPublishersAsync(BaseModelPagedRequest<Publisher> request);
     Task<PublisherDetailedResponse> GetPublisherAsync(int id);
     Task CreatePublisherAsync(PublisherCreateRequest request);

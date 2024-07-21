@@ -26,13 +26,13 @@ internal class PublisherService : BaseModelService<Publisher>, IPublisherService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PublisherPrimitiveResponse>> GetActivePublishersAsync()
+    public async Task<IEnumerable<PrimitiveResponse>> GetActivePublishersAsync()
     {
         var specification = new NonDeletedSpecification<Publisher>();
 
         var publishers = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<PublisherPrimitiveResponse>>(publishers);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(publishers);
 
         return response;
     }

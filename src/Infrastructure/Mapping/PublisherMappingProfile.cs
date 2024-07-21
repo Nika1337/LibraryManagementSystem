@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Publishers;
 using Nika1337.Library.Domain.Entities;
 
@@ -20,7 +21,7 @@ public class PublisherMappingProfile : Profile
             .ForMember(pdr => pdr.PublishedBookEditionsCount, opts => opts.MapFrom(r => r.PublishedBookEditions.Count))
             .ForMember(ppr => ppr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
 
-        CreateMap<Publisher, PublisherPrimitiveResponse>()
+        CreateMap<Publisher, PrimitiveResponse>()
             .ForMember(ppr => ppr.Name, opts => opts.MapFrom(p => p.PublisherName));
     }
 }
