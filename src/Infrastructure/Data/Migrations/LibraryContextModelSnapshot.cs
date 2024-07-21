@@ -34,7 +34,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("BooksId");
 
-                    b.ToTable("AuthorBook");
+                    b.ToTable("AuthorBook", (string)null);
                 });
 
             modelBuilder.Entity("BookGenre", b =>
@@ -49,7 +49,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("GenresId");
 
-                    b.ToTable("BookGenre");
+                    b.ToTable("BookGenre", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Account", b =>
@@ -78,7 +78,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.AuditLog", b =>
@@ -114,7 +114,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Author", b =>
@@ -146,7 +146,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Book", b =>
@@ -183,7 +183,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("OriginalLanguageId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookCopy", b =>
@@ -204,7 +204,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("BookEditionId");
 
-                    b.ToTable("BookCopies");
+                    b.ToTable("BookCopies", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookCopyCheckout", b =>
@@ -225,7 +225,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("BookCopyId");
 
-                    b.ToTable("BookCopyCheckout", t =>
+                    b.ToTable("BookCopyCheckout", null, t =>
                         {
                             t.HasCheckConstraint("CK_CloseTimeWithStatus", "([BookCopyCheckoutStatus] IS NULL AND [BookCopyCheckoutCloseTime] IS NULL) OR ([BookCopyCheckoutStatus] IS NOT NULL AND [BookCopyCheckoutCloseTime] IS NOT NULL)");
                         });
@@ -275,7 +275,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("BookEditions");
+                    b.ToTable("BookEditions", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Checkout", b =>
@@ -287,9 +287,6 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookEditionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CheckoutTime")
@@ -305,9 +302,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("BookEditionId");
-
-                    b.ToTable("Checkouts", t =>
+                    b.ToTable("Checkouts", null, t =>
                         {
                             t.HasCheckConstraint("CK_ReturnMoreThanCheckout", "[SupposedReturnTime] > [CheckoutTime]");
                         });
@@ -354,7 +349,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailTemplates");
+                    b.ToTable("EmailTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Genre", b =>
@@ -380,7 +375,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genre", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Language", b =>
@@ -401,7 +396,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Publisher", b =>
@@ -426,7 +421,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publishers");
+                    b.ToTable("Publishers", (string)null);
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Room", b =>
@@ -453,7 +448,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("AuthorBook", b =>
@@ -488,7 +483,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Account", b =>
                 {
-                    b.OwnsOne("Nika1337.Library.Domain.Entities.ContactInformation", "ContactInformation", b1 =>
+                    b.OwnsOne("Nika1337.Library.Domain.Entities.Account.ContactInformation#Nika1337.Library.Domain.Entities.ContactInformation", "ContactInformation", b1 =>
                         {
                             b1.Property<int>("AccountId")
                                 .HasColumnType("int");
@@ -505,12 +500,12 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                             b1.HasKey("AccountId");
 
-                            b1.ToTable("Accounts");
+                            b1.ToTable("Accounts", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AccountId");
 
-                            b1.OwnsOne("Nika1337.Library.Domain.Entities.Address", "Address", b2 =>
+                            b1.OwnsOne("Nika1337.Library.Domain.Entities.Account.ContactInformation#Nika1337.Library.Domain.Entities.ContactInformation.Address#Nika1337.Library.Domain.Entities.Address", "Address", b2 =>
                                 {
                                     b2.Property<int>("ContactInformationAccountId")
                                         .HasColumnType("int");
@@ -537,7 +532,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                                     b2.HasKey("ContactInformationAccountId");
 
-                                    b2.ToTable("Accounts");
+                                    b2.ToTable("Accounts", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ContactInformationAccountId");
@@ -635,20 +630,12 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Nika1337.Library.Domain.Entities.BookEdition", "BookEdition")
-                        .WithMany()
-                        .HasForeignKey("BookEditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Account");
-
-                    b.Navigation("BookEdition");
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Publisher", b =>
                 {
-                    b.OwnsOne("Nika1337.Library.Domain.Entities.ContactInformation", "ContactInformation", b1 =>
+                    b.OwnsOne("Nika1337.Library.Domain.Entities.Publisher.ContactInformation#Nika1337.Library.Domain.Entities.ContactInformation", "ContactInformation", b1 =>
                         {
                             b1.Property<int>("PublisherId")
                                 .HasColumnType("int");
@@ -665,12 +652,12 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                             b1.HasKey("PublisherId");
 
-                            b1.ToTable("Publishers");
+                            b1.ToTable("Publishers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PublisherId");
 
-                            b1.OwnsOne("Nika1337.Library.Domain.Entities.Address", "Address", b2 =>
+                            b1.OwnsOne("Nika1337.Library.Domain.Entities.Publisher.ContactInformation#Nika1337.Library.Domain.Entities.ContactInformation.Address#Nika1337.Library.Domain.Entities.Address", "Address", b2 =>
                                 {
                                     b2.Property<int>("ContactInformationPublisherId")
                                         .HasColumnType("int");
@@ -697,7 +684,7 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
                                     b2.HasKey("ContactInformationPublisherId");
 
-                                    b2.ToTable("Publishers");
+                                    b2.ToTable("Publishers", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ContactInformationPublisherId");
