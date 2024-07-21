@@ -118,6 +118,7 @@ public static class Dependencies
         services.AddScoped<IPublisherService, PublisherService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IBookEditionService, BookEditionService>();
+        services.AddScoped<ICheckoutService, CheckoutService>();
 
         services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<INavigationMenuService, NavigationMenuService>();

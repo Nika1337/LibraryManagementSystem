@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 
 namespace Nika1337.Library.Domain.Specifications.Checkouts.Results;
 
