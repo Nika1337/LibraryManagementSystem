@@ -27,7 +27,6 @@ public class AvailableBookEditionsSpecification : NonDeletedSpecification<BookEd
         Query.Select(be => new AvaliableBookEditionResult
         {
             Id = be.Id,
-            BookTitle = be.Book.Title,
             PublisherName = be.Publisher.PublisherName,
             LanguageName = be.Language.Name,
             AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsBookCopyAvaliable)

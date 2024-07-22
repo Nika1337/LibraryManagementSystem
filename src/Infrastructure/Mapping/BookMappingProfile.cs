@@ -34,7 +34,7 @@ public class BookMappingProfile : Profile
         CreateMap<BookPreviewResult, BookPreviewResponse>();
 
         CreateMap<AvaliableBookResult, PrimitiveResponse>()
-            .ForMember(pr => pr.Name, opts => opts.MapFrom(abr => abr.Title + " By " + string.Join(", ", abr.AuthorNames)));
+            .ForMember(pr => pr.Name, opts => opts.MapFrom(abr => abr.Title + " By " + string.Join(", ", abr.AuthorNames.Take(2))));
 
     }
 }

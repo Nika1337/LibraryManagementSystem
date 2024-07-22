@@ -36,13 +36,13 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
         _publisherRepository = publisherRepository;
     }
 
-    public async Task<IEnumerable<BookEditionPrimitiveResponse>> GetAvaliableBookEditionsAsync(int bookId)
+    public async Task<IEnumerable<PrimitiveResponse>> GetAvaliableBookEditionsAsync(int bookId)
     {
         var specification = new AvailableBookEditionsSpecification(bookId);
 
         var bookEditions = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<BookEditionPrimitiveResponse>>(bookEditions);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(bookEditions);
 
         return response;
     }

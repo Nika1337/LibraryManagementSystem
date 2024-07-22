@@ -1,6 +1,7 @@
 ﻿
 
 using AutoMapper;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.BookEditions;
 using Nika1337.Library.Domain.Entities;
 using Nika1337.Library.Domain.Specifications.BookEditions.Results;
@@ -29,6 +30,10 @@ public class BookEditionMappingProfile : Profile
 
         CreateMap<BookEditionResult, BookEditionPreviewResponse>();
 
-        CreateMap<AvaliableBookEditionResult, BookEditionPrimitiveResponse>();
+        CreateMap<AvaliableBookEditionResult, PrimitiveResponse>()
+            .ForMember(
+                pr => pr.Name,
+                opts => opts.MapFrom(aber => $"Published by {aber.PublisherName} in {aber.LanguageName} has {aber.AvaliableCopiesCount} copies avaliable")
+            );
     }
 }

@@ -11,7 +11,7 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IBookEditionService : IBaseModelService
 {
-    Task<IEnumerable<BookEditionPrimitiveResponse>> GetAvaliableBookEditionsAsync(int bookId);
+    Task<IEnumerable<PrimitiveResponse>> GetAvaliableBookEditionsAsync(int bookId);
     Task<PagedList<BookEditionPreviewResponse>> GetPagedBookEditionsAsync(int bookId, BaseModelPagedRequest<BookEdition> request);
     Task<BookEditionDetailedResponse> GetBookEditionAsync(int bookId, int id);
     Task CreateBookEditionAsync(int bookId, BookEditionCreateRequest request);
