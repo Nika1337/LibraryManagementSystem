@@ -117,7 +117,8 @@
                         <div class="col-md-3 mb-3">
                             <div class="form-group">
                                 <label asp-for="AvaliableCopiesCount" class="form-label"></label>
-                                <input asp-for="AvaliableCopiesCount" class="form-control" readonly />
+                                <input asp-for="AvaliableCopiesCount" class="form-control" />
+                                <span asp-validation-for="AvaliableCopiesCount" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -165,6 +166,22 @@
         const preselectedLanguage = @Model.LanguageId;
         const preselectedPublisher = @Model.PublisherId;
         const preselectedRoom = @Model.RoomId;
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const avaliableCopiesInput = document.getElementById('AvaliableCopiesCount');
+            const totalCopiesInput = document.getElementById('TotalCopiesCount');
+
+            if (avaliableCopiesInput && totalCopiesInput) {
+                const initialTotalCopies = parseInt(totalCopiesInput.value, 10);
+                const initialAvaliableCopies = parseInt(avaliableCopiesInput.value, 10);
+                const initialDifference = initialTotalCopies - initialAvaliableCopies;
+
+                avaliableCopiesInput.addEventListener('input', () => {
+                    const currentAvaliableCopies = parseInt(avaliableCopiesInput.value, 10) || 0;
+                    totalCopiesInput.value = currentAvaliableCopies + initialDifference;
+                });
+            }
+        });
     </script>
 }
 

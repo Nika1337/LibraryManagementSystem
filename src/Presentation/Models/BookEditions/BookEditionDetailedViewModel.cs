@@ -44,7 +44,7 @@ public class BookEditionDetailedViewModel
     public required int TotalCopiesCount { get; init; }
 
     [DisplayName("Avaliable Copies Count")]
-    public required int AvaliableCopiesCount { get; init; }
+    public required int AvaliableCopiesCount { get; set; }
 
     [DisplayName("Deleted Date")]
     public required DateTime? DeletedDate { get; init; }

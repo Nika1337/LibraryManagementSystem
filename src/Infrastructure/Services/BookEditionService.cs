@@ -8,6 +8,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications.BookEditions;
 using Nika1337.Library.Domain.Specifications.BookEditions.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
         var bookEdition = await GetDetailedBookEditionAsync(bookId, id);
 
         var response = _mapper.Map<BookEditionDetailedResponse>(bookEdition);
-        
+
         return response;
     }
 
@@ -88,7 +89,10 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
     {
         await ThrowIfBookEditionWithGivenIsbnHasDifferentIdAsync(request.Isbn, request.Id);
 
-        var bookEdition = await GetEntityAsync(request.Id);
+
+        var specification = new BookEditionWithAvailableCopies(bookId, request.Id);
+
+        var bookEdition = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<BookEdition>(request.Id);
 
         _mapper.Map(request, bookEdition);
 
@@ -96,10 +100,49 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
         await AddPublisherAsync(bookEdition, request.PublisherId);
         await AddRoomAsync(bookEdition, request.RoomId);
 
+        UpdateCopies(bookEdition, request.AvaliableCopiesCount);
+
         await _repository.UpdateAsync(bookEdition);
     }
 
+    /// <summary>
+    /// Updated avaliable copies of given book edition according to new copies count
+    /// </summary>
+    /// <param name="bookEdition">Book edition with only avaliable copies included.</param>
+    /// <param name="newCopiesCount">Count of updated copies.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation.
+    /// </returns>
+    private static void UpdateCopies(BookEdition bookEdition, int newCopiesCount)
+    {
+        var copiesCount = bookEdition.Copies.Count;
 
+        if (copiesCount < newCopiesCount)
+        {
+            int copiesToAdd = newCopiesCount - copiesCount;
+            for (int i = 0; i < copiesToAdd; i++)
+            {
+                var newCopy = new BookCopy
+                {
+                    BookEdition = bookEdition
+                };
+                bookEdition.Copies.Add(newCopy);
+            }
+        }
+        else if (copiesCount > newCopiesCount)
+        {
+            int copiesToRemove = copiesCount - newCopiesCount;
+            var copiesToDelete = bookEdition.Copies
+                .Take(copiesToRemove)
+                .ToList();
+
+            foreach (var copy in copiesToDelete)
+            {
+                copy.Delete();
+            }
+        }
+
+    }
 
     private async Task<BookEditionByIdResult> GetDetailedBookEditionAsync(int bookId, int id)
     {
