@@ -25,6 +25,7 @@ public class BookCreateViewModel
 
     [Required(ErrorMessage = "Original Language is required")]
     [DisplayName("Original Language")]
+    [NotZero]
     public int OriginalLanguageId { get; set; }
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one genre")]

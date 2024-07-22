@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System;
+using Nika1337.Library.Presentation.Validation;
 
 namespace Nika1337.Library.Presentation.Models.BookEditions;
 
@@ -23,14 +24,17 @@ public class BookEditionDetailedViewModel
 
     [DisplayName("Language")]
     [Required(ErrorMessage = "Book Edition must have language")]
+    [NotZero]
     public required int LanguageId { get; set; }
 
     [DisplayName("Publisher")]
     [Required(ErrorMessage = "Book Edition must have publisher")]
+    [NotZero]
     public required int PublisherId { get; set; }
 
     [DisplayName("Room")]
     [Required(ErrorMessage = "Book Edition must be in a room")]
+    [NotZero]
     public required int RoomId { get; set; }
 
     [DisplayName("Book")]

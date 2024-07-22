@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nika1337.Library.Presentation.Validation;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,14 +21,17 @@ public class BookEditionCreateViewModel
 
     [DisplayName("Language")]
     [Required(ErrorMessage = "Book Edition must have language")]
+    [NotZero]
     public int LanguageId { get; set; }
 
     [DisplayName("Publisher")]
     [Required(ErrorMessage = "Book Edition must have publisher")]
+    [NotZero]
     public int PublisherId { get; set; }
 
     [DisplayName("Room")]
     [Required(ErrorMessage = "Book Edition must be in a room")]
+    [NotZero]
     public int RoomId { get; set; }
 
     [DisplayName("Copies Count")]
