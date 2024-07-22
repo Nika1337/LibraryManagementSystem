@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Library.Checkouts;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
+[Authorize(Roles = "Consultant")]
+[Route("Checkouts")]
 public class CheckoutsController : BaseModelController<Checkout>
 {
     private readonly ICheckoutService _checkoutService;
