@@ -12,7 +12,7 @@ using Nika1337.Library.Presentation.Models;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Librarian")]
+[Authorize(Roles = "Librarian,Consultant")]
 [Route("Books")]
 public class BooksController : BaseModelController<Book>
 {
@@ -38,6 +38,7 @@ public class BooksController : BaseModelController<Book>
         _bookService = bookService;
     }
 
+    
     [HttpGet(Name = "Books")]
     public async Task<IActionResult> Books(
         int pageNumber = 1, 
@@ -57,6 +58,7 @@ public class BooksController : BaseModelController<Book>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpGet("[action]")]
     public IActionResult AddBook()
     {
@@ -65,6 +67,7 @@ public class BooksController : BaseModelController<Book>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddBook(BookCreateViewModel model)
     {
@@ -97,6 +100,7 @@ public class BooksController : BaseModelController<Book>
         return View("Book", model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Books(BookDetailViewModel model)
     {

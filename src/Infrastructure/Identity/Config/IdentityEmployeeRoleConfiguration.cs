@@ -32,18 +32,8 @@ internal class IdentityEmployeeRoleConfiguration : IEntityTypeConfiguration<Iden
             },
             new IdentityEmployeeRole
             {
-                Name = "Core Librarian",
-                NormalizedName = "CORE LIBRARIAN"
-            },
-            new IdentityEmployeeRole
-            {
                 Name = "Consultant",
                 NormalizedName = "CONSULTANT"
-            },
-            new IdentityEmployeeRole
-            {
-                Name = "Location Manager",
-                NormalizedName = "LOCATION MANAGER"
             });
     }
 

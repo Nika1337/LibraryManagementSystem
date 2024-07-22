@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Location Manager")]
+[Authorize(Roles = "Librarian")]
 [Route("Rooms")]
 public class RoomsController : BaseModelController<Room>
 {

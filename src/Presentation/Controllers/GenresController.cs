@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Core Librarian")]
+[Authorize(Roles = "Librarian")]
 [Route("Genres")]
 public class GenresController : BaseModelController<Genre>
 {

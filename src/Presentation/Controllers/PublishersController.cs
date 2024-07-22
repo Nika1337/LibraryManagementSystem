@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-
-[Authorize(Roles = "Core Librarian")]
+    
+[Authorize(Roles = "Librarian")]
 [Route("Publishers")]
 public class PublishersController : BaseModelController<Publisher>
 {
