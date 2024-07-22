@@ -24,17 +24,17 @@ public class BookEditionDetailedViewModel
 
     [DisplayName("Language")]
     [Required(ErrorMessage = "Book Edition must have language")]
-    [NotZero]
+    [NotZero(ErrorMessage = "Book Edition must have language")]
     public required int LanguageId { get; set; }
 
     [DisplayName("Publisher")]
     [Required(ErrorMessage = "Book Edition must have publisher")]
-    [NotZero]
+    [NotZero(ErrorMessage = "Book Edition must have publisher")]
     public required int PublisherId { get; set; }
 
     [DisplayName("Room")]
     [Required(ErrorMessage = "Book Edition must be in a room")]
-    [NotZero]
+    [NotZero(ErrorMessage = "Book Edition must be in a room")]
     public required int RoomId { get; set; }
 
     [DisplayName("Book")]
