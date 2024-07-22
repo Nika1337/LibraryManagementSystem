@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Librarian")]
+[Authorize(Roles = "Librarian, Consultant")]
 [Route("Genres")]
 public class GenresController : BaseModelController<Genre>
 {
@@ -62,6 +62,7 @@ public class GenresController : BaseModelController<Genre>
         return View("Genre", model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Genres(GenreDetailViewModel model)
     {
@@ -85,6 +86,7 @@ public class GenresController : BaseModelController<Genre>
         return RedirectToRoute("Genres");
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpGet("[action]")]
     public IActionResult AddGenre()
     {
@@ -93,6 +95,7 @@ public class GenresController : BaseModelController<Genre>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddGenre(GenreCreateViewModel model)
     {

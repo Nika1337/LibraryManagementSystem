@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Nika1337.Library.Presentation.Controllers;
 
     
-[Authorize(Roles = "Librarian")]
+[Authorize(Roles = "Librarian, Consultant")]
 [Route("Publishers")]
 public class PublishersController : BaseModelController<Publisher>
 {
@@ -54,6 +54,7 @@ public class PublishersController : BaseModelController<Publisher>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpGet("[action]")]
     public IActionResult AddPublisher()
     {
@@ -62,6 +63,7 @@ public class PublishersController : BaseModelController<Publisher>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddPublisher(PublisherCreateViewModel model)
     {
@@ -95,6 +97,7 @@ public class PublishersController : BaseModelController<Publisher>
         return View("Publisher", model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Publishers(PublisherDetailedViewModel model)
     {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Librarian")]
+[Authorize(Roles = "Librarian, Consultant")]
 [Route("Authors")]
 public class AuthorsController : BaseModelController<Author>
 {
@@ -63,6 +63,7 @@ public class AuthorsController : BaseModelController<Author>
         return View("Author", model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Authors(AuthorDetailViewModel model)
     {
@@ -78,6 +79,7 @@ public class AuthorsController : BaseModelController<Author>
         return RedirectToRoute("Authors");
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpGet("[action]")]
     public IActionResult AddAuthor()
     {
@@ -86,6 +88,7 @@ public class AuthorsController : BaseModelController<Author>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddAuthor(AuthorCreateViewModel model)
     {
@@ -100,7 +103,6 @@ public class AuthorsController : BaseModelController<Author>
 
         return RedirectToAction(nameof(Authors));
     }
-
 
     [HttpGet("[action]")]
     public async Task<IActionResult> GetActiveAuthorPreviews()

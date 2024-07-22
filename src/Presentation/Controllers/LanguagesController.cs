@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Librarian")]
+[Authorize(Roles = "Librarian, Consultant")]
 [Route("Languages")]
 public class LanguagesController : BaseModelController<Language>
 {
@@ -63,6 +63,7 @@ public class LanguagesController : BaseModelController<Language>
         return View("Language", model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Languages(LanguageDetailedViewModel model)
     {
@@ -86,6 +87,7 @@ public class LanguagesController : BaseModelController<Language>
         return RedirectToRoute("Languages");
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpGet("[action]")]
     public IActionResult AddLanguage()
     {
@@ -94,6 +96,7 @@ public class LanguagesController : BaseModelController<Language>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddLanguage(LanguageCreateViewModel model)
     {

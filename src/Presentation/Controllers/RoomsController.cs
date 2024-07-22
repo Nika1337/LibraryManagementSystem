@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
-[Authorize(Roles = "Librarian")]
+[Authorize(Roles = "Librarian, Consultant")]
 [Route("Rooms")]
 public class RoomsController : BaseModelController<Room>
 {
@@ -58,6 +58,7 @@ public class RoomsController : BaseModelController<Room>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpGet("[action]")]
     public IActionResult AddRoom()
     {
@@ -66,6 +67,7 @@ public class RoomsController : BaseModelController<Room>
         return View(model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddRoom(RoomCreateViewModel model)
     {
@@ -99,6 +101,7 @@ public class RoomsController : BaseModelController<Room>
         return View("Room",model);
     }
 
+    [Authorize(Roles = "Librarian")]
     [HttpPost("{id:int}")]
     public async Task<IActionResult> Rooms(RoomDetailedViewModel model)
     {
