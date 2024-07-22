@@ -1,0 +1,108 @@
+﻿@model Nika1337.Library.Presentation.Models.Checkouts.CheckoutCreateViewModel
+
+@{
+    Layout = "_DetailLayout";
+    ViewData["Title"] = "Add Checkout";
+
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Checkouts",
+            Url = "/Checkouts"
+        },
+        new()
+        {
+            Label = "Add",
+            Url = $"/Checkouts/AddCheckout"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
+<form asp-action="AddCheckout" method="post" class="needs-validation" novalidate>
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <h5 class="card-header">Add Book Edition</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="AccountId" class="form-label"></label>
+                                <select asp-for="AccountId" id="AccountId" class="form-select"></select>
+                                <span asp-validation-for="AccountId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="BookId" class="form-label"></label>
+                                <select asp-for="BookId" id="BookId" class="form-select"></select>
+                                <span asp-validation-for="BookId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="BookEditionId" class="form-label"></label>
+                                <select asp-for="BookEditionId" id="BookEditionId" class="form-select"></select>
+                                <span asp-validation-for="BookEditionId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label asp-for="CopiesCount" class="form-label"></label>
+                                <input asp-for="CopiesCount" class="form-control" />
+                                <span asp-validation-for="CopiesCount" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="SupposedReturnTime" class="form-label"></label>
+                                <input asp-for="SupposedReturnTime" class="form-control" />
+                                <span asp-validation-for="SupposedReturnTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-end justify-content-end myfab-container">
+                        <button type="submit" class="btn btn-primary myfab">Add Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Include Choices JavaScript (latest) -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script src="~/js/Library/Checkouts/AddCheckout.js"></script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+}
