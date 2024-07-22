@@ -33,7 +33,7 @@ public class BookEditionMappingProfile : Profile
         CreateMap<AvaliableBookEditionResult, PrimitiveResponse>()
             .ForMember(
                 pr => pr.Name,
-                opts => opts.MapFrom(aber => $"Published by {aber.PublisherName} in {aber.LanguageName} has {aber.AvaliableCopiesCount} copies avaliable")
+                opts => opts.MapFrom(aber => $"ISBN: {aber.Isbn}, Published by {aber.PublisherName} in {aber.LanguageName} - {aber.AvaliableCopiesCount} copies available")
             );
     }
 }
