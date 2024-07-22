@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Rooms;
 using Nika1337.Library.Domain.Entities;
 
@@ -19,7 +20,7 @@ public class RoomMappingProfile : Profile
             .ForMember(rpr => rpr.EditionsCount, opts => opts.MapFrom(r => r.BookEditions.Count))
             .ForMember(rpr => rpr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
 
-        CreateMap<Room, RoomPrimitiveResponse>()
+        CreateMap<Room, PrimitiveResponse>()
             .ForMember(rpr => rpr.Name, opts => opts.MapFrom(r => r.RoomNumber));
     }
 }

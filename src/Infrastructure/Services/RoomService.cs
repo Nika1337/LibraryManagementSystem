@@ -24,13 +24,13 @@ internal class RoomService : BaseModelService<Room>, IRoomService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<RoomPrimitiveResponse>> GetActiveRoomsAsync()
+    public async Task<IEnumerable<PrimitiveResponse>> GetActiveRoomsAsync()
     {
         var specification = new NonDeletedSpecification<Room>();
 
         var rooms = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<RoomPrimitiveResponse>>(rooms);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(rooms);
 
         return response;
     }
