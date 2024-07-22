@@ -221,6 +221,25 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
                 Name = "Add Account",
                 Route = "/Accounts/AddAccount",
                 ParentNavigationMenuItemId = 32
+            },
+            new()
+            {
+                Id = 35,
+                Name = "Checkouts"
+            },
+            new()
+            {
+                Id = 36,
+                Name = "All Checkouts",
+                Route = "/Checkouts",
+                ParentNavigationMenuItemId = 35
+            },
+            new()
+            {
+                Id = 38,
+                Name = "Add Checkouts",
+                Route = "/Checkouts/AddCheckout",
+                ParentNavigationMenuItemId = 35
             }
         };
 
