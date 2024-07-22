@@ -13,16 +13,24 @@ public class CheckoutDetailedSpecification : BaseModelByIdSpecification<Checkout
     {
         Query.Include(ch => ch.Account);
 
-        var bookEditions = Query
+
+        Query
             .Include(ch => ch.BookCopyCheckouts)
-            .ThenInclude(bcc => bcc.BookCopy)
-            .ThenInclude(c => c.BookEdition);
+                .ThenInclude(bcc => bcc.BookCopy)
+                    .ThenInclude(c => c.BookEdition)
+                        .ThenInclude(be => be.Book);
 
-        bookEditions.ThenInclude(be => be.Book);
+        Query
+            .Include(ch => ch.BookCopyCheckouts)
+                .ThenInclude(bcc => bcc.BookCopy)
+                    .ThenInclude(c => c.BookEdition)
+                        .ThenInclude(be => be.Publisher);
 
-        bookEditions.ThenInclude(be => be.Publisher);
-
-        bookEditions.ThenInclude(be => be.Language);
+        Query
+            .Include(ch => ch.BookCopyCheckouts)
+                .ThenInclude(bcc => bcc.BookCopy)
+                    .ThenInclude(c => c.BookEdition)
+                        .ThenInclude(be => be.Language);
 
         Query.Select(ch => new CheckoutDetailedResult
         {
