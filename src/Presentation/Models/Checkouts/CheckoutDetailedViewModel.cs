@@ -48,5 +48,5 @@ public class CheckoutDetailedViewModel
 
     [DisplayName("Deleted Date")]
     public required DateTime? DeletedDate { get; init; }
-    public string? ErrorMessage { get; init; }
+    public string? ErrorMessage { get; set; }
 }
