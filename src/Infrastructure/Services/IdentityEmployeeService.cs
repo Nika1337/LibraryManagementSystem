@@ -132,7 +132,7 @@ internal class IdentityEmployeeService : IEmployeeService
             throw new ApplicationException($"Can not terminate already terminated employee with id '{id}'");
         }
 
-        employee.TerminationDate = DateTime.UtcNow;
+        employee.TerminationDate = DateTime.Now;
 
         await _userManager.UpdateAsync(employee);
     }
@@ -147,7 +147,7 @@ internal class IdentityEmployeeService : IEmployeeService
         }
 
         employee.TerminationDate = null;
-        employee.StartDate = DateTime.UtcNow;
+        employee.StartDate = DateTime.Now;
 
         await _userManager.UpdateAsync(employee);
     }

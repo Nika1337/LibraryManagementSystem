@@ -28,7 +28,7 @@ public class EmployeeMappingProfile : Profile
         CreateMap<EmployeeRegistrationRequest, IdentityEmployee>()
             .ForMember(ie => ie.Roles, opts => opts.Ignore())
             .ForMember(ie => ie.UserName, opts => opts.MapFrom(esp => esp.Username))
-            .ForMember(ie => ie.StartDate, opts => opts.MapFrom(esp => DateTime.UtcNow));
+            .ForMember(ie => ie.StartDate, opts => opts.MapFrom(esp => DateTime.Now));
 
 
         CreateMap<EmployeeManagerUpdateRequest, IdentityEmployee>()

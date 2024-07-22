@@ -11,7 +11,7 @@ public class CheckoutMappingProfile : Profile
     public CheckoutMappingProfile()
     {
         CreateMap<CheckoutCreateRequest, Checkout>()
-            .ForMember(ch => ch.CheckoutTime, opts => opts.MapFrom(ccr => DateTime.UtcNow));
+            .ForMember(ch => ch.CheckoutTime, opts => opts.MapFrom(ccr => DateTime.Now));
 
         CreateMap<CheckoutResult, CheckoutPreviewResponse>();
 

@@ -38,7 +38,7 @@ public static class LoggingHelper
                 EntityName = entityName,
                 ModifiedRowId = pk,
                 Action = modifiedEntity.State.ToString(),
-                Timestamp = DateTime.UtcNow,
+                Timestamp = DateTime.Now,
                 Changes = GetChanges(modifiedEntity),
                 UserId = userId,
             };

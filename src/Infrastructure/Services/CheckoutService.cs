@@ -75,7 +75,7 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
 
         ThrowIfCopiesDontMatch(request, checkout);
 
-        var now = DateTime.UtcNow;
+        var now = DateTime.Now;
         var bookCopyCheckouts = checkout.BookCopyCheckouts.ToList();
 
         var statusUpdates = new[]

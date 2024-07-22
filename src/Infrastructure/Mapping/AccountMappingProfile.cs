@@ -12,7 +12,7 @@ public class AccountMappingProfile : Profile
     public AccountMappingProfile()
     {
         CreateMap<AccountCreateRequest, Account>()
-            .ForMember(ac => ac.AccountCreationDate, opts => opts.MapFrom(acr => DateTime.UtcNow));
+            .ForMember(ac => ac.AccountCreationDate, opts => opts.MapFrom(acr => DateTime.Now));
 
         CreateMap<AccountUpdateRequest, Account>();
 

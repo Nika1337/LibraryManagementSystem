@@ -24,7 +24,7 @@ public class CheckoutCreateViewModel
 
     [Required(ErrorMessage = "Please specify when the copies should be returned")]
     [DisplayName("Supposed Return Time")]
-    public DateTime SupposedReturnTime { get; set; }
+    public DateTime SupposedReturnTime { get; set; } = DateTime.Now;
 
     public string? ErrorMessage { get; set; }
 }

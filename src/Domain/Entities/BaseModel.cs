@@ -50,7 +50,7 @@ public abstract class BaseModel : IEquatable<BaseModel>
 
     public void Delete()
     {
-        DeletedDate = DateTime.UtcNow;
+        DeletedDate = DateTime.Now;
     }
 
     public void Renew()
