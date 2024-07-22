@@ -73,6 +73,7 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
     {
         var checkout = await GetCheckoutWithBookCopyCheckouts(request.Id);
 
+        ThrowIfCheckoutIsAlreadyClosed(request.Id, checkout.BookCopyCheckouts);
         ThrowIfCopiesDontMatch(request, checkout);
 
         var now = DateTime.Now;
@@ -96,7 +97,13 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
         await _repository.UpdateAsync(checkout);
     }
 
-
+    private static void ThrowIfCheckoutIsAlreadyClosed(int id, List<BookCopyCheckout> bookCopyCheckouts)
+    {
+        if (bookCopyCheckouts.All(bcc => bcc.BookCopyCheckoutCloseTime != null))
+        {
+            throw new CheckoutAlreadyClosedException(id);
+        }
+    }
 
     private async Task<IEnumerable<BookCopy>> GetCopiesToAddIfAvailable(Checkout checkout, int bookId, int bookEditionId, int copiesCount)
     {
