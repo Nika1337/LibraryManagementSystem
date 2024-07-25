@@ -19,22 +19,13 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderValue: 'Select a book edition',
     });
 
-    // Load data for dropdowns
-    function loadDropdownData(url, choicesInstance) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const choices = data.map(item => ({
-                    value: item.id,
-                    label: item.name
-                }));
-                choicesInstance.setChoices(choices, 'value', 'label', true);
-            });
-    }
-
     // Load accounts and books
-    loadDropdownData('/Accounts/GetActiveAccounts', accountChoices);
-    loadDropdownData('/Books/GetAvaliableBooks', bookChoices);
+    loadDropdownData('/Accounts/GetActiveAccounts', accountChoices, [preselectedAccount]);
+    loadDropdownData('/Books/GetAvaliableBooks', bookChoices, [preselectedBook]);
+
+    if (preselectedBook != 0) {
+        loadDropdownData(`/Books/${preselectedBook}/BookEditions/GetAvaliableBookEditions`, bookEditionChoices, [preselectedBookEdition]);
+    }
 
     // Handle book selection and load book editions
     bookChoices.passedElement.element.addEventListener('change', function () {

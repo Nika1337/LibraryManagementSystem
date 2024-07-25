@@ -100,7 +100,12 @@
     <!-- Include Choices JavaScript (latest) -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-    <script src="~/js/Library/Checkouts/AddCheckout.js"></script>
+    <script src="~/js/Library/Checkouts/CheckoutChoices.js"></script>
+    <script>
+        const preselectedAccount = @Model.AccountId;
+        const preselectedBook = @Model.BookId;
+        const preselectedBookEdition = @Model.BookEditionId;
+    </script>
 }
 
 @section Styles {
