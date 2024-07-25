@@ -29,7 +29,8 @@ public class CheckoutCreateViewModel
 
     [Required(ErrorMessage = "Please specify when the copies should be returned")]
     [DisplayName("Supposed Return Time")]
-    public DateTime SupposedReturnTime { get; set; } = DateTime.Now;
+    [MinOneDayFromNow(ErrorMessage = "Supposed return time must be at least one day from now.")]
+    public DateTime SupposedReturnTime { get; set; } = DateTime.Now.AddDays(1);
 
     public string? ErrorMessage { get; set; }
 }
