@@ -120,7 +120,12 @@
     <!-- Include Choices JavaScript (latest) -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-    <script src="~/js/Books/AddBook.js"></script>
+    <script src="~/js/Books/BookChoices.js"></script>
+    <script>
+        const preselectedGenres = @Html.Raw(Json.Serialize(Model.GenreIds));
+        const preselectedAuthors = @Html.Raw(Json.Serialize(Model.AuthorIds));
+        const preselectedLanguage = @Model.OriginalLanguageId;
+    </script>
 }
 
 @section Styles {

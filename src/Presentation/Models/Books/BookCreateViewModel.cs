@@ -30,11 +30,11 @@ public class BookCreateViewModel
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one genre")]
     [DisplayName("Genres")]
-    public IList<int> GenreIds { get; set; }
+    public IList<int> GenreIds { get; set; } = [];
 
     [AtLeastOneElement(ErrorMessage = "Books need to have at least one author")]
     [DisplayName("Authors")]
-    public IList<int> AuthorIds { get; set; }
+    public IList<int> AuthorIds { get; set; } = [];
 
     public string? ErrorMessage { get; set; }
 }

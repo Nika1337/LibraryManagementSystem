@@ -21,20 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderValue: 'Select authors',
     });
 
-    // Load data for dropdowns
-    function loadDropdownData(url, choicesInstance) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const choices = data.map(item => ({
-                    value: item.id,
-                    label: item.name
-                }));
-                choicesInstance.setChoices(choices, 'value', 'label', true);
-            });
-    }
-
-    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices);
-    loadDropdownData('/Genres/GetActiveGenrePreviews', genreChoices);
-    loadDropdownData('/Authors/GetActiveAuthorPreviews', authorChoices);
+    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, [preselectedLanguage]);
+    loadDropdownData('/Genres/GetActiveGenrePreviews', genreChoices, preselectedGenres);
+    loadDropdownData('/Authors/GetActiveAuthorPreviews', authorChoices, preselectedAuthors);
 });
