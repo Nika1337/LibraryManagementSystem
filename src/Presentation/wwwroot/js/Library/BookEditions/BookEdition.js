@@ -6,44 +6,19 @@ document.getElementById('confirmAction').addEventListener('click', function () {
     performAction(fetchPath, afterFetchPath);
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Choices.js
-    const languageChoices = new Choices('#LanguageId', {
-        removeItemButton: true,
-        searchEnabled: true,
-        placeholder: true,
-        placeholderValue: 'Select a language',
-    });
 
-    const publisherChoices = new Choices('#PublisherId', {
-        removeItemButton: true,
-        searchEnabled: true,
-        placeholder: true,
-        placeholderValue: 'Select publisher',
-    });
+document.addEventListener('DOMContentLoaded', (event) => {
+    const avaliableCopiesInput = document.getElementById('AvaliableCopiesCount');
+    const totalCopiesInput = document.getElementById('TotalCopiesCount');
 
-    const roomChoices = new Choices('#RoomId', {
-        removeItemButton: true,
-        searchEnabled: true,
-        placeholder: true,
-        placeholderValue: 'Select room',
-    });
+    if (avaliableCopiesInput && totalCopiesInput) {
+        const initialTotalCopies = parseInt(totalCopiesInput.value, 10);
+        const initialAvaliableCopies = parseInt(avaliableCopiesInput.value, 10);
+        const initialDifference = initialTotalCopies - initialAvaliableCopies;
 
-    // Load data for dropdowns and set preselected values
-    function loadDropdownData(url, choicesInstance, preselectedValue) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const choices = data.map(item => ({
-                    value: item.id,
-                    label: item.name,
-                    selected: preselectedValue === item.id
-                }));
-                choicesInstance.setChoices(choices, 'value', 'label', true);
-            });
+        avaliableCopiesInput.addEventListener('input', () => {
+            const currentAvaliableCopies = parseInt(avaliableCopiesInput.value, 10) || 0;
+            totalCopiesInput.value = currentAvaliableCopies + initialDifference;
+        });
     }
-
-    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, preselectedLanguage);
-    loadDropdownData('/Rooms/GetActiveRooms', roomChoices, preselectedRoom);
-    loadDropdownData('/Publishers/GetActivePublishers', publisherChoices, preselectedPublisher);
 });

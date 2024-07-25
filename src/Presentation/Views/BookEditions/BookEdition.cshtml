@@ -158,6 +158,7 @@
 
     <script src="~/js/Shared/ActionModal.js"></script>
     <script src="~/js/Library/BookEditions/BookEdition.js"></script>
+    <script src="~/js/Library/BookEditions/BookEditionChoices.js"></script>
 
     <script>
         const bookId = '@bookId';
@@ -166,22 +167,6 @@
         const preselectedLanguage = @Model.LanguageId;
         const preselectedPublisher = @Model.PublisherId;
         const preselectedRoom = @Model.RoomId;
-
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const avaliableCopiesInput = document.getElementById('AvaliableCopiesCount');
-            const totalCopiesInput = document.getElementById('TotalCopiesCount');
-
-            if (avaliableCopiesInput && totalCopiesInput) {
-                const initialTotalCopies = parseInt(totalCopiesInput.value, 10);
-                const initialAvaliableCopies = parseInt(avaliableCopiesInput.value, 10);
-                const initialDifference = initialTotalCopies - initialAvaliableCopies;
-
-                avaliableCopiesInput.addEventListener('input', () => {
-                    const currentAvaliableCopies = parseInt(avaliableCopiesInput.value, 10) || 0;
-                    totalCopiesInput.value = currentAvaliableCopies + initialDifference;
-                });
-            }
-        });
     </script>
 }
 

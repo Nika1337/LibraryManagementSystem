@@ -131,7 +131,13 @@
     <!-- Include Choices JavaScript (latest) -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-    <script src="~/js/Library/BookEditions/AddBookEdition.js"></script>
+    <script src="~/js/Library/BookEditions/BookEditionChoices.js"></script>
+
+    <script>
+        const preselectedLanguage = @Model.LanguageId;
+        const preselectedPublisher = @Model.PublisherId;
+        const preselectedRoom = @Model.RoomId;
+    </script>
 }
 
 @section Styles {

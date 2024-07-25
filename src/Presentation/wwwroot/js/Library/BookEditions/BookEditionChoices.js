@@ -21,20 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         placeholderValue: 'Select room',
     });
 
-    // Load data for dropdowns and set preselected values
-    function loadDropdownData(url, choicesInstance) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const choices = data.map(item => ({
-                    value: item.id,
-                    label: item.name
-                }));
-                choicesInstance.setChoices(choices, 'value', 'label', true);
-            });
-    }
-
-    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices);
-    loadDropdownData('/Rooms/GetActiveRooms', roomChoices);
-    loadDropdownData('/Publishers/GetActivePublishers', publisherChoices);
+    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, [preselectedLanguage]);
+    loadDropdownData('/Rooms/GetActiveRooms', roomChoices, [preselectedRoom]);
+    loadDropdownData('/Publishers/GetActivePublishers', publisherChoices, [preselectedPublisher]);
 });
