@@ -1,14 +1,14 @@
 function togglePasswordVisibility(passwordInputId, toggleButtonId) {
-    var passwordInput = document.getElementById(passwordInputId);
-    var toggleButton = document.getElementById(toggleButtonId);
+    var $passwordInput = $('#' + passwordInputId);
+    var $toggleButton = $('#' + toggleButtonId);
 
-    toggleButton.addEventListener('click', function () {
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleButton.textContent = 'Hide';
+    $toggleButton.on('click', function () {
+        if ($passwordInput.attr('type') === 'password') {
+            $passwordInput.attr('type', 'text');
+            $toggleButton.text('Hide');
         } else {
-            passwordInput.type = 'password';
-            toggleButton.textContent = 'Show';
+            $passwordInput.attr('type', 'password');
+            $toggleButton.text('Show');
         }
     });
 }

@@ -20,12 +20,17 @@ tinymce.init({
     resize: true,
 });
 
-document.getElementById('confirmAction').addEventListener('click', function () {
-    var fetchPath = `/EmailTemplates/${userAction}/${id}`;
-    var afterFetchPath = `/EmailTemplates/${id}`;
+$(function () {
+    $('#confirmAction').on('click', function () {
 
-    performAction(fetchPath, afterFetchPath);
+        var fetchPath = `/EmailTemplates/${userAction}/${id}`;
+        var afterFetchPath = `/EmailTemplates/${id}`;
+
+        performAction(fetchPath, afterFetchPath);
+    });
 });
+
+
 function loadEmailTemplates() {
     $.ajax({
         url: '/EmailTemplates',

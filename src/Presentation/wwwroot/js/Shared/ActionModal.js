@@ -3,24 +3,24 @@
 
     // Define performAction function with parameters
     window.performAction = function (fetchPath, afterFetchPath) {
+        var token = $('input[name="__RequestVerificationToken"]').val();
 
-        var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-
-        fetch(`${fetchPath}`, {
+        $.ajax({
+            url: fetchPath,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'RequestVerificationToken': token
+            },
+            success: function () {
+                window.location.href = afterFetchPath;
+            },
+            error: function () {
+                alert('An error occurred while trying to perform action.');
             }
-        }).then(response => {
-            if (response.ok) {
-                window.location.href = `${afterFetchPath}`;
-            } else {
-                alert(`An error occurred while trying to perform action.`);
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-            alert(`An error occurred while trying to perform action.`);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', textStatus, errorThrown);
+            alert('An error occurred while trying to perform action.');
         });
     };
 })();

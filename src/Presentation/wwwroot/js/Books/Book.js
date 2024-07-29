@@ -1,7 +1,9 @@
-document.getElementById('confirmAction').addEventListener('click', function () {
+$(function () {
+    $('#confirmAction').on('click', function () {
+        var fetchPath = `/Books/${userAction}/${id}`;
+        var afterFetchPath = `/Books`;
 
-    var fetchPath = `/Books/${userAction}/${id}`;
-    var afterFetchPath = `/Books`;
 
-    performAction(fetchPath, afterFetchPath);
+        performAction(fetchPath, afterFetchPath);
+    });
 });

@@ -1,23 +1,22 @@
 function showLogDetails(log) {
-    const modal = document.getElementById('logDetailsModal');
+    const $modal = $('#logDetailsModal');
 
-    modal.querySelector('#logApplication').textContent = log.applicationName;
-    modal.querySelector('#logId').textContent = log.id;
-    modal.querySelector('#logUserId').textContent = log.userId;
-    modal.querySelector('#logEntityName').textContent = log.entityName;
-    modal.querySelector('#logModifiedRowId').textContent = log.modifiedRowId;
-    modal.querySelector('#logAction').textContent = log.action;
-    modal.querySelector('#logTimestamp').textContent = new Date(log.timestamp).toLocaleString();
+    $modal.find('#logApplication').text(log.applicationName);
+    $modal.find('#logId').text(log.id);
+    $modal.find('#logUserId').text(log.userId);
+    $modal.find('#logEntityName').text(log.entityName);
+    $modal.find('#logModifiedRowId').text(log.modifiedRowId);
+    $modal.find('#logAction').text(log.action);
+    $modal.find('#logTimestamp').text(new Date(log.timestamp).toLocaleString());
 
-    const changesContent = modal.querySelector('#logChanges');
+    const $changesContent = $modal.find('#logChanges');
     try {
         const formattedChanges = JSON.stringify(JSON.parse(log.changes), null, 2);
-        changesContent.textContent = formattedChanges;
+        $changesContent.text(formattedChanges);
     } catch (e) {
-        changesContent.textContent = log.changes;
+        $changesContent.text(log.changes);
     }
 
-
-    const bootstrapModal = new bootstrap.Modal(modal);
+    const bootstrapModal = new bootstrap.Modal($modal[0]);
     bootstrapModal.show();
 }

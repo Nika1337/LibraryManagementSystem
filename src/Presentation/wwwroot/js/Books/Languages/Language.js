@@ -1,7 +1,9 @@
-document.getElementById('confirmAction').addEventListener('click', function () {
+$(function () {
+    $('#confirmAction').on('click', function () {
+        var fetchPath = `/Languages/${userAction}/${id}`;
+        var afterFetchPath = `/Languages`;
 
-    var fetchPath = `/Languages/${userAction}/${id}`;
-    var afterFetchPath = `/Languages`;
 
-    performAction(fetchPath, afterFetchPath);
+        performAction(fetchPath, afterFetchPath);
+    });
 });

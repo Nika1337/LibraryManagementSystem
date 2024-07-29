@@ -1,24 +1,26 @@
-document.getElementById('confirmAction').addEventListener('click', function () {
+$(function () {
+    $('#confirmAction').on('click', function () {
 
-    var fetchPath = `/Books/${bookId}/BookEditions/${userAction}/${id}`;
-    var afterFetchPath = `/Books/${bookId}/BookEditions`;
+        var fetchPath = `/Books/${bookId}/BookEditions/${userAction}/${id}`;
+        var afterFetchPath = `/Books/${bookId}/BookEditions`;
 
-    performAction(fetchPath, afterFetchPath);
+        performAction(fetchPath, afterFetchPath);
+    });
 });
 
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    const avaliableCopiesInput = document.getElementById('AvaliableCopiesCount');
-    const totalCopiesInput = document.getElementById('TotalCopiesCount');
+$(function () {
+    const $avaliableCopiesInput = $('#AvaliableCopiesCount');
+    const $totalCopiesInput = $('#TotalCopiesCount');
 
-    if (avaliableCopiesInput && totalCopiesInput) {
-        const initialTotalCopies = parseInt(totalCopiesInput.value, 10);
-        const initialAvaliableCopies = parseInt(avaliableCopiesInput.value, 10);
+    if ($avaliableCopiesInput.length && $totalCopiesInput.length) {
+        const initialTotalCopies = parseInt($totalCopiesInput.val(), 10);
+        const initialAvaliableCopies = parseInt($avaliableCopiesInput.val(), 10);
         const initialDifference = initialTotalCopies - initialAvaliableCopies;
 
-        avaliableCopiesInput.addEventListener('input', () => {
-            const currentAvaliableCopies = parseInt(avaliableCopiesInput.value, 10) || 0;
-            totalCopiesInput.value = currentAvaliableCopies + initialDifference;
+        $avaliableCopiesInput.on('input', () => {
+            const currentAvaliableCopies = parseInt($avaliableCopiesInput.val(), 10) || 0;
+            $totalCopiesInput.val(currentAvaliableCopies + initialDifference);
         });
     }
 });

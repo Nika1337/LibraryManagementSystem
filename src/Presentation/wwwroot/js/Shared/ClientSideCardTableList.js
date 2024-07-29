@@ -5,43 +5,38 @@ function search() {
 }
 
 function filter() {
-    var searchTerm = document.getElementById('searchTerm').value.toLowerCase();
-    var cards = document.querySelectorAll('.list-card');
-    var rows = document.querySelectorAll('.table-row');
+    const searchTerm = $('#searchTerm').val().toLowerCase();
+    const cards = $('.list-card');
+    const rows = $('.table-row');
 
     // Update currentFilters based on filter inputs
     updateCurrentFilters();
 
     console.log(currentFilters);
     function checkElement(element) {
+        const $element = $(element);
         console.log(element);
+
         // Check search term
-        var matchesSearch = searchableFieldNames.some(field =>
-            element.dataset[field].toLowerCase().includes(searchTerm)
+        const matchesSearch = searchableFieldNames.some(field =>
+            $element.data(field).toLowerCase().includes(searchTerm)
         );
 
         // Check filters
-        var matchesFilters = Object.entries(currentFilters).every(([filterName, filterValue]) => {
-            var formattedFilterName = removeWhiteSpaces(filterName).toLowerCase();
+        const matchesFilters = Object.entries(currentFilters).every(([filterName, filterValue]) => {
+            const formattedFilterName = removeWhiteSpaces(filterName).toLowerCase();
             console.log(formattedFilterName);
-            console.log(filterValue)
+            console.log(filterValue);
 
             if (typeof filterValue === 'boolean') {
-                console.log(`filterValue - ${filterValue}`)
-                console.log(`element.dataset[formattedFilterName] - ${element.dataset[formattedFilterName]}`)
-                return !filterValue || element.dataset[formattedFilterName] === 'true';
+                return !filterValue || $element.data(formattedFilterName) === true;
             } else if (typeof filterValue === 'object' && 'start' in filterValue && 'end' in filterValue) {
-                let value = element.dataset[formattedFilterName];
+                let value = $element.data(formattedFilterName);
                 let start = filterValue.start ? filterValue.start : -Infinity;
                 let end = filterValue.end ? filterValue.end : Infinity;
 
-
                 // Convert value to appropriate type based on range type
-                let rangeType = element.dataset[`${formattedFilterName}_rangetype`];
-
-                console.log(rangeType);
-
-                switch (rangeType) {
+                switch ($element.data(`${formattedFilterName}_rangetype`)) {
                     case 'datetime-local':
                     case 'date':
                         value = new Date(value).getTime();
@@ -55,22 +50,12 @@ function filter() {
                         break;
                 }
 
-                
-                console.log(value);
-                console.log(start);
-                console.log(end);
-                console.log(isNaN(start) && isNaN(end));
-                console.log(isNaN(start));
-                console.log(isNaN(end));
-
-
                 if (isNaN(start) && isNaN(end)) return true;
                 else if (isNaN(start)) return value <= end;
                 else if (isNaN(end)) return value >= start;
                 else return value >= start && value <= end;
-
             } else if (Array.isArray(filterValue)) {
-                return filterValue.includes(element.dataset[formattedFilterName]);
+                return filterValue.includes($element.data(formattedFilterName));
             }
             return true;
         });
@@ -78,46 +63,47 @@ function filter() {
         return matchesSearch && matchesFilters;
     }
 
-    cards.forEach(function (card) {
-        card.style.display = checkElement(card) ? '' : 'none';
+    cards.each(function () {
+        $(this).toggle(checkElement(this));
     });
 
-    rows.forEach(function (row) {
-        row.style.display = checkElement(row) ? '' : 'none';
+    rows.each(function () {
+        $(this).toggle(checkElement(this));
     });
 }
 
 function updateCurrentFilters() {
     currentFilters = {};
 
-    document.querySelectorAll('.filter-input').forEach(input => {
-        const filterName = input.dataset.filter;
-        const filterType = input.dataset.filterType;
+    $('.filter-input').each(function () {
+        const $input = $(this);
+        const filterName = $input.data('filter');
+        const filterType = $input.data('filterType');
 
-        console.log(`input - ${input.innerHTML}`);
+        console.log(`input - ${$input.html()}`);
         console.log(`filterName - ${filterName}`);
         console.log(`filterType - ${filterType}`);
 
         switch (filterType) {
             case 'checkbox':
-                currentFilters[filterName] = input.checked;
+                currentFilters[filterName] = $input.is(':checked');
                 break;
             case 'range':
                 if (!currentFilters[filterName]) {
                     currentFilters[filterName] = {};
                 }
-                if (input.id.endsWith('_start')) {
-                    currentFilters[filterName].start = input.value;
-                } else if (input.id.endsWith('_end')) {
-                    currentFilters[filterName].end = input.value;
+                if (this.id.endsWith('_start')) {
+                    currentFilters[filterName].start = $input.val();
+                } else if (this.id.endsWith('_end')) {
+                    currentFilters[filterName].end = $input.val();
                 }
                 break;
             case 'list':
                 if (!currentFilters[filterName]) {
                     currentFilters[filterName] = [];
                 }
-                if (input.checked) {
-                    currentFilters[filterName].push(input.value);
+                if ($input.is(':checked')) {
+                    currentFilters[filterName].push($input.val());
                 }
                 break;
         }
@@ -125,18 +111,21 @@ function updateCurrentFilters() {
 }
 
 function sort(element) {
-    var sortType = element.getAttribute('data-sort');
-    var sortLabel = document.getElementById('sortLabel');
-    sortLabel.innerText = element.innerText;
-    var cards = Array.from(document.querySelectorAll('.list-card'));
-    var rows = Array.from(document.querySelectorAll('.table-row'));
-    var sortFunction = getSortFunction(sortType);
+    const $element = $(element);
+    const sortType = $element.data('sort');
+    $('#sortLabel').text($element.text());
+    const cards = $('.list-card').toArray();
+    const rows = $('.table-row').toArray();
+    const sortFunction = getSortFunction(sortType);
     cards.sort(sortFunction);
     rows.sort(sortFunction);
     updateView('#cardView', cards);
     updateView('#table tbody', rows);
 }
 
+function initializeCurrentValues() {
+    // Empty on purpose, nothing to initialize
+}
 function getSortFunction(sortType) {
     return function (a, b) {
         var aData, bData;
