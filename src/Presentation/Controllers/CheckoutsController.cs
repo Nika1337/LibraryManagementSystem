@@ -116,11 +116,6 @@ public class CheckoutsController : BaseModelController<Checkout>
             model.ErrorMessage = e.Message;
             return View("Checkout", model);
         }
-        catch (CheckoutAlreadyClosedException)
-        {
-            model.ErrorMessage = "Checkout is already closed!";
-            return View("Checkout", model);
-        }
 
         return RedirectToRoute("Checkouts");
     }

@@ -59,7 +59,7 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
     {
         var checkout = _mapper.Map<Checkout>(request);
 
-        var copies = await GetCopiesToAddIfAvailable(checkout, request.BookId, request.BookEditionId, request.CopiesCount);
+        var copies = await GetCopiesToAddIfAvailable(request.BookId, request.BookEditionId, request.CopiesCount);
 
         AddBookCopyCheckouts(checkout, copies);
 
@@ -73,7 +73,6 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
     {
         var checkout = await GetCheckoutWithBookCopyCheckouts(request.Id);
 
-        ThrowIfCheckoutIsAlreadyClosed(request.Id, checkout.BookCopyCheckouts);
         ThrowIfCopiesDontMatch(request, checkout);
 
         var now = DateTime.Now;
@@ -97,15 +96,8 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
         await _repository.UpdateAsync(checkout);
     }
 
-    private static void ThrowIfCheckoutIsAlreadyClosed(int id, List<BookCopyCheckout> bookCopyCheckouts)
-    {
-        if (bookCopyCheckouts.All(bcc => bcc.BookCopyCheckoutCloseTime != null))
-        {
-            throw new CheckoutAlreadyClosedException(id);
-        }
-    }
 
-    private async Task<IEnumerable<BookCopy>> GetCopiesToAddIfAvailable(Checkout checkout, int bookId, int bookEditionId, int copiesCount)
+    private async Task<IEnumerable<BookCopy>> GetCopiesToAddIfAvailable(int bookId, int bookEditionId, int copiesCount)
     {
         var specification = new BookEditionWithAvailableCopies(bookId, bookEditionId);
 
@@ -154,7 +146,7 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
         return endIndex;
     }
 
-    private void ThrowIfCopiesDontMatch(CheckoutCloseRequest request, Checkout checkout)
+    private static void ThrowIfCopiesDontMatch(CheckoutCloseRequest request, Checkout checkout)
     {
         var expectedCount = checkout.BookCopyCheckouts.Count;
 
