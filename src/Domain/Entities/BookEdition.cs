@@ -12,4 +12,5 @@ public class BookEdition : BaseModel
     public required Language Language { get; set; }
     public required Room Room { get; set; }
     public List<BookCopy> Copies { get; set; } = [];
+    public List<BookEditionCopiesAuditEntry> Audit { get; set; } = [];
 }

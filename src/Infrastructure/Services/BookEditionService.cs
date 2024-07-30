@@ -144,9 +144,9 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
 
     }
 
-    private async Task<BookEditionByIdResult> GetDetailedBookEditionAsync(int bookId, int id)
+    private async Task<BookEditionDetailedResult> GetDetailedBookEditionAsync(int bookId, int id)
     {
-        var specification = new BookEditionByIdSpecification(bookId, id);
+        var specification = new BookEditionDetailedSpecification(bookId, id);
 
         var bookEdition = await _repository.SingleOrDefaultAsync(specification)
             ?? throw new NotFoundException<BookEdition>($"No Book Edition Found with Book Id '{bookId}' and Id '{id}'");

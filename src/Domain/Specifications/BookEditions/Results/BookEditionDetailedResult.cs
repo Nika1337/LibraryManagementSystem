@@ -2,7 +2,7 @@
 
 namespace Nika1337.Library.Domain.Specifications.BookEditions.Results;
 
-public class BookEditionByIdResult
+public class BookEditionDetailedResult
 {
     public required int Id { get; init; }
     public required string Isbn { get; init; }

@@ -26,7 +26,7 @@ public class BookEditionMappingProfile : Profile
             .ForMember(be => be.Room, opts => opts.Ignore())
             .ForMember(be => be.Copies, opts => opts.Ignore());
 
-        CreateMap<BookEditionByIdResult, BookEditionDetailedResponse>();
+        CreateMap<BookEditionDetailedResult, BookEditionDetailedResponse>();
 
         CreateMap<BookEditionResult, BookEditionPreviewResponse>();
 

@@ -7,25 +7,22 @@ using System.Linq;
 
 namespace Nika1337.Library.Domain.Specifications.BookEditions;
 
-public class BookEditionByIdSpecification : BaseModelByIdSpecification<BookEdition, BookEditionByIdResult>
+public class BookEditionDetailedSpecification : BaseModelByIdSpecification<BookEdition, BookEditionDetailedResult>
 {
-    public BookEditionByIdSpecification(int bookId, int id) : base(id)
+    public BookEditionDetailedSpecification(int bookId, int id) : base(id)
     {
-        Query.Include(be => be.Book);
+        Query.Include(be => be.Book)
+             .Include(be => be.Publisher)
+             .Include(be => be.Language)
+             .Include(be => be.Room)
+             .Include(be => be.Copies)
+                 .ThenInclude(c => c.BookCopyCheckouts)
+                 .ThenInclude(bcc => bcc.Checkout);
 
-        Query.Include(be => be.Publisher);
-
-        Query.Include(be => be.Language);
-
-        Query.Include(be => be.Room);
-
-        Query.Include(be => be.Copies)
-             .ThenInclude(c => c.BookCopyCheckouts)
-             .ThenInclude(bcc => bcc.Checkout);
 
         Query.Where(be => be.Book.Id == bookId);
 
-        Query.Select(be => new BookEditionByIdResult
+        Query.Select(be => new BookEditionDetailedResult
         {
             Id = be.Id,
             Isbn = be.Isbn,

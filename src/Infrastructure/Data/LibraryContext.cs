@@ -44,6 +44,7 @@ internal class LibraryContext(
         builder.ApplyConfiguration(new PublisherConfiguration());
         builder.ApplyConfiguration(new RoomConfiguration());
         builder.ApplyConfiguration(new BookCopyCheckoutConfiguration());
+        builder.ApplyConfiguration(new BookEditionCopiesAuditEntryConfiguration());
 
     }
 

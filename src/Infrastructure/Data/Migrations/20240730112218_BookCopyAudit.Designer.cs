@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nika1337.Library.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Nika1337.Library.Infrastructure.Data;
 namespace Nika1337.Library.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240730112218_BookCopyAudit")]
+    partial class BookCopyAudit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,19 +40,19 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     b.ToTable("AuthorBook");
                 });
 
-            modelBuilder.Entity("BookCopyBookEditionCopiesAuditEntry", b =>
+            modelBuilder.Entity("BookCopyBookCopyAuditEntry", b =>
                 {
-                    b.Property<int>("BookCopiesId")
+                    b.Property<int>("BookCopyAuditId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BookEditionCopiesAuditEntryId")
+                    b.Property<int>("ModelsChangedId")
                         .HasColumnType("int");
 
-                    b.HasKey("BookCopiesId", "BookEditionCopiesAuditEntryId");
+                    b.HasKey("BookCopyAuditId", "ModelsChangedId");
 
-                    b.HasIndex("BookEditionCopiesAuditEntryId");
+                    b.HasIndex("ModelsChangedId");
 
-                    b.ToTable("BookCopyBookEditionCopiesAuditEntry");
+                    b.ToTable("BookCopyBookCopyAuditEntry");
                 });
 
             modelBuilder.Entity("BookGenre", b =>
@@ -222,6 +225,29 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     b.ToTable("BookCopies");
                 });
 
+            modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookCopyAuditEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Action")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookCopyAuditEntry");
+                });
+
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookCopyCheckout", b =>
                 {
                     b.Property<int>("CheckoutId")
@@ -291,34 +317,6 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("BookEditions");
-                });
-
-            modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookEditionCopiesAuditEntry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Action")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookEditionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookEditionId");
-
-                    b.ToTable("BookEditionCopiesAuditEntry");
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Checkout", b =>
@@ -509,17 +507,17 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BookCopyBookEditionCopiesAuditEntry", b =>
+            modelBuilder.Entity("BookCopyBookCopyAuditEntry", b =>
                 {
-                    b.HasOne("Nika1337.Library.Domain.Entities.BookCopy", null)
+                    b.HasOne("Nika1337.Library.Domain.Entities.BookCopyAuditEntry", null)
                         .WithMany()
-                        .HasForeignKey("BookCopiesId")
+                        .HasForeignKey("BookCopyAuditId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nika1337.Library.Domain.Entities.BookEditionCopiesAuditEntry", null)
+                    b.HasOne("Nika1337.Library.Domain.Entities.BookCopy", null)
                         .WithMany()
-                        .HasForeignKey("BookEditionCopiesAuditEntryId")
+                        .HasForeignKey("ModelsChangedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -680,17 +678,6 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookEditionCopiesAuditEntry", b =>
-                {
-                    b.HasOne("Nika1337.Library.Domain.Entities.BookEdition", "BookEdition")
-                        .WithMany("Audit")
-                        .HasForeignKey("BookEditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BookEdition");
-                });
-
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Checkout", b =>
                 {
                     b.HasOne("Nika1337.Library.Domain.Entities.Account", "Account")
@@ -784,8 +771,6 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.BookEdition", b =>
                 {
-                    b.Navigation("Audit");
-
                     b.Navigation("Copies");
                 });
 
