@@ -14,6 +14,8 @@ public class BookEditionViewModelMappingProfile : Profile
 
         CreateMap<BookEditionPreviewResponse, BookEditionPreviewViewModel>();
 
+        CreateMap<BookEditionCopiesAuditEntryResponse, BookEditionCopiesAuditEntryViewModel>();
+
         CreateMap<BookEditionCreateViewModel, BookEditionCreateRequest>();
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 
 namespace Nika1337.Library.Application.DataTransferObjects.Library.BookEditions;
 
@@ -17,4 +18,5 @@ public record BookEditionDetailedResponse
     public required int TotalCopiesCount { get; init; }
     public required int AvaliableCopiesCount { get; init; }
     public required DateTime? DeletedDate { get; init; }
+    public required List<BookEditionCopiesAuditEntryResponse> Audit { get; init; }
 }

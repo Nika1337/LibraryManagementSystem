@@ -17,7 +17,10 @@ public class BookEditionDetailedSpecification : BaseModelByIdSpecification<BookE
              .Include(be => be.Room)
              .Include(be => be.Copies)
                  .ThenInclude(c => c.BookCopyCheckouts)
-                 .ThenInclude(bcc => bcc.Checkout);
+                 .ThenInclude(bcc => bcc.Checkout)
+             .Include(be => be.Audit)
+                 .ThenInclude(becae => becae.BookCopies);
+
 
 
         Query.Where(be => be.Book.Id == bookId);
@@ -34,6 +37,13 @@ public class BookEditionDetailedSpecification : BaseModelByIdSpecification<BookE
             RoomId = be.Room.Id,
             TotalCopiesCount = be.Copies.AsQueryable().Count(Extensions.ShouldIncludeBookCopyInTotal),
             AvaliableCopiesCount = be.Copies.AsQueryable().Count(Extensions.IsBookCopyAvaliable),
+            Audit = be.Audit.Select(becae => new BookEditionCopiesAuditEntryResult
+            {
+                Timestamp = becae.Timestamp,
+                Action = becae.Action,
+                Message = becae.Message,
+                ModifiedCopiesCount = becae.BookCopies.Count
+            }),
             DeletedDate = be.DeletedDate
         });
     }

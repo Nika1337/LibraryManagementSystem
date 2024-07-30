@@ -28,6 +28,8 @@ public class BookEditionMappingProfile : Profile
 
         CreateMap<BookEditionDetailedResult, BookEditionDetailedResponse>();
 
+        CreateMap<BookEditionCopiesAuditEntryResult, BookEditionCopiesAuditEntryResponse>();
+
         CreateMap<BookEditionResult, BookEditionPreviewResponse>();
 
         CreateMap<AvaliableBookEditionResult, PrimitiveResponse>()

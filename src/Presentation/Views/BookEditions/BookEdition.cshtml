@@ -131,6 +131,32 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-4">
+                <h5 class="card-header">Audit Information</h5>
+                <div class="card-body p-0">
+                    @if (Model.Audit != null && Model.Audit.Any())
+                    {
+                        <ul class="list-group list-group-flush audit-list">
+                            @foreach (var entry in Model.Audit.OrderByDescending(a => a.Timestamp))
+                            {
+                                <li class="list-group-item py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge @(entry.Action == Nika1337.Library.Domain.Entities.BookEditionCopiesAuditAction.Added ? "bg-success" : "bg-danger")">@entry.Action</span>
+                                        <small class="text-muted">@entry.Timestamp.ToString("g")</small>
+                                    </div>
+                                    <p class="mb-0 mt-1 small">@entry.Message</p>
+                                    <small class="text-muted">Modified Copies: @entry.ModifiedCopiesCount</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted m-3">No audit entries available.</p>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </form>
@@ -172,4 +198,5 @@
 
 @section Styles {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <link rel="stylesheet" href="~/css/Library/BookEditions/BookEdition.css" asp-append-version="true" />
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Nika1337.Library.Domain.Specifications.BookEditions.Results;
 
@@ -14,5 +15,6 @@ public class BookEditionDetailedResult
     public required int RoomId { get; init; }
     public required int TotalCopiesCount { get; init; }
     public required int AvaliableCopiesCount { get; init; }
+    public required IEnumerable<BookEditionCopiesAuditEntryResult> Audit { get; init; }
     public required DateTime? DeletedDate { get; init; }
 }

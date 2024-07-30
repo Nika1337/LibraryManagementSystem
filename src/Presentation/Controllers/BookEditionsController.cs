@@ -9,6 +9,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Presentation.Models;
 using Nika1337.Library.Presentation.Models.BookEditions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -93,6 +94,34 @@ public class BookEditionsController : BaseModelController<BookEdition>
     public async Task<IActionResult> BookEditions(int bookId, int id)
     {
         var bookEdition = await _bookEditionService.GetBookEditionAsync(bookId, id);
+
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        bookEdition.Audit.ForEach(becaer =>
+        {
+            Console.WriteLine(becaer.Action);
+            Console.WriteLine(becaer.Message);
+            Console.WriteLine(becaer.ModifiedCopiesCount);
+        });
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine();
 
         var model = _mapper.Map<BookEditionDetailedViewModel>(bookEdition);
 

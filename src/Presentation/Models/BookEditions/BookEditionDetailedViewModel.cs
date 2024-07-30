@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System;
 using Nika1337.Library.Presentation.Validation;
+using System.Collections.Generic;
 
 namespace Nika1337.Library.Presentation.Models.BookEditions;
 
@@ -45,6 +46,8 @@ public class BookEditionDetailedViewModel
 
     [DisplayName("Available Copies Count")]
     public required int AvaliableCopiesCount { get; set; }
+
+    public required List<BookEditionCopiesAuditEntryViewModel> Audit { get; set; } 
 
     [DisplayName("Deleted Date")]
     public required DateTime? DeletedDate { get; init; }
