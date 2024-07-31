@@ -15,7 +15,7 @@ public class AuthorCreateViewModel
 
     [Required]
     [Display(Name = "Date Of Birth")]
-    public DateTime DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; } = null;
 
     [Required]
     [Display(Name = "Alive")]

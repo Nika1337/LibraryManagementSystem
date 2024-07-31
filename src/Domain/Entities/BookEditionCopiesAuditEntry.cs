@@ -7,7 +7,7 @@ namespace Nika1337.Library.Domain.Entities;
 
 public class BookEditionCopiesAuditEntry
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required DateTime Timestamp { get; set; }
     public required BookEditionCopiesAuditAction Action { get; set; }
     public required string Message { get; set; }

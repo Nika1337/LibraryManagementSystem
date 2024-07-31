@@ -14,4 +14,5 @@ public record BookEditionUpdateRequest
     public required int LanguageId { get; init; }
     public required int RoomId { get; init; }
     public required int AvaliableCopiesCount { get; init; }
+    public required string? CopiesChangeReasonMessage { get; set; }
 }

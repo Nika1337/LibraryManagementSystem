@@ -1,6 +1,4 @@
-﻿
-
-using Nika1337.Library.Domain.Entities;
+﻿using Nika1337.Library.Domain.Entities;
 using System;
 using System.ComponentModel;
 

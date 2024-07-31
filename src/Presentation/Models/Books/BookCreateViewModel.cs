@@ -16,9 +16,10 @@ public class BookCreateViewModel
     [Required]
     [StringLength(300)]
     public string Summary { get; set; }
+
     [Required]
     [DisplayName("Original Release Date")]
-    public DateTime OriginalReleaseDate { get; set; } = DateTime.Now;
+    public DateTime? OriginalReleaseDate { get; set; } = null;
 
     [DisplayName("Minimum Age")]
     public byte? MinimumAge { get; set; }

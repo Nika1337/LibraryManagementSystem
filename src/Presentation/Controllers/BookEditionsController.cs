@@ -95,35 +95,9 @@ public class BookEditionsController : BaseModelController<BookEdition>
     {
         var bookEdition = await _bookEditionService.GetBookEditionAsync(bookId, id);
 
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        bookEdition.Audit.ForEach(becaer =>
-        {
-            Console.WriteLine(becaer.Action);
-            Console.WriteLine(becaer.Message);
-            Console.WriteLine(becaer.ModifiedCopiesCount);
-        });
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
-
         var model = _mapper.Map<BookEditionDetailedViewModel>(bookEdition);
+
+        SerializeAuditForView(model);
 
         return View("BookEdition", model);
     }
@@ -133,6 +107,7 @@ public class BookEditionsController : BaseModelController<BookEdition>
     {
         if (!ModelState.IsValid)
         {
+            model.Audit = DeserializeAudit(model.SerializedAudit);
             return View("BookEdition", model);
         }
 
@@ -145,6 +120,13 @@ public class BookEditionsController : BaseModelController<BookEdition>
         catch (IsbnDuplicateException)
         {
             model.ErrorMessage = $"Book Edition with Isbn '{model.Isbn}' already exists";
+            model.Audit = DeserializeAudit(model.SerializedAudit);
+            return View("BookEdition", model);
+        }
+        catch (CopiesChangedWithoutMessageException)
+        {
+            model.ErrorMessage = "Book Copy Changed without a reason message!";
+            model.Audit = DeserializeAudit(model.SerializedAudit);
             return View("BookEdition", model);
         }
 
@@ -157,5 +139,21 @@ public class BookEditionsController : BaseModelController<BookEdition>
         var bookEditions = await _bookEditionService.GetAvaliableBookEditionsAsync(bookId);
 
         return Ok(bookEditions);
+    }
+
+    private void SerializeAuditForView(BookEditionDetailedViewModel model)
+    {
+        if (model.Audit != null)
+        {
+            model.SerializedAudit = System.Text.Json.JsonSerializer.Serialize(model.Audit);
+        }
+    }
+
+    private List<BookEditionCopiesAuditEntryViewModel>? DeserializeAudit(string? serializedAudit)
+    {
+        if (string.IsNullOrEmpty(serializedAudit))
+            return null;
+
+        return System.Text.Json.JsonSerializer.Deserialize<List<BookEditionCopiesAuditEntryViewModel>>(serializedAudit);
     }
 }

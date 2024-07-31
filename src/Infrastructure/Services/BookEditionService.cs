@@ -75,12 +75,12 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
 
         var bookEdition = _mapper.Map<BookEdition>(request);
 
-        await AddBookAsync(bookEdition, bookId);
-        await AddLanguageAsync(bookEdition, request.LanguageId);
-        await AddPublisherAsync(bookEdition, request.PublisherId);
-        await AddRoomAsync(bookEdition, request.RoomId);
+        await InitializeBookAsync(bookEdition, bookId);
+        await SetLanguageAsync(bookEdition, request.LanguageId);
+        await SetPublisherAsync(bookEdition, request.PublisherId);
+        await SetRoomAsync(bookEdition, request.RoomId);
 
-        AddCopies(bookEdition, request.CopiesCount);
+        AddCopies(bookEdition, request.CopiesCount, "Initial Copy Addition");
 
         await _repository.AddAsync(bookEdition);
     }
@@ -96,11 +96,12 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
 
         _mapper.Map(request, bookEdition);
 
-        await AddLanguageAsync(bookEdition, request.LanguageId);
-        await AddPublisherAsync(bookEdition, request.PublisherId);
-        await AddRoomAsync(bookEdition, request.RoomId);
+        await SetLanguageAsync(bookEdition, request.LanguageId);
+        await SetPublisherAsync(bookEdition, request.PublisherId);
+        await SetRoomAsync(bookEdition, request.RoomId);
 
-        UpdateCopies(bookEdition, request.AvaliableCopiesCount);
+
+        UpdateCopies(bookEdition, request.AvaliableCopiesCount, request.CopiesChangeReasonMessage);
 
         await _repository.UpdateAsync(bookEdition);
     }
@@ -113,35 +114,28 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
     /// <returns>
     /// A task that represents the asynchronous operation.
     /// </returns>
-    private static void UpdateCopies(BookEdition bookEdition, int newCopiesCount)
+    private static void UpdateCopies(BookEdition bookEdition, int newCopiesCount, string? message)
     {
         var copiesCount = bookEdition.Copies.Count;
+
+        if (copiesCount == newCopiesCount)
+        {
+            return;
+        }
+
+        var notNullMessage = message ?? throw new CopiesChangedWithoutMessageException();
+
 
         if (copiesCount < newCopiesCount)
         {
             int copiesToAdd = newCopiesCount - copiesCount;
-            for (int i = 0; i < copiesToAdd; i++)
-            {
-                var newCopy = new BookCopy
-                {
-                    BookEdition = bookEdition
-                };
-                bookEdition.Copies.Add(newCopy);
-            }
+            AddCopies(bookEdition, copiesToAdd, notNullMessage);
         }
         else if (copiesCount > newCopiesCount)
         {
             int copiesToRemove = copiesCount - newCopiesCount;
-            var copiesToDelete = bookEdition.Copies
-                .Take(copiesToRemove)
-                .ToList();
-
-            foreach (var copy in copiesToDelete)
-            {
-                copy.Delete();
-            }
+            RemoveCopies(bookEdition, copiesToRemove, notNullMessage);
         }
-
     }
 
     private async Task<BookEditionDetailedResult> GetDetailedBookEditionAsync(int bookId, int id)
@@ -180,42 +174,75 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
         }
     }
 
-    private async Task AddBookAsync(BookEdition bookEdition, int bookId)
+    private async Task InitializeBookAsync(BookEdition bookEdition, int bookId)
     {
         var book = await _bookRepository.GetByIdAsync(bookId) ?? throw new NotFoundException<Book>(bookId);
 
         bookEdition.Book = book;
     }
 
-    private async Task AddLanguageAsync(BookEdition bookEdition, int languageId)
+    private async Task SetLanguageAsync(BookEdition bookEdition, int languageId)
     {
         var language = await _languageRepository.GetByIdAsync(languageId) ?? throw new NotFoundException<Language>(languageId);
 
         bookEdition.Language = language;
     }
 
-    private async Task AddPublisherAsync(BookEdition bookEdition, int publisherId)
+    private async Task SetPublisherAsync(BookEdition bookEdition, int publisherId)
     {
         var publisher = await _publisherRepository.GetByIdAsync(publisherId) ?? throw new NotFoundException<Publisher>(publisherId);
 
         bookEdition.Publisher = publisher;
     }
 
-    private async Task AddRoomAsync(BookEdition bookEdition, int roomId)
+    private async Task SetRoomAsync(BookEdition bookEdition, int roomId)
     {
         var room = await _roomRepository.GetByIdAsync(roomId) ?? throw new NotFoundException<Room>(roomId);
 
         bookEdition.Room = room;
     }
 
-    private static void AddCopies(BookEdition bookEdition, int copiesCount)
+    private static void AddCopies(BookEdition bookEdition, int copiesCount, string message)
     {
+        var auditEntry = new BookEditionCopiesAuditEntry()
+        {
+            Timestamp = DateTime.Now,
+            Action = BookEditionCopiesAuditAction.Added,
+            Message = message,
+            BookEdition = bookEdition
+        };
+
         for (int i = 0; i < copiesCount; i++)
         {
             var bookCopy = new BookCopy { BookEdition = bookEdition };
 
             bookEdition.Copies.Add(bookCopy);
+            auditEntry.BookCopies.Add(bookCopy);
         }
+
+        bookEdition.Audit.Add(auditEntry);
+    }
+
+    private static void RemoveCopies(BookEdition bookEdition, int copiesCount, string message)
+    {
+        var copiesToDelete = bookEdition.Copies
+                .Take(copiesCount)
+                .ToList();
+
+        var auditEntry = new BookEditionCopiesAuditEntry
+        {
+            Timestamp = DateTime.Now,
+            Action = BookEditionCopiesAuditAction.Deleted,
+            Message = message,
+            BookEdition = bookEdition,
+        };
+
+        foreach (var copy in copiesToDelete)
+        {
+            copy.Delete();
+            auditEntry.BookCopies.Add(copy);
+        }
+        bookEdition.Audit.Add(auditEntry);
     }
 
 }

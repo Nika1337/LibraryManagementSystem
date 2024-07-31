@@ -17,7 +17,7 @@ public class BookEditionCreateViewModel
 
     [Required(ErrorMessage = "Book Edition must have publication date")]
     [DisplayName("Publication Date")]
-    public DateTime PublicationDate { get; set; }
+    public DateTime? PublicationDate { get; set; } = null;
 
     [DisplayName("Language")]
     [Required(ErrorMessage = "Book Edition must have language")]

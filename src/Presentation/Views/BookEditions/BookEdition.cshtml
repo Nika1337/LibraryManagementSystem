@@ -123,6 +123,8 @@
                         </div>
                     </div>
 
+                    <input type="hidden" asp-for="CopiesChangeReasonMessage" id="CopiesChangeReasonMessage" />
+
                     <div class="d-flex align-items-end justify-content-end myfab-container">
                         <div class="d-flex flex-column">
                             <button type="submit" class="btn btn-primary myfab mb-2">Save Changes</button>
@@ -135,6 +137,8 @@
             <div class="card mb-4">
                 <h5 class="card-header">Audit Information</h5>
                 <div class="card-body p-0">
+                    <input type="hidden" asp-for="SerializedAudit" />
+
                     @if (Model.Audit != null && Model.Audit.Any())
                     {
                         <ul class="list-group list-group-flush audit-list">
@@ -160,6 +164,28 @@
         </div>
     </div>
 </form>
+
+<!-- Change Reason Modal -->
+<div class="modal fade" id="changeReasonModal" tabindex="-1" aria-labelledby="changeReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeReasonModalLabel">Reason for Change</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="changeReasonInput" class="form-label">Please enter a reason for changing the available copies count:</label>
+                    <textarea id="changeReasonInput" class="form-control" rows="3" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelChangeReason">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveChangeReason">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section ActionModal {
     @await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Book Edition"))
