@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+$(function () {
     // Initialize Choices.js
     const languageChoices = new Choices('#LanguageId', {
         removeItemButton: true,
