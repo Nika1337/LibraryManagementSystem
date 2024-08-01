@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         bookEditionChoices.setChoiceByValue('');
 
         if (bookId) {
-            loadDropdownData(`/Books/${bookId}/BookEditions/GetAvaliableBookEditions`, bookEditionChoices);
+            loadDropdownData(`/Books/${bookId}/BookEditions/GetAvaliableBookEditions`, bookEditionChoices, [preselectedBookEdition]);
         }
     });
 });
