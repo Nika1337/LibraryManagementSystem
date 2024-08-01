@@ -1,15 +1,13 @@
-
 $(function () {
     const $availableCopiesInput = $('#AvaliableCopiesCount');
     const $totalCopiesInput = $('#TotalCopiesCount');
-    const $changeReasonModal = $('#changeReasonModal');
-    const $saveChangeReasonBtn = $('#saveChangeReason');
-    const $cancelChangeReasonBtn = $('#cancelChangeReason');
+    const $editAvailableCopiesBtn = $('#editAvailableCopies');
+    const $editAvailableCopiesModal = $('#editAvailableCopiesModal');
+    const $newAvailableCopiesInput = $('#newAvailableCopies');
     const $changeReasonInput = $('#changeReasonInput');
+    const $saveAvailableCopiesBtn = $('#saveAvailableCopies');
     const $copiesChangeReasonMessage = $('#CopiesChangeReasonMessage');
     const $confirmActionBtn = $('#confirmAction');
-
-    let originalAvailableValue;
     let initialTotalCopies;
     let initialAvailableCopies;
     let initialDifference;
@@ -18,47 +16,33 @@ $(function () {
         initialTotalCopies = parseInt($totalCopiesInput.val(), 10);
         initialAvailableCopies = parseInt($availableCopiesInput.val(), 10);
         initialDifference = initialTotalCopies - initialAvailableCopies;
-
-        $availableCopiesInput.on('focus', function () {
-            originalAvailableValue = $(this).val();
-        });
-
-        $availableCopiesInput.on('input', function () {
-            const currentAvailableCopies = parseInt($(this).val(), 10) || 0;
-            $totalCopiesInput.val(currentAvailableCopies + initialDifference);
-        });
-
-        $availableCopiesInput.on('change', function () {
-            if ($(this).val() !== originalAvailableValue) {
-                $changeReasonModal.modal('show');
-            }
-        });
     }
 
-    $saveChangeReasonBtn.on('click', function () {
-        const reason = $changeReasonInput.val().trim();
-        if (reason) {
-            $copiesChangeReasonMessage.val(reason);
-            $changeReasonModal.modal('hide');
-        } else {
-            alert('Please enter a reason for the change.');
-        }
-    });
-
-    function revertChanges() {
-        $availableCopiesInput.val(originalAvailableValue);
-        $totalCopiesInput.val(parseInt(originalAvailableValue, 10) + initialDifference);
-        $copiesChangeReasonMessage.val('');
+    $editAvailableCopiesBtn.on('click', function () {
+        $newAvailableCopiesInput.val($availableCopiesInput.val());
         $changeReasonInput.val('');
-    }
-
-    $cancelChangeReasonBtn.on('click', function () {
-        revertChanges();
+        $editAvailableCopiesModal.modal('show');
     });
 
-    $changeReasonModal.on('hidden.bs.modal', function (event) {
-        if (event.target === this && !$copiesChangeReasonMessage.val()) {
-            revertChanges();
+    $saveAvailableCopiesBtn.on('click', function () {
+        const newAvailableCopies = parseInt($newAvailableCopiesInput.val(), 10);
+        const changeReason = $changeReasonInput.val().trim();
+
+        if (isNaN(newAvailableCopies) || newAvailableCopies < 0 || !changeReason) {
+            alert('Please enter a valid number of copies and a reason for the change.');
+            return;
+        }
+
+        $availableCopiesInput.val(newAvailableCopies);
+        $totalCopiesInput.val(newAvailableCopies + initialDifference);
+        $copiesChangeReasonMessage.val(changeReason);
+        $editAvailableCopiesModal.modal('hide');
+    });
+
+    $editAvailableCopiesModal.on('hidden.bs.modal', function () {
+        if (!$copiesChangeReasonMessage.val()) {
+            $availableCopiesInput.val(initialAvailableCopies);
+            $totalCopiesInput.val(initialTotalCopies);
         }
     });
 
