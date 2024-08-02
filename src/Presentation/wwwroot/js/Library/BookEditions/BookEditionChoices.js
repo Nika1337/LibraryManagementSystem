@@ -21,7 +21,7 @@ $(function () {
         placeholderValue: 'Select room',
     });
 
-    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, [preselectedLanguage]);
+    loadDropdownData('/Languages/GetActiveLanguages', languageChoices, [preselectedLanguage]);
     loadDropdownData('/Rooms/GetActiveRooms', roomChoices, [preselectedRoom]);
     loadDropdownData('/Publishers/GetActivePublishers', publisherChoices, [preselectedPublisher]);
 });

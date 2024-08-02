@@ -1,4 +1,4 @@
-@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.Genres.GenreViewModel>
+@model Nika1337.Library.Domain.RequestFeatures.PagedList<Nika1337.Library.Presentation.Models.Genres.GenrePreviewViewModel>
 
 @{
     ViewData["Title"] = "Genres";
@@ -29,7 +29,7 @@
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white">
                     <span class="card-header-name">@genre.Name</span>
-                    @if (!genre.DeletedDate.HasValue)
+                    @if (genre.IsActive)
                     {
                         <span class="badge bg-success badge-sm">Active</span>
                     }
@@ -65,7 +65,7 @@
                     <td>@genre.Name</td>
                     <td class="table-description">@genre.Description</td>
                     <td>
-                        @if (!genre.DeletedDate.HasValue)
+                        @if (genre.IsActive)
                         {
                             <span class="badge bg-success">Active</span>
                         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
 using Nika1337.Library.Domain.Entities;
 
@@ -12,8 +13,8 @@ public class AuthorMappingProfile : Profile
 
         CreateMap<AuthorUpdateRequest, Author>();
 
-        CreateMap<Author, AuthorResponse>();
-
         CreateMap<Author, AuthorPreviewResponse>();
+
+        CreateMap<Author, PrimitiveResponse>();
     }
 }

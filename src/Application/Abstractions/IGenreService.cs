@@ -11,9 +11,9 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IGenreService : IBaseModelService
 {
-    Task<PagedList<GenreResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request);
-    Task<IEnumerable<GenrePreviewResponse>> GetActiveGenrePreviewsAsync();
-    Task<GenreResponse> GetGenreAsync(int id);
+    Task<PagedList<GenrePreviewResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request);
+    Task<IEnumerable<PrimitiveResponse>> GetActiveGenresAsync();
+    Task<GenrePreviewResponse> GetGenreAsync(int id);
     Task CreateGenreAsync(GenreCreateRequest request);
     Task UpdateGenreAsync(GenreUpdateRequest request);
 }

@@ -23,7 +23,7 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
         _mapper = mapper;
     }
 
-    public async Task<PagedList<AuthorResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request)
+    public async Task<PagedList<AuthorPreviewResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Author>>(request);
 
@@ -31,27 +31,27 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
 
         var authors = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 
-        var result = _mapper.Map<PagedList<AuthorResponse>>(authors);
+        var result = _mapper.Map<PagedList<AuthorPreviewResponse>>(authors);
 
         return result;
     }
 
-    public async Task<IEnumerable<AuthorPreviewResponse>> GetActiveAuthorPreviewsAsync()
+    public async Task<IEnumerable<PrimitiveResponse>> GetActiveAuthorsAsync()
     {
         var specification = new NonDeletedSpecification<Author>();
 
         var authors = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<AuthorPreviewResponse>>(authors);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(authors);
 
         return response;
     }
 
-    public async Task<AuthorResponse> GetAuthorAsync(int id)
+    public async Task<AuthorPreviewResponse> GetAuthorAsync(int id)
     {
         var author = await GetEntityAsync(id);
 
-        var response = _mapper.Map<AuthorResponse>(author);
+        var response = _mapper.Map<AuthorPreviewResponse>(author);
 
         return response;
     }

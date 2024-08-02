@@ -24,7 +24,7 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
         _mapper = mapper;
     }
 
-    public async Task<PagedList<GenreResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request)
+    public async Task<PagedList<GenrePreviewResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Genre>>(request);
 
@@ -33,28 +33,28 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
 
         var genres = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 
-        var result = _mapper.Map<PagedList<GenreResponse>>(genres);
+        var result = _mapper.Map<PagedList<GenrePreviewResponse>>(genres);
 
         return result;
     }
 
-    public async Task<IEnumerable<GenrePreviewResponse>> GetActiveGenrePreviewsAsync()
+    public async Task<IEnumerable<PrimitiveResponse>> GetActiveGenresAsync()
     {
         var specification = new NonDeletedSpecification<Genre>();
 
         var genres = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<GenrePreviewResponse>>(genres);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(genres);
 
         return response;
     }
 
 
-    public async Task<GenreResponse> GetGenreAsync(int id)
+    public async Task<GenrePreviewResponse> GetGenreAsync(int id)
     {
         var genre = await GetEntityAsync(id);
 
-        var response = _mapper.Map<GenreResponse>(genre);
+        var response = _mapper.Map<GenrePreviewResponse>(genre);
 
         return response;
     }

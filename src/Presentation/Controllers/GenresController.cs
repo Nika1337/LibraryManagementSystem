@@ -47,7 +47,7 @@ public class GenresController : BaseModelController<Genre>
 
         var genres = await _genreService.GetPagedGenresAsync(request);
 
-        var model = _mapper.Map<PagedList<GenreViewModel>>(genres);
+        var model = _mapper.Map<PagedList<GenrePreviewViewModel>>(genres);
 
         return View(model);
     }
@@ -120,9 +120,9 @@ public class GenresController : BaseModelController<Genre>
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> GetActiveGenrePreviews(string query)
+    public async Task<IActionResult> GetActiveGenres(string query)
     {
-        var genres = await _genreService.GetActiveGenrePreviewsAsync();
+        var genres = await _genreService.GetActiveGenresAsync();
 
         return Ok(genres);
     }

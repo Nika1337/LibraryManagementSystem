@@ -10,9 +10,9 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface IAuthorService : IBaseModelService
 {
-    Task<PagedList<AuthorResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request);
-    Task<IEnumerable<AuthorPreviewResponse>> GetActiveAuthorPreviewsAsync();
-    Task<AuthorResponse> GetAuthorAsync(int id);
+    Task<PagedList<AuthorPreviewResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request);
+    Task<IEnumerable<PrimitiveResponse>> GetActiveAuthorsAsync();
+    Task<AuthorPreviewResponse> GetAuthorAsync(int id);
     Task CreateAuthorAsync(AuthorCreateRequest request);
     Task UpdateAuthorAsync(AuthorUpdateRequest request);
 }

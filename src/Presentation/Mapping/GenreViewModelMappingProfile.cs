@@ -9,9 +9,9 @@ public class GenreViewModelMappingProfile : Profile
     {
         CreateMap<GenreDetailViewModel, GenreUpdateRequest>();
 
-        CreateMap<GenreResponse, GenreDetailViewModel>();
+        CreateMap<GenrePreviewResponse, GenreDetailViewModel>();
 
-        CreateMap<GenreResponse, GenreViewModel>();
+        CreateMap<GenrePreviewResponse, GenrePreviewViewModel>();
 
         CreateMap<GenreCreateViewModel, GenreCreateRequest>();
     }

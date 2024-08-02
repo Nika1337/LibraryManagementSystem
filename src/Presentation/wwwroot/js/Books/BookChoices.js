@@ -23,7 +23,7 @@ $(function () {
         placeholderValue: 'Select authors',
     });
 
-    loadDropdownData('/Languages/GetActiveLanguagePreviews', languageChoices, [preselectedLanguage]);
-    loadDropdownData('/Genres/GetActiveGenrePreviews', genreChoices, preselectedGenres);
-    loadDropdownData('/Authors/GetActiveAuthorPreviews', authorChoices, preselectedAuthors);
+    loadDropdownData('/Languages/GetActiveLanguages', languageChoices, [preselectedLanguage]);
+    loadDropdownData('/Genres/GetActiveGenres', genreChoices, preselectedGenres);
+    loadDropdownData('/Authors/GetActiveAuthors', authorChoices, preselectedAuthors);
 });

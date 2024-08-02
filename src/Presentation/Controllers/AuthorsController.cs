@@ -48,7 +48,7 @@ public class AuthorsController : BaseModelController<Author>
 
         var authors = await _authorService.GetPagedAuthorsAsync(request);
 
-        var model = _mapper.Map<PagedList<AuthorViewModel>>(authors);
+        var model = _mapper.Map<PagedList<AuthorPreviewViewModel>>(authors);
 
         return View(model);
     }
@@ -105,9 +105,9 @@ public class AuthorsController : BaseModelController<Author>
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> GetActiveAuthorPreviews()
+    public async Task<IActionResult> GetActiveAuthors()
     {
-        var authors = await _authorService.GetActiveAuthorPreviewsAsync();
+        var authors = await _authorService.GetActiveAuthorsAsync();
 
         return Ok(authors);
     }
