@@ -1,10 +1,8 @@
-﻿
+﻿using System;
 
-using System;
+namespace Nika1337.Library.Domain.Specifications.Accounts.Results;
 
-namespace Nika1337.Library.Application.DataTransferObjects.Library.Account;
-
-public record AccountPreviewResponse
+public class AccountPreviewResult
 {
     public required int Id { get; init; }
     public required string AccountName { get; init; }

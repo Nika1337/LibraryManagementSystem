@@ -39,7 +39,7 @@ internal class AccountService : BaseModelService<Account>, IAccountService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Account>>(request);
 
-        var specification = new AccountSpecification(specificationParameters);
+        var specification = new AccountPreviewSpecification(specificationParameters);
 
         var accounts = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 

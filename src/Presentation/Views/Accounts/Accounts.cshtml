@@ -49,11 +49,11 @@
                     </div>
                     <div class="property">
                         <span class="text-muted">Total Checkouts:</span>
-                        <span>@account.TotalCheckouts</span>
+                        <span>@account.TotalCheckoutsCount</span>
                     </div>
                     <div class="property">
                         <span class="text-muted">Active Checkouts:</span>
-                        <span>@account.ActiveCheckouts</span>
+                        <span>@account.ActiveCheckoutsCount</span>
                     </div>
                 </div>
             </div>
@@ -81,8 +81,8 @@
                     <td>@account.AccountName</td>
                     <td>@account.CustomerIdentification</td>
                     <td>@account.AccountCreationDate.ToShortDateString()</td>
-                    <td>@account.TotalCheckouts</td>
-                    <td>@account.ActiveCheckouts</td>
+                    <td>@account.TotalCheckoutsCount</td>
+                    <td>@account.ActiveCheckoutsCount</td>
                     <td>
                         @if (account.IsActive)
                         {

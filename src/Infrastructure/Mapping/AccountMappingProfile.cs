@@ -2,6 +2,7 @@
 using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Account;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications.Accounts.Results;
 using System;
 using System.Linq;
 
@@ -20,10 +21,7 @@ public class AccountMappingProfile : Profile
             .ForMember(adr => adr.ActiveCheckouts, opts => opts.MapFrom(ac => GetActiveCheckoutsCount(ac)))
             .ForMember(adr => adr.TotalCheckouts, opts => opts.MapFrom(ac => ac.Checkouts.Count()));
 
-        CreateMap<Account, AccountPreviewResponse>()
-            .ForMember(apr => apr.ActiveCheckouts, opts => opts.MapFrom(ac => GetActiveCheckoutsCount(ac)))
-            .ForMember(apr => apr.TotalCheckouts, opts => opts.MapFrom(ac => ac.Checkouts.Count()))
-            .ForMember(apr => apr.IsActive, opts => opts.MapFrom(ac => ac.DeletedDate == null));
+        CreateMap<AccountPreviewResult, AccountPreviewResponse>();
 
         CreateMap<Account, PrimitiveResponse>()
             .ForMember(apr => apr.Name, opts => opts.MapFrom(ac => ac.AccountName));

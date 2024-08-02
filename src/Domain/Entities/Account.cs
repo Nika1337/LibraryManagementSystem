@@ -9,7 +9,5 @@ public class Account : BaseModel
     public DateTime AccountCreationDate { get; set; }
     public required ContactInformation ContactInformation { get; set; }
     public required string CustomerIdentification { get; set; }
-
-
     public ICollection<Checkout> Checkouts { get; } = [];
 }
