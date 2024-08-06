@@ -2,6 +2,7 @@
 using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Authors;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications.Authors.Results;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
 
@@ -13,7 +14,7 @@ public class AuthorMappingProfile : Profile
 
         CreateMap<AuthorUpdateRequest, Author>();
 
-        CreateMap<Author, AuthorPreviewResponse>();
+        CreateMap<AuthorResult, AuthorPreviewResponse>();
 
         CreateMap<Author, PrimitiveResponse>();
     }

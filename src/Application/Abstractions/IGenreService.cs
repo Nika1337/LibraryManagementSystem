@@ -13,7 +13,7 @@ public interface IGenreService : IBaseModelService
 {
     Task<PagedList<GenrePreviewResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request);
     Task<IEnumerable<PrimitiveResponse>> GetActiveGenresAsync();
-    Task<GenrePreviewResponse> GetGenreAsync(int id);
+    Task<GenreDetailedResponse> GetGenreAsync(int id);
     Task CreateGenreAsync(GenreCreateRequest request);
     Task UpdateGenreAsync(GenreUpdateRequest request);
 }

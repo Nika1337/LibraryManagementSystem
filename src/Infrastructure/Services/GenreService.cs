@@ -24,6 +24,17 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
         _mapper = mapper;
     }
 
+    public async Task<IEnumerable<PrimitiveResponse>> GetActiveGenresAsync()
+    {
+        var specification = new NonDeletedSpecification<Genre>();
+
+        var genres = await _repository.ListAsync(specification);
+
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(genres);
+
+        return response;
+    }
+
     public async Task<PagedList<GenrePreviewResponse>> GetPagedGenresAsync(BaseModelPagedRequest<Genre> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Genre>>(request);
@@ -38,23 +49,14 @@ internal class GenreService : BaseModelService<Genre>, IGenreService
         return result;
     }
 
-    public async Task<IEnumerable<PrimitiveResponse>> GetActiveGenresAsync()
+
+    public async Task<GenreDetailedResponse> GetGenreAsync(int id)
     {
-        var specification = new NonDeletedSpecification<Genre>();
+        var specification = new GenreDetailedSpecification(id);
 
-        var genres = await _repository.ListAsync(specification);
+        var genre = await _repository.SingleOrDefaultAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(genres);
-
-        return response;
-    }
-
-
-    public async Task<GenrePreviewResponse> GetGenreAsync(int id)
-    {
-        var genre = await GetEntityAsync(id);
-
-        var response = _mapper.Map<GenrePreviewResponse>(genre);
+        var response = _mapper.Map<GenreDetailedResponse>(genre);
 
         return response;
     }

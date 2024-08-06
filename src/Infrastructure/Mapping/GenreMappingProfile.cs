@@ -2,6 +2,7 @@
 using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Genres;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications.Genres.Results;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
 
@@ -13,8 +14,10 @@ public class GenreMappingProfile : Profile
 
         CreateMap<GenreUpdateRequest, Genre>();
 
-        CreateMap<Genre, GenrePreviewResponse>(); 
-       
+        CreateMap<GenreResult, GenrePreviewResponse>();
+
+        CreateMap<GenreDetailedResult, GenreDetailedResponse>();
+
         CreateMap<Genre, PrimitiveResponse>();
     }
 }

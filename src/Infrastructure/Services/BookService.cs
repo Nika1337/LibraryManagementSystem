@@ -114,7 +114,7 @@ internal class BookService : BaseModelService<Book>, IBookService
         var currentGenres = book.Genres.ToArray();
 
         // Fetch new genres
-        var specificationByGenreIds = new GenresByIdsSpecification(genreIds);
+        var specificationByGenreIds = new GenreByIdsSpecification(genreIds);
 
         var newGenres = await _genreRepository.ListAsync(specificationByGenreIds);
 
