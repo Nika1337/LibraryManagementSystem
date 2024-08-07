@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Languages;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications.Languages.Results;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
 
@@ -12,8 +14,10 @@ public class LanguageMappingProfile : Profile
 
         CreateMap<LanguageUpdateRequest, Language>();
 
-        CreateMap<Language, LanguageResponse>();
+        CreateMap<LanguageResult, LanguagePreviewResponse>();
 
-        CreateMap<Language, LanguagePreviewResponse>();
+        CreateMap<LanguageDetailedResult, LanguageDetailedResponse>();
+
+        CreateMap<Language, PrimitiveResponse>();
     }
 }

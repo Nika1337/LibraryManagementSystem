@@ -12,7 +12,7 @@ public interface IAuthorService : IBaseModelService
 {
     Task<PagedList<AuthorPreviewResponse>> GetPagedAuthorsAsync(BaseModelPagedRequest<Author> request);
     Task<IEnumerable<PrimitiveResponse>> GetActiveAuthorsAsync();
-    Task<AuthorPreviewResponse> GetAuthorAsync(int id);
+    Task<AuthorDetailedResponse> GetAuthorAsync(int id);
     Task CreateAuthorAsync(AuthorCreateRequest request);
     Task UpdateAuthorAsync(AuthorUpdateRequest request);
 }

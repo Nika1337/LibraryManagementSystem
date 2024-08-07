@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Genres;
 
-public class GenresSpecification : BaseModelSpecification<Genre, GenreResult>
+public class GenresSpecification : BaseModelsSpecification<Genre, GenreResult>
 {
     protected override Expression<Func<Genre, string>>[] FieldSelectors => [genre => genre.Name, genre => genre.Description];
 

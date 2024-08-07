@@ -6,12 +6,14 @@ using System.Linq;
 
 namespace Nika1337.Library.Domain.Specifications.BookEditions;
 
-public class BookEditionWithAvailableCopies : BaseModelByIdSpecification<BookEdition>
+public class BookEditionWithAvailableCopies : SingleResultSpecification<BookEdition>
 {
-    public BookEditionWithAvailableCopies(int bookId, int id) : base(id)
+    public BookEditionWithAvailableCopies(int bookId, int id)
     {
-        Query.Where(be => be.Book.Id == bookId);
+        Query.Where(be => be.Book.Id == bookId && be.Id == id);
 
         Query.Include(be => be.Copies.AsQueryable().Where(Extensions.IsBookCopyAvaliable));
+
+        Query.AsTracking();
     }
 }

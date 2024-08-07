@@ -16,6 +16,8 @@ public class AuthorMappingProfile : Profile
 
         CreateMap<AuthorResult, AuthorPreviewResponse>();
 
+        CreateMap<AuthorDetailedResult, AuthorDetailedResponse>();
+
         CreateMap<Author, PrimitiveResponse>();
     }
 }

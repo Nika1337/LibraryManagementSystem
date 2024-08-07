@@ -10,6 +10,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Publishers;
+using Nika1337.Library.Domain.Specifications.Publishers.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,7 +42,7 @@ internal class PublisherService : BaseModelService<Publisher>, IPublisherService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Publisher>>(request);
 
-        var specification = new PublisherSpecification(specificationParameters);
+        var specification = new PublishersSpecification(specificationParameters);
 
         var publishers = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 
@@ -79,9 +80,9 @@ internal class PublisherService : BaseModelService<Publisher>, IPublisherService
         await _repository.UpdateAsync(publisher);
     }
 
-    private async Task<Publisher> GetDetailedPublisherAsync(int id)
+    private async Task<PublisherDetailedResult> GetDetailedPublisherAsync(int id)
     {
-        var specification = new PublisherByIdSpecification(id);
+        var specification = new PublisherDetailedSpecification(id);
 
         var publisher = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Publisher>(id);
 

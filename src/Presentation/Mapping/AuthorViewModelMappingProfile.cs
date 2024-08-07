@@ -10,7 +10,7 @@ public class AuthorViewModelMappingProfile : Profile
     {
         CreateMap<AuthorDetailViewModel, AuthorUpdateRequest>();
 
-        CreateMap<AuthorPreviewResponse, AuthorDetailViewModel>();
+        CreateMap<AuthorDetailedResponse, AuthorDetailViewModel>();
 
         CreateMap<AuthorPreviewResponse, AuthorPreviewViewModel>();
 

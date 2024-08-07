@@ -47,11 +47,13 @@ internal class AuthorService : BaseModelService<Author>, IAuthorService
         return response;
     }
 
-    public async Task<AuthorPreviewResponse> GetAuthorAsync(int id)
+    public async Task<AuthorDetailedResponse> GetAuthorAsync(int id)
     {
-        var author = await GetEntityAsync(id);
+        var specification = new AuthorDetailedSpecification(id);
 
-        var response = _mapper.Map<AuthorPreviewResponse>(author);
+        var author = await _repository.SingleOrDefaultAsync(specification);
+
+        var response = _mapper.Map<AuthorDetailedResponse>(author);
 
         return response;
     }

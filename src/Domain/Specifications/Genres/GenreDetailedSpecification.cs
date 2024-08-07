@@ -5,12 +5,10 @@ using System.Linq;
 
 namespace Nika1337.Library.Domain.Specifications.Genres;
 
-public class GenreDetailedSpecification : SingleResultSpecification<Genre, GenreDetailedResult>
+public class GenreDetailedSpecification : BaseModelByIdSpecification<Genre, GenreDetailedResult>
 {
-    public GenreDetailedSpecification(int id)
+    public GenreDetailedSpecification(int id) : base(id)
     {
-        Query.Where(genre => genre.Id == id);
-
         Query.Select(genre => new GenreDetailedResult
         {
             Id = genre.Id,

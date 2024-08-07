@@ -2,6 +2,7 @@
 using Nika1337.Library.Application.DataTransferObjects.Library;
 using Nika1337.Library.Application.DataTransferObjects.Library.Rooms;
 using Nika1337.Library.Domain.Entities;
+using Nika1337.Library.Domain.Specifications.Rooms.Results;
 
 namespace Nika1337.Library.Infrastructure.Mapping;
 
@@ -13,12 +14,9 @@ public class RoomMappingProfile : Profile
 
         CreateMap<RoomUpdateRequest, Room>();
 
-        CreateMap<Room, RoomDetailedResponse>()
-            .ForMember(rdr => rdr.EditionsCount, opts => opts.MapFrom(r => r.BookEditions.Count));
+        CreateMap<RoomDetailedResult, RoomDetailedResponse>();
 
-        CreateMap<Room, RoomPreviewResponse>()
-            .ForMember(rpr => rpr.EditionsCount, opts => opts.MapFrom(r => r.BookEditions.Count))
-            .ForMember(rpr => rpr.IsActive, opts => opts.MapFrom(r => r.DeletedDate == null));
+        CreateMap<RoomResult, RoomPreviewResponse>();
 
         CreateMap<Room, PrimitiveResponse>()
             .ForMember(rpr => rpr.Name, opts => opts.MapFrom(r => r.RoomNumber));

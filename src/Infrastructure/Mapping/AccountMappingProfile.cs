@@ -17,19 +17,12 @@ public class AccountMappingProfile : Profile
 
         CreateMap<AccountUpdateRequest, Account>();
 
-        CreateMap<Account, AccountDetailedResponse>()
-            .ForMember(adr => adr.ActiveCheckouts, opts => opts.MapFrom(ac => GetActiveCheckoutsCount(ac)))
-            .ForMember(adr => adr.TotalCheckouts, opts => opts.MapFrom(ac => ac.Checkouts.Count()));
+        CreateMap<AccountDetailedResult, AccountDetailedResponse>();
 
-        CreateMap<AccountPreviewResult, AccountPreviewResponse>();
+        CreateMap<AccountResult, AccountPreviewResponse>();
 
         CreateMap<Account, PrimitiveResponse>()
             .ForMember(apr => apr.Name, opts => opts.MapFrom(ac => ac.AccountName));
 
-    }
-
-    private static int GetActiveCheckoutsCount(Account account)
-    {
-        return account.Checkouts.Count(c => c.BookCopyCheckouts.Any(bcc => bcc.BookCopyCheckoutCloseTime == null));
     }
 }

@@ -51,7 +51,7 @@ internal class BookEditionService : BaseModelService<BookEdition>, IBookEditionS
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<BookEdition>>(request);
 
-        var specification = new BookEditionSpecification(bookId, specificationParameters);
+        var specification = new BookEditionsSpecification(bookId, specificationParameters);
 
         var bookEditions = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 

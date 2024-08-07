@@ -24,7 +24,7 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
         _mapper = mapper;
     }
 
-    public async Task<PagedList<LanguageResponse>> GetPagedLanguagesAsync(BaseModelPagedRequest<Language> request)
+    public async Task<PagedList<LanguagePreviewResponse>> GetPagedLanguagesAsync(BaseModelPagedRequest<Language> request)
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Language>>(request);
 
@@ -33,27 +33,29 @@ internal class LanguageService : BaseModelService<Language>, ILanguageService
 
         var languages = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 
-        var result = _mapper.Map<PagedList<LanguageResponse>>(languages);
+        var result = _mapper.Map<PagedList<LanguagePreviewResponse>>(languages);
 
         return result;
     }
 
-    public async Task<IEnumerable<LanguagePreviewResponse>> GetActiveLanguagePreviewsAsync()
+    public async Task<IEnumerable<PrimitiveResponse>> GetActiveLanguagesAsync()
     {
         var specification = new NonDeletedSpecification<Language>();
 
         var genres = await _repository.ListAsync(specification);
 
-        var response = _mapper.Map<IEnumerable<LanguagePreviewResponse>>(genres);
+        var response = _mapper.Map<IEnumerable<PrimitiveResponse>>(genres);
 
         return response;
     }
 
-    public async Task<LanguageResponse> GetLanguageAsync(int id)
+    public async Task<LanguageDetailedResponse> GetLanguageAsync(int id)
     {
-        var language = await GetEntityAsync(id);
+        var specification = new LanguageDetailedSpecification(id);
 
-        var response = _mapper.Map<LanguageResponse>(language);
+        var language = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Language>(id);
+
+        var response = _mapper.Map<LanguageDetailedResponse>(language);
 
         return response;
     }

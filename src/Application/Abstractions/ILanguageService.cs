@@ -10,9 +10,9 @@ namespace Nika1337.Library.Application.Abstractions;
 
 public interface ILanguageService : IBaseModelService
 {
-    Task<PagedList<LanguageResponse>> GetPagedLanguagesAsync(BaseModelPagedRequest<Language> request);
-    Task<IEnumerable<LanguagePreviewResponse>> GetActiveLanguagePreviewsAsync();
-    Task<LanguageResponse> GetLanguageAsync(int id);
+    Task<PagedList<LanguagePreviewResponse>> GetPagedLanguagesAsync(BaseModelPagedRequest<Language> request);
+    Task<IEnumerable<PrimitiveResponse>> GetActiveLanguagesAsync();
+    Task<LanguageDetailedResponse> GetLanguageAsync(int id);
     Task CreateLanguageAsync(LanguageCreateRequest request);
     Task UpdateLanguageAsync(LanguageUpdateRequest request);
 }

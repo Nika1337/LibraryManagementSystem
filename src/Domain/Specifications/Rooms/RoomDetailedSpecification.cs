@@ -1,28 +1,22 @@
 ﻿using Ardalis.Specification;
 using Nika1337.Library.Domain.Entities;
-using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications.Rooms.Results;
-using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Rooms;
 
-public class RoomsSpecification : BaseModelsSpecification<Room, RoomResult>
+public class RoomDetailedSpecification : BaseModelByIdSpecification<Room, RoomDetailedResult>
 {
-    protected override Expression<Func<Room, string>>[] FieldSelectors => [room => room.RoomNumber];
-
-    public RoomsSpecification(BaseModelSpecificationParameters<Room> parameters) : base(parameters)
+    public RoomDetailedSpecification(int id) : base(id)
     {
-
-        Query.Select(room => new RoomResult
+        Query.Select(room => new RoomDetailedResult
         {
             Id = room.Id,
             RoomNumber = room.RoomNumber,
             MaxCapacityOfPeople = room.MaxCapacityOfPeople,
             Floor = room.Floor,
             EditionsCount = room.BookEditions.Count(be => be.DeletedDate == null),
-            IsActive = room.DeletedDate == null
+            DeletedDate = room.DeletedDate
         });
     }
 }

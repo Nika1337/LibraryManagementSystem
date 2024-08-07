@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Authors;
 
-public class AuthorsSpecification : BaseModelSpecification<Author, AuthorResult>
+public class AuthorsSpecification : BaseModelsSpecification<Author, AuthorResult>
 {
     protected override Expression<Func<Author, string>>[] FieldSelectors => [author => author.Biography, author => author.Name];
 

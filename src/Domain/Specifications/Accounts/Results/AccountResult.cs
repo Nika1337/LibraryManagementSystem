@@ -2,7 +2,7 @@
 
 namespace Nika1337.Library.Domain.Specifications.Accounts.Results;
 
-public class AccountPreviewResult
+public class AccountResult
 {
     public required int Id { get; init; }
     public required string AccountName { get; init; }

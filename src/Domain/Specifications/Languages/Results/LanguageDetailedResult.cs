@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Nika1337.Library.Application.DataTransferObjects.Library.Languages;
+namespace Nika1337.Library.Domain.Specifications.Languages.Results;
 
-public record LanguageResponse
+public class LanguageDetailedResult
 {
     public required int Id { get; init; }
     public required string Name { get; init; }

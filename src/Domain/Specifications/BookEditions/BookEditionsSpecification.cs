@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.BookEditions;
 
-public class BookEditionSpecification : BaseModelSpecification<BookEdition, BookEditionResult>
+public class BookEditionsSpecification : BaseModelsSpecification<BookEdition, BookEditionResult>
 {
     protected override Expression<Func<BookEdition, string>>[] FieldSelectors =>
     [
@@ -20,7 +20,7 @@ public class BookEditionSpecification : BaseModelSpecification<BookEdition, Book
         be => be.Language.Name,
         be => be.Room.RoomNumber
     ];
-    public BookEditionSpecification(
+    public BookEditionsSpecification(
         int bookId,
         BaseModelSpecificationParameters<BookEdition> parameters) : base(parameters)
     {

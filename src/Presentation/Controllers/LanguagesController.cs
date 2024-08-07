@@ -122,9 +122,9 @@ public class LanguagesController : BaseModelController<Language>
 
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> GetActiveLanguagePreviews()
+    public async Task<IActionResult> GetActiveLanguages()
     {
-        var languages = await _languageService.GetActiveLanguagePreviewsAsync();
+        var languages = await _languageService.GetActiveLanguagesAsync();
 
         return Ok(languages);
     }

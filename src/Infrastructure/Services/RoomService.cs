@@ -8,6 +8,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Rooms;
+using Nika1337.Library.Domain.Specifications.Rooms.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -76,9 +77,9 @@ internal class RoomService : BaseModelService<Room>, IRoomService
         await _repository.UpdateAsync(room);
     }
 
-    private async Task<Room> GetDetailedRoomAsync(int id)
+    private async Task<RoomDetailedResult> GetDetailedRoomAsync(int id)
     {
-        var specification = new RoomByIdSpecification(id);
+        var specification = new RoomDetailedSpecification(id);
 
         var room = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Room>(id);
 

@@ -8,13 +8,13 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Accounts;
 
-public class AccountPreviewSpecification : BaseModelSpecification<Account, AccountPreviewResult>
+public class AccountSpecification : BaseModelsSpecification<Account, AccountResult>
 {
     protected override Expression<Func<Account, string>>[] FieldSelectors => [ac => ac.AccountName, ac => ac.ContactInformation.Email];
 
-    public AccountPreviewSpecification(BaseModelSpecificationParameters<Account> parameters) : base(parameters)
+    public AccountSpecification(BaseModelSpecificationParameters<Account> parameters) : base(parameters)
     {
-        Query.Select(ac => new AccountPreviewResult
+        Query.Select(ac => new AccountResult
         {
             Id = ac.Id,
             AccountName = ac.AccountName,

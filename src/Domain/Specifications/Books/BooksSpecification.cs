@@ -8,9 +8,11 @@ using System.Linq.Expressions;
 
 namespace Nika1337.Library.Domain.Specifications.Books;
 
-public class BookPreviewsSpecification : BaseModelSpecification<Book, BookPreviewResult>
+public class BooksSpecification : BaseModelsSpecification<Book, BookResult>
 {
-    public BookPreviewsSpecification(BaseModelSpecificationParameters<Book> parameters) : base(parameters)
+    protected override Expression<Func<Book, string>>[] FieldSelectors => [book => book.Title, book => book.Summary];
+
+    public BooksSpecification(BaseModelSpecificationParameters<Book> parameters) : base(parameters)
     {
         Query.Include(book => book.Authors);
 
@@ -18,7 +20,7 @@ public class BookPreviewsSpecification : BaseModelSpecification<Book, BookPrevie
 
         Query.Include(book => book.Editions);
 
-        Query.Select(book => new BookPreviewResult
+        Query.Select(book => new BookResult
         {
             Id = book.Id,
             Title = book.Title,
@@ -30,6 +32,4 @@ public class BookPreviewsSpecification : BaseModelSpecification<Book, BookPrevie
             EditionsCount = book.Editions.Count(be => be.DeletedDate == null)
         });
     }
-
-    protected override Expression<Func<Book, string>>[] FieldSelectors => [book => book.Title, book => book.Summary];
 }

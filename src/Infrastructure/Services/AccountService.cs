@@ -8,6 +8,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications;
 using Nika1337.Library.Domain.Specifications.Accounts;
+using Nika1337.Library.Domain.Specifications.Accounts.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ internal class AccountService : BaseModelService<Account>, IAccountService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Account>>(request);
 
-        var specification = new AccountPreviewSpecification(specificationParameters);
+        var specification = new AccountSpecification(specificationParameters);
 
         var accounts = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 
@@ -80,9 +81,9 @@ internal class AccountService : BaseModelService<Account>, IAccountService
     }
 
 
-    private async Task<Account> GetDetailedAccountAsync(int id)
+    private async Task<AccountDetailedResult> GetDetailedAccountAsync(int id)
     {
-        var specification = new AccountByIdSpecification(id);
+        var specification = new AccountDetailedSpecification(id);
 
         var account = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Account>(id);
 

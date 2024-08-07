@@ -10,5 +10,7 @@ public class AuthorsByIdsSpecification : Specification<Author>
     public AuthorsByIdsSpecification(IEnumerable<int> ids)
     {
         Query.Where(author => ids.Contains(author.Id));
+
+        Query.AsTracking();
     }
 }

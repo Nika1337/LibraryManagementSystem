@@ -10,14 +10,14 @@ namespace Nika1337.Library.Domain.Specifications.Checkouts;
 
 
 
-public class CheckoutSpecification : BaseModelSpecification<Checkout, CheckoutResult>
+public class CheckoutsSpecification : BaseModelsSpecification<Checkout, CheckoutResult>
 {
     protected override Expression<Func<Checkout, string>>[] FieldSelectors =>
         [
             ch => ch.Account.AccountName
         ];
 
-    public CheckoutSpecification(
+    public CheckoutsSpecification(
         BaseModelSpecificationParameters<Checkout> parameters) : base(parameters)
     {
         Query.Include(ch => ch.Account);

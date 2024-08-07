@@ -9,9 +9,9 @@ public class LanguageViewModelMappingProfile : Profile
     {
         CreateMap<LanguageDetailedViewModel, LanguageUpdateRequest>();
 
-        CreateMap<LanguageResponse, LanguageDetailedViewModel>();
+        CreateMap<LanguageDetailedResponse, LanguageDetailedViewModel>();
 
-        CreateMap<LanguageResponse, LanguageViewModel>();
+        CreateMap<LanguagePreviewResponse, LanguageViewModel>();
 
         CreateMap<LanguageCreateViewModel, LanguageCreateRequest>();
     }

@@ -8,21 +8,14 @@ using Nika1337.Library.Domain.RequestFeatures;
 
 namespace Nika1337.Library.Domain.Specifications;
 
-public abstract class BaseModelSpecification<T> : BaseModelSpecification<T, T> where T : BaseModel
-{
-    protected BaseModelSpecification(BaseModelSpecificationParameters<T> parameters) : base(parameters)
-    {
-        Query.Select(entity => entity);
-    }
-}
 
 
-public abstract class BaseModelSpecification<T, TResult> : Specification<T, TResult> where T : BaseModel
+public abstract class BaseModelsSpecification<T, TResult> : Specification<T, TResult> where T : BaseModel
 {
 
     protected abstract Expression<Func<T, string>>[] FieldSelectors { get; }
 
-    public BaseModelSpecification(BaseModelSpecificationParameters<T> parameters)
+    public BaseModelsSpecification(BaseModelSpecificationParameters<T> parameters)
     {
         if (parameters.OrderBy != null)
         {
@@ -46,6 +39,8 @@ public abstract class BaseModelSpecification<T, TResult> : Specification<T, TRes
         {
             Query.Where(entity => entity.DeletedDate == null);
         }
+
+        Query.AsNoTracking();
     }
 
     private Expression<Func<T, bool>> BuildSearchPredicate(string searchTerm)

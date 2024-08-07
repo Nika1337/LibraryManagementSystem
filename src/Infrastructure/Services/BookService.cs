@@ -8,6 +8,7 @@ using Nika1337.Library.Domain.Exceptions;
 using Nika1337.Library.Domain.RequestFeatures;
 using Nika1337.Library.Domain.Specifications.Authors;
 using Nika1337.Library.Domain.Specifications.Books;
+using Nika1337.Library.Domain.Specifications.Books.Results;
 using Nika1337.Library.Domain.Specifications.Genres;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ internal class BookService : BaseModelService<Book>, IBookService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Book>>(request);
 
-        var specification = new BookPreviewsSpecification(specificationParameters);
+        var specification = new BooksSpecification(specificationParameters);
 
 
         var books = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
@@ -85,8 +86,10 @@ internal class BookService : BaseModelService<Book>, IBookService
     }
 
     public async Task UpdateBookAsync(BookUpdateRequest request)
-    { 
-        var book = await GetDetailedBookAsync(request.Id);
+    {
+        var specification = new BookWithLanguageAuthorsGenresSpecification(request.Id);
+
+        var book = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Book>(request.Id);
 
         _mapper.Map(request, book);
 
@@ -176,9 +179,9 @@ internal class BookService : BaseModelService<Book>, IBookService
         }
     }
 
-    private async Task<Book> GetDetailedBookAsync(int id)
+    private async Task<BookDetailedResult> GetDetailedBookAsync(int id)
     {
-        var specification = new BookDetailedByIdSpecification(id);
+        var specification = new BookDetailedSpecification(id);
 
         var book = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Book>(id);
 

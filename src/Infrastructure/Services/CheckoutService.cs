@@ -37,7 +37,7 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
     {
         var specificationParameters = _mapper.Map<BaseModelSpecificationParameters<Checkout>>(request);
 
-        var specification = new CheckoutSpecification(specificationParameters);
+        var specification = new CheckoutsSpecification(specificationParameters);
 
         var checkouts = await _repository.PagedListAsync(specification, request.PageNumber, request.PageSize);
 
@@ -160,7 +160,6 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
 
     private async Task<Checkout> GetCheckoutWithBookCopyCheckouts(int id)
     {
-
         var specification = new CheckoutWithBookCopyCheckoutsSpecification(id);
 
         var checkout = await _repository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<Checkout>(id);

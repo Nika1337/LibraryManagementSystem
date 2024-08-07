@@ -30,7 +30,7 @@
             <div class="card h-100 shadow-sm d-flex flex-column">
                 <div class="card-header d-flex justify-content-between align-items-center text-white" style="border-bottom:unset">
                     <span class="card-header-name">@language.Name</span>
-                    @if (!language.DeletedDate.HasValue)
+                    @if (language.IsActive)
                     {
                         <span class="badge bg-success badge-sm">Active</span>
                     }
@@ -59,7 +59,7 @@
                 <tr class="table-row">
                     <td>@language.Name</td>
                     <td>
-                        @if (!language.DeletedDate.HasValue)
+                        @if (language.IsActive)
                         {
                             <span class="badge bg-success">Active</span>
                         }
