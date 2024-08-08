@@ -1,0 +1,134 @@
+﻿@model Nika1337.Library.Presentation.Models.EmailTemplates.EmailTemplateDetailedViewModel
+
+@{
+    Layout = "_DetailLayout";
+    ViewData["Title"] = Model.Name + "Template";
+
+    var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
+    var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Email Templates",
+            Url = "/EmailTemplates"
+        },
+        new()
+        {
+            Label = "Details",
+            Url = $"/EmailTemplates/{Model.Id}"
+        }
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
+<form asp-route="/EmailTemplates" method="post" class="needs-validation" novalidate>
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <h5 class="card-header">Email Template Details</h5>
+                <div class="card-body">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Name" class="form-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Subject" class="form-label"></label>
+                                <input asp-for="Subject" class="form-control" />
+                                <span asp-validation-for="Subject" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="FromEmail" class="form-label"></label>
+                                <input asp-for="FromEmail" class="form-control" />
+                                <span asp-validation-for="FromEmail" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label asp-for="BriefDescription" class="form-label"></label>
+                                <input asp-for="BriefDescription" class="form-control" />
+                                <span asp-validation-for="BriefDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Separator" class="form-label"></label>
+                                <input asp-for="Separator" class="form-control" />
+                                <span asp-validation-for="Separator" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DeletedDate" class="form-label"></label>
+                                <input asp-for="DeletedDate" class="form-control" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Body" class="form-label"></label>
+                        <textarea asp-for="Body" class="form-control" id="tinymce-editor"></textarea>
+                    </div>
+
+                    <div class="d-flex align-items-end justify-content-end myfab-container">
+                        <div class="d-flex flex-column">
+                            <button type="submit" class="btn btn-primary myfab mb-2">Save Changes</button>
+                            <button type="button" class="btn @actionButtonClass myfab" data-bs-toggle="modal" data-bs-target="#actionModal">@userAction</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section ActionModal {
+    @await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Email Template"))
+}
+
+@section Error {
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="d-flex flex-column align-items-center">
+            <div class="alert alert-danger" style="width: fit-content">
+                @Model.ErrorMessage
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/wkssty2otjmc1ux36i1xy7pdmzh2eijw8m6ogi2ll9v810e6/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="~/js/Shared/ActionModal.js"></script>
+    <script src="~/js/Operations/EmailTemplate.js"></script>
+    <script>
+        const id = '@Model.Id';
+        const userAction = '@userAction';
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Operations/EmailTemplates.css" asp-append-version="true" />
+}

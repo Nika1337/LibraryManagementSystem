@@ -101,14 +101,14 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             {
                 Id = 16,
                 Name = "All Genres",
-                Route = "/Books/Genres",
+                Route = "/Genres",
                 ParentNavigationMenuItemId = 15
             },
             new()
             {
                 Id = 17,
                 Name = "Add Genre",
-                Route = "/Books/Genres/AddGenre",
+                Route = "/Genres/AddGenre",
                 ParentNavigationMenuItemId = 15
             },
             new()
@@ -121,14 +121,14 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             {
                 Id = 19,
                 Name = "All Languages",
-                Route = "/Books/Languages",
+                Route = "/Languages",
                 ParentNavigationMenuItemId = 18
             },
             new()
             {
                 Id = 20,
                 Name = "Add Language",
-                Route = "/Books/Languages/AddLanguage",
+                Route = "/Languages/AddLanguage",
                 ParentNavigationMenuItemId = 18
             },
             new()
@@ -141,21 +141,21 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             {
                 Id = 22,
                 Name = "All Authors",
-                Route = "/Books/Authors",
+                Route = "/Authors",
                 ParentNavigationMenuItemId = 21
             },
             new()
             {
                 Id = 23,
                 Name = "Add Author",
-                Route = "/Books/Authors/AddAuthor",
+                Route = "/Authors/AddAuthor",
                 ParentNavigationMenuItemId = 21
             },
             new()
             {
                 Id = 24,
                 Name = "Audit Log",
-                Route = "/Operations/AuditLog",
+                Route = "/AuditLog",
                 ParentNavigationMenuItemId = 4
             },
             new()
@@ -173,14 +173,14 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             {
                 Id = 27,
                 Name = "All Rooms",
-                Route = "/Location/Rooms",
+                Route = "/Rooms",
                 ParentNavigationMenuItemId = 26
             },
             new()
             {
                 Id = 28,
                 Name = "Add Room",
-                Route = "/Location/Rooms/AddRoom",
+                Route = "/Rooms/AddRoom",
                 ParentNavigationMenuItemId = 26
             },
             new()
@@ -193,14 +193,14 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             {
                 Id = 30,
                 Name = "All Publishers",
-                Route = "/Books/Publishers",
+                Route = "/Publishers",
                 ParentNavigationMenuItemId = 29
             },
             new()
             {
                 Id = 31,
                 Name = "Add Publisher",
-                Route = "/Books/Publishers/AddPublisher",
+                Route = "/Publishers/AddPublisher",
                 ParentNavigationMenuItemId = 29
             },
             new()
@@ -236,10 +236,17 @@ internal class NavigationMenuItemConfiguration : IEntityTypeConfiguration<Naviga
             },
             new()
             {
-                Id = 38,
+                Id = 37,
                 Name = "Add Checkouts",
                 Route = "/Checkouts/AddCheckout",
                 ParentNavigationMenuItemId = 35
+            },
+            new()
+            {
+                Id = 38,
+                Name = "Reports",
+                Route = "/Reports",
+                ParentNavigationMenuItemId = 4
             }
         };
 

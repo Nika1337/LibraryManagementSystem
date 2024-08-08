@@ -1,145 +1,112 @@
-﻿@model Nika1337.Library.Presentation.Models.EmailTemplates.EmailTemplateViewModel
+﻿@model IEnumerable<Nika1337.Library.Presentation.Models.EmailTemplates.EmailTemplatePreviewViewModel>
 
 @{
     ViewData["Title"] = "Email Templates";
+    Layout = "_ClientSideCardTableLayout";
 
-    var userAction = Model.DeletedDate == null ? "Delete" : "Renew";
-    var actionButtonClass = Model.DeletedDate == null ? "btn-danger" : "btn-warning";
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Email Templates",
+            Url = "/EmailTemplates"
+        },
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
 
-<div class="container-fluid p-0 vh-100">
-    <div id="loadingIndicator" class="loading-indicator">
-        Loading...
-    </div>
-
-    <div id="mainContent" class="row g-0" style="display: flex; align-items: stretch" style="display: none;">
-        <!-- Sidebar -->
-        <div class="col-12 col-lg-3 bg-white p-0 border-end d-none d-lg-block">
-            <nav class="navbar navbar-expand-lg flex-md-column align-items-stretch navbar-light p-0 h-100">
-                <div id="emailTemplatesList" class="list-group list-group-flush border-bottom scrollarea">
-                    <!-- Email templates will be loaded here via AJAX -->
+@section Cards {
+    @foreach (var template in Model)
+    {
+        <a
+            class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 list-card"
+            data-name="@template.Name"
+            data-subject="@template.Subject"
+            data-fromemail="@template.FromEmail"
+            data-briefdescription="@template.BriefDescription"
+            data-donotincludedeleted="@template.IsActive.ToString().ToLower()"
+            href="/EmailTemplates/@template.Id"
+            style="text-decoration:none; color:black">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+                <div class="card-header d-flex justify-content-between align-items-center text-white">
+                    <span class="card-header-name">@template.Name</span>
+                    @if (template.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Deleted</span>
+                    }
                 </div>
-            </nav>
-        </div>
-
-        <!-- Offcanvas for mobile -->
-        <div class="col-12 d-lg-none">
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="offcanvas offcanvas-start" id="sidebar">
-                    <div class="offcanvas-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div class="property">
+                        <span class="text-muted">Brief Description:</span>
+                        <span>@template.BriefDescription</span>
                     </div>
-                    <div class="offcanvas-body p-0">
-                        <div id="offcanvasEmailTemplatesList" class="list-group list-group-flush border-bottom scrollarea">
-                            <!-- Email templates will be loaded here via AJAX -->
-                        </div>
+                    <div class="property">
+                        <span class="text-muted">Subject:</span>
+                        <span>@template.Subject</span>
+                    </div>
+                    <div class="property">
+                        <span class="text-muted">From Email:</span>
+                        <span>@template.FromEmail</span>
                     </div>
                 </div>
-            </nav>
-        </div>
-
-        <!-- Main content -->
-        <div class="col-12 col-lg-9 p-5">
-            <div class="d-flex align-items-center justify-content-center">
-                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-                {
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="alert alert-danger" style="width: fit-content">
-                            @Model.ErrorMessage
-                        </div>
-                    </div>
-                }
             </div>
-            <form asp-route="/Operations/EmailTemplates" method="post">
-                <input type="hidden" asp-for="Id" />
+        </a>
+    }
+}
 
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Name" class="form-label"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Subject" class="form-label"></label>
-                            <input asp-for="Subject" class="form-control" />
-                            <span asp-validation-for="Subject" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="FromEmail" class="form-label"></label>
-                            <input asp-for="FromEmail" class="form-control" />
-                            <span asp-validation-for="FromEmail" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="BriefDescription" class="form-label"></label>
-                            <input asp-for="BriefDescription" class="form-control" />
-                            <span asp-validation-for="BriefDescription" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="DeletedDate" class="form-label"></label>
-                            <input asp-for="DeletedDate" class="form-control" readonly />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Separator" class="form-label"></label>
-                            <input asp-for="Separator" class="form-control" />
-                            <span asp-validation-for="Separator" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 10rem">
-                    <label asp-for="Body" class="form-label"></label>
-                    <textarea asp-for="Body" class="form-control" id="tinymce-editor"></textarea>
-                </div>
-
-                <div class="myfab-container">
-                    <div class="d-flex flex-column">
-                        <button type="submit" class="btn btn-primary mb-2 myfab">
-                            Save
-                        </button>
-                        <button type="button" class="btn @actionButtonClass myfab" data-bs-toggle="modal" data-bs-target="#actionModal">
-                            @userAction
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@await Html.PartialAsync("_ActionConfirmationModalPartial", new Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel(userAction, actionButtonClass, "Email Template"))
+@section Table {
+    <table id="table" class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Brief Description</th>
+                <th>Subject</th>
+                <th>From Email</th>
+                <th>Status</th>
+                <th style="width: 8%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var template in Model)
+            {
+                <tr 
+                    class="table-row"
+                    data-name="@template.Name"
+                    data-subject="@template.Subject"
+                    data-fromemail="@template.FromEmail"
+                    data-briefdescription="@template.BriefDescription"
+                    data-donotincludedeleted="@template.IsActive.ToString().ToLower()">
+                    <td>@template.Name</td>
+                    <td>@template.BriefDescription</td>
+                    <td>@template.Subject</td>
+                    <td>@template.FromEmail</td>
+                    <td>
+                        @if (template.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Deleted</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/EmailTemplates/@template.Id" class="btn btn-info btn-sm no-wrap">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @section Scripts {
-    <script src="https://cdn.tiny.cloud/1/wkssty2otjmc1ux36i1xy7pdmzh2eijw8m6ogi2ll9v810e6/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script src="~/js/Shared/ActionModal.js"></script>
     <script src="~/js/Operations/EmailTemplates.js"></script>
-    <script>
-        var userAction = '@userAction';
-        var id = '@Model.Id';
-    </script>
-}
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/Operations/EmailTemplates.css" asp-append-version="true" />
 }

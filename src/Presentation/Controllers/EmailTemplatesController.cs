@@ -29,24 +29,32 @@ public class EmailTemplatesController : BaseModelController<EmailTemplate>
         _mapper = mapper;
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> EmailTemplates(int id)
+    [HttpGet(Name = "Email Templates")]
+    public async Task<IActionResult> EmailTemplates()
     {
+        var templates = await _emailTemplateService.GetAllEmailTemplatesAsync();
 
-        var selectedEmailTemplate = await _emailTemplateService.GetEmailTemplateAsync(id);
-
-        var model = _mapper.Map<EmailTemplateViewModel>(selectedEmailTemplate);
-     
+        var model = _mapper.Map<IEnumerable<EmailTemplatePreviewViewModel>>(templates);
 
         return View(model);
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> EmailTemplates(int id)
+    {
+        var template = await _emailTemplateService.GetEmailTemplateAsync(id);
+
+        var model = _mapper.Map<EmailTemplateDetailedViewModel>(template);
+     
+        return View("EmailTemplate", model);
+    }
+
     [HttpPost("{id}")]
-    public async Task<IActionResult> EmailTemplates(EmailTemplateViewModel model)
+    public async Task<IActionResult> EmailTemplates(EmailTemplateDetailedViewModel model)
     {
         if (!ModelState.IsValid)
         {
-            return View(model);
+            return View("EmailTemplate", model);
         }
 
         var updateRequest = _mapper.Map<EmailTemplateUpdateRequest>(model);
@@ -55,21 +63,12 @@ public class EmailTemplatesController : BaseModelController<EmailTemplate>
         {
             await _emailTemplateService.UpdateEmailTemplateAsync(updateRequest);
         }
-        catch(NameDuplicateException)
+        catch (NameDuplicateException)
         {
             model.ErrorMessage = $"Email template with name '{model.Name}' already exists";
-            return View(model);
+            return View("EmailTemplate", model);
         }
 
-        return RedirectToAction(nameof(EmailTemplates));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetEmailTemplates()
-    {
-        var emailTemplates = await _emailTemplateService.GetAllEmailTemplatesAsync();
-
-
-        return Json(emailTemplates);
+        return RedirectToRoute(routeName: "Email Templates");
     }
 }

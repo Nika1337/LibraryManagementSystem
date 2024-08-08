@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Nika1337.Library.Presentation.Models.EmailTemplates;
 
-public class EmailTemplateViewModel
+public class EmailTemplateDetailedViewModel
 {
     public required int Id { get; set; }
     [DisplayName("Name")]
