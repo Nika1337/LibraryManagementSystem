@@ -59,14 +59,20 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
     {
         var checkout = _mapper.Map<Checkout>(request);
 
-        var copies = await GetCopiesToAddIfAvailable(request.BookId, request.BookEditionId, request.CopiesCount);
-
-        AddBookCopyCheckouts(checkout, copies);
-
         await AddAccountAsync(checkout, request.AccountId);
-
+        await AddBookEdition(checkout, request.BookId, request.BookEditionId);
+        AddBookCopyCheckouts(checkout, request.CopiesCount);
 
         await _repository.AddAsync(checkout);
+    }
+
+    private async Task AddBookEdition(Checkout checkout, int bookId, int bookEditionId)
+    {
+        var specification = new BookEditionWithAvailableCopies(bookId, bookEditionId);
+
+        var bookEdition = await _bookEditionRepository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<BookEdition>(bookEditionId);
+
+        checkout.BookEdition = bookEdition;
     }
 
     public async Task CloseCheckoutAsync(CheckoutCloseRequest request)
@@ -96,23 +102,15 @@ internal class CheckoutService : BaseModelService<Checkout>, ICheckoutService
         await _repository.UpdateAsync(checkout);
     }
 
-
-    private async Task<IEnumerable<BookCopy>> GetCopiesToAddIfAvailable(int bookId, int bookEditionId, int copiesCount)
+    private static void AddBookCopyCheckouts(Checkout checkout, int copiesCount)
     {
-        var specification = new BookEditionWithAvailableCopies(bookId, bookEditionId);
-
-        var bookEdition = await _bookEditionRepository.SingleOrDefaultAsync(specification) ?? throw new NotFoundException<BookEdition>(bookEditionId);
-
-        if (bookEdition.Copies.Count < copiesCount)
+        if (checkout.BookEdition.Copies.Count < copiesCount)
         {
-            throw new NotEnoughBookCopiesException(bookEdition.Copies.Count, copiesCount);
+            throw new NotEnoughBookCopiesException(checkout.BookEdition.Copies.Count, copiesCount);
         }
 
-        return bookEdition.Copies.Take(copiesCount);
-    }
+        var copies = checkout.BookEdition.Copies.Take(copiesCount);
 
-    private static void AddBookCopyCheckouts(Checkout checkout, IEnumerable<BookCopy> copies)
-    {
         foreach (var copy in copies)
         {
             var bookCopyCheckout = new BookCopyCheckout

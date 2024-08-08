@@ -332,6 +332,9 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
+                    b.Property<int>("BookEditionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CheckoutTime")
                         .HasColumnType("datetime2");
 
@@ -344,6 +347,8 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("BookEditionId");
 
                     b.ToTable("Checkouts", t =>
                         {
@@ -699,7 +704,15 @@ namespace Nika1337.Library.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Nika1337.Library.Domain.Entities.BookEdition", "BookEdition")
+                        .WithMany()
+                        .HasForeignKey("BookEditionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Account");
+
+                    b.Navigation("BookEdition");
                 });
 
             modelBuilder.Entity("Nika1337.Library.Domain.Entities.Publisher", b =>

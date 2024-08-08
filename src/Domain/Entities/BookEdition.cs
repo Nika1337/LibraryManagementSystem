@@ -13,4 +13,5 @@ public class BookEdition : BaseModel
     public required Room Room { get; set; }
     public List<BookCopy> Copies { get; set; } = [];
     public List<BookEditionCopiesAuditEntry> Audit { get; set; } = [];
+    public List<Checkout> Checkouts { get; set; } = [];
 }

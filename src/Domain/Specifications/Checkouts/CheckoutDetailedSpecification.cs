@@ -35,9 +35,9 @@ public class CheckoutDetailedSpecification : BaseModelByIdSpecification<Checkout
         Query.Select(ch => new CheckoutDetailedResult
         {
             Id = ch.Id,
-            BookTitle = ch.BookCopyCheckouts.First().BookCopy.BookEdition.Book.Title,
-            PublisherName = ch.BookCopyCheckouts.First().BookCopy.BookEdition.Publisher.PublisherName,
-            LanguageName = ch.BookCopyCheckouts.First().BookCopy.BookEdition.Language.Name,
+            BookTitle = ch.BookEdition.Book.Title,
+            PublisherName = ch.BookEdition.Publisher.PublisherName,
+            LanguageName = ch.BookEdition.Language.Name,
             CopiesCount = ch.BookCopyCheckouts.Count,
             AccountName = ch.Account.AccountName,
             CheckoutTime = ch.CheckoutTime,

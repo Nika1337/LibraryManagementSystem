@@ -20,35 +20,14 @@ public class CheckoutsSpecification : BaseModelsSpecification<Checkout, Checkout
     public CheckoutsSpecification(
         BaseModelSpecificationParameters<Checkout> parameters) : base(parameters)
     {
-        Query.Include(ch => ch.Account);
-
-
-        Query
-            .Include(ch => ch.BookCopyCheckouts)
-                .ThenInclude(bcc => bcc.BookCopy)
-                    .ThenInclude(c => c.BookEdition)
-                        .ThenInclude(be => be.Book);
-
-        Query
-            .Include(ch => ch.BookCopyCheckouts)
-                .ThenInclude(bcc => bcc.BookCopy)
-                    .ThenInclude(c => c.BookEdition)
-                        .ThenInclude(be => be.Publisher);
-
-        Query
-            .Include(ch => ch.BookCopyCheckouts)
-                .ThenInclude(bcc => bcc.BookCopy)
-                    .ThenInclude(c => c.BookEdition)
-                        .ThenInclude(be => be.Language);
-
 
 
         Query.Select(ch => new CheckoutResult
         {
             Id = ch.Id,
-            BookTitle = ch.BookCopyCheckouts.First().BookCopy.BookEdition.Book.Title,
-            PublisherName = ch.BookCopyCheckouts.First().BookCopy.BookEdition.Publisher.PublisherName,
-            LanguageName = ch.BookCopyCheckouts.First().BookCopy.BookEdition.Language.Name,
+            BookTitle = ch.BookEdition.Book.Title,
+            PublisherName = ch.BookEdition.Publisher.PublisherName,
+            LanguageName = ch.BookEdition.Language.Name,
             CopiesCount = ch.BookCopyCheckouts.Count,
             AccountName = ch.Account.AccountName,
             CheckoutTime = ch.CheckoutTime,
