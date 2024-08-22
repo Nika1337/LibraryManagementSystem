@@ -21,7 +21,7 @@ internal class ReportService : IReportService
 
     public async Task<ReportResponse> GenerateAnnualReportAsync(AnnualReportRequest request)
     {
-        var procedureName = $"{request.Subject}By{request.Metric}Report";
+        var procedureName = $"{request.Subject}By{request.Metric.Replace(" ", "")}Report";
         var yearParameter = new SqlParameter("@Year", request.Year);
 
         await using var command = _libraryContext.Database.GetDbConnection().CreateCommand();

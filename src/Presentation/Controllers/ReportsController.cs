@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Reports;
 using Nika1337.Library.Presentation.Models.Reports;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ public class ReportsController : Controller
 {
     private readonly static Dictionary<string, string[]> SubjectsWithMetrics = new()
     {
-        { "Books", ["Popularity", "Lost Count"] },
+        { "Books", ["Popularity", "Lost Or Destroyed"] },
         { "Accounts", ["Books Taken", "Books Lost Or Destroyed", "Checkouts Completed"] },
         { "Publishers", ["Popularity"] },
         { "Genres", ["Popularity"] },
@@ -30,16 +29,13 @@ public class ReportsController : Controller
 
     private readonly IReportService _reportService;
     private readonly IMapper _mapper;
-    private readonly IExportService _exportService;
 
     public ReportsController(
         IReportService reportService,
-        IMapper mapper,
-        IExportService exportService)
+        IMapper mapper)
     {
         _reportService = reportService;
         _mapper = mapper;
-        _exportService = exportService;
     }
 
     [HttpGet("SubjectsWithMetrics")]
