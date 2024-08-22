@@ -1,0 +1,74 @@
+@model Nika1337.Library.Presentation.Models.Reports.ReportViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "_Layout";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Reports",
+            Url = "/Reports"
+        },
+        new()
+        {
+            Label = Model.Title,
+            Url = "#"
+        },
+    };
+}
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
+
+<div class="table-responsive d-flex justify-content-center pt-5">
+    <table id="reportTable" class="table table-hover table-striped">
+        <thead>
+            <tr>
+                @foreach (var columnName in Model.ColumnNames)
+                {
+                    <th>@columnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Content)
+            {
+                <tr>
+                    @foreach (var cell in row)
+                    {
+                        <td>@cell</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex align-items-end justify-content-end myfab-container">
+    <div class="d-flex flex-column">
+        <a href="/Reports" class="btn btn-primary btn-lg myfab mb-2">
+            Generate New Report
+        </a>
+        <a id="exportButton" class="btn btn-success btn-lg myfab">
+            <i class="fas fa-file-excel me-2"></i> Export to Excel
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Include SheetJS (XLSX) library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- Include FileSaver.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script src="~/js/Reports/Report.js"></script>
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+}

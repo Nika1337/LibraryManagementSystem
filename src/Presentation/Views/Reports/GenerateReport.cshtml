@@ -3,7 +3,21 @@
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = "Generate Report";
+
+    var breadcrumbItems = new List<BreadcrumbItem>
+    {
+        new()
+        {
+            Label = "Reports",
+            Url = "/Reports"
+        }
+    };
 }
+
+@section Breadcrumb {
+    @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
+}
+
 
 
 <form asp-action="GenerateReport" method="post" class="needs-validation" novalidate>
@@ -13,7 +27,7 @@
                 <h5 class="card-header">Generate Report</h5>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <div class="form-group">
                                 <label asp-for="Subject" class="form-label"></label>
                                 <select asp-for="Subject" class="form-select" id="Subject"></select>
@@ -21,7 +35,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <div class="form-group">
                                 <label asp-for="Metric" class="form-label"></label>
                                 <select asp-for="Metric" class="form-select" id="Metric"></select>
@@ -31,19 +45,11 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <div class="form-group">
-                                <label asp-for="StartingMonth" class="form-label"></label>
-                                <input asp-for="StartingMonth" class="form-control" type="month" />
-                                <span asp-validation-for="StartingMonth" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <div class="form-group">
-                                <label asp-for="EndingMonth" class="form-label"></label>
-                                <input asp-for="EndingMonth" class="form-control" type="month" />
-                                <span asp-validation-for="EndingMonth" class="text-danger"></span>
+                                <label asp-for="Year" class="form-label"></label>
+                                <input asp-for="Year" class="form-control" type="number" />
+                                <span asp-validation-for="Year" class="text-danger"></span>
                             </div>
                         </div>
                     </div>

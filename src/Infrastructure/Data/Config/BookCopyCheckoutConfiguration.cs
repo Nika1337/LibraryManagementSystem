@@ -26,6 +26,7 @@ internal class BookCopyCheckoutConfiguration : IEntityTypeConfiguration<BookCopy
         builder.ToTable( bcc =>
         {
             bcc.HasCheckConstraint("CK_CloseTimeWithStatus", "([BookCopyCheckoutStatus] IS NULL AND [BookCopyCheckoutCloseTime] IS NULL) OR ([BookCopyCheckoutStatus] IS NOT NULL AND [BookCopyCheckoutCloseTime] IS NOT NULL)");
+            bcc.UseSqlOutputClause(false);
         });
     }
 }

@@ -1,10 +1,14 @@
 ﻿
 
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Nika1337.Library.Application.Abstractions;
+using Nika1337.Library.Application.DataTransferObjects.Reports;
 using Nika1337.Library.Presentation.Models.Reports;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
 
@@ -24,6 +28,20 @@ public class ReportsController : Controller
         { "Authors", ["Popularity"] }
     };
 
+    private readonly IReportService _reportService;
+    private readonly IMapper _mapper;
+    private readonly IExportService _exportService;
+
+    public ReportsController(
+        IReportService reportService,
+        IMapper mapper,
+        IExportService exportService)
+    {
+        _reportService = reportService;
+        _mapper = mapper;
+        _exportService = exportService;
+    }
+
     [HttpGet("SubjectsWithMetrics")]
     public IActionResult GetAllSubjectsWithMetrics()
     {
@@ -38,12 +56,21 @@ public class ReportsController : Controller
     }
 
     [HttpPost]
-    public IActionResult GenerateReport(GenerateReportViewModel model)
+    public async Task<IActionResult> GenerateReportAsync(GenerateReportViewModel model)
     {
-        Console.WriteLine(model.Subject);
-        Console.WriteLine(model.Metric);
-        Console.WriteLine(model.StartingMonth);
-        Console.WriteLine(model.EndingMonth);
-        throw new NotImplementedException();
+        var request = new AnnualReportRequest
+        {
+            Subject = model.Subject,
+            Metric = model.Metric,
+            Year = model.Year
+        };
+
+        var response = await _reportService.GenerateAnnualReportAsync(request);
+
+        var newModel = _mapper.Map<ReportViewModel>(response);
+
+        newModel.Title = $"{model.Subject} By {model.Metric} in {model.Year} Report";
+
+        return View("Report", newModel);
     }
 }
