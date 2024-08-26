@@ -7,6 +7,7 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Reports;
 using Nika1337.Library.Presentation.Models.Reports;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;
@@ -51,21 +52,20 @@ public class ReportsController : Controller
         return View(model);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> GenerateReportAsync(GenerateReportViewModel model)
+    [HttpGet("{subject}/{metric}/{year:int}")]
+    public async Task<IActionResult> GetReport(string subject, string metric, int year)
     {
         var request = new AnnualReportRequest
         {
-            Subject = model.Subject,
-            Metric = model.Metric,
-            Year = model.Year
+            Subject = subject,
+            Metric = metric,
+            Year = year
         };
 
         var response = await _reportService.GenerateAnnualReportAsync(request);
 
         var newModel = _mapper.Map<ReportViewModel>(response);
-
-        newModel.Title = $"{model.Subject} By {model.Metric} in {model.Year} Report";
+        newModel.Title = $"{subject} By {metric} in {year} Report";
 
         return View("Report", newModel);
     }

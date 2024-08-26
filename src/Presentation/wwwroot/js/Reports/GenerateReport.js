@@ -43,3 +43,16 @@ $(function () {
         }
     });
 });
+
+function navigateToReport() {
+    // Get values from the dropdowns and input
+    const subject = document.getElementById('Subject').value;
+    const metric = document.getElementById('Metric').value;
+    const year = document.getElementById('Year').value;
+
+    // Construct the URL dynamically
+    const url = `/Reports/${subject}/${metric}/${year}`;
+
+    // Redirect to the constructed URL
+    window.location.href = url;
+}
