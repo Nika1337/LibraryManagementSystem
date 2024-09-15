@@ -11,17 +11,18 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <div class="content-wrapper">
-        <header>
-            @await Component.InvokeAsync("Navigation")
-        </header>
+    <header>
+        @await Component.InvokeAsync("Navigation")
+    </header>
+
+    <div class="content-wrapper d-flex flex-column">
         <div class="breadcrumb-container">
             <div class="container" style="margin-top: 0px">
                 @RenderSection("Breadcrumb", required: false)
             </div>
         </div>
-        <div class="container">
-            <main role="main" class="pb-3">
+        <div class="container flex-grow-1">
+            <main role="main" class="pb-3 d-flex flex-column" style="height: 100%;">
                 @RenderBody()
             </main>
         </div>

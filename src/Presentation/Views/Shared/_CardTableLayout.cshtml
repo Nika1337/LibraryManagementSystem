@@ -3,50 +3,49 @@
     Layout = "_Layout.cshtml";
 }
 
-<div>
-    <div class="row justify-content-between">
-        <div class="col-md-4" style="width: fit-content">
-            <div class="row flex-nowrap mb-4">
-                <div class="col-auto">
-                    @await Html.PartialAsync("_FilterPartial")
-                </div>
-                <div class="col-auto">
-                    @await Html.PartialAsync("_SortPartial")
-                </div>
+<div class="row justify-content-between">
+    <div class="col-md-6" style="width: fit-content">
+        <div class="row flex-nowrap mb-4">
+            <div class="col-auto">
+                @await Html.PartialAsync("_FilterPartial")
             </div>
-        </div>
-        <div class="col-md-4" style="width: fit-content">
-            @RenderSection("Paging", required: false)
-        </div>
-        <div class="col-md-4" style="width: fit-content">
-            <div class="row flex-nowrap mb-4">
-                <div class="col-auto">
-                    @await Html.PartialAsync("_SearchPartial")
-                </div>
-                <div class="col-auto d-flex justify-content-center align-items-center">
-                    @await Html.PartialAsync("_SwitchPartial")
-                </div>
+            <div class="col-auto">
+                @await Html.PartialAsync("_SortPartial")
             </div>
         </div>
     </div>
-
-    <div id="cardView" class="row d-none">
-        @RenderSection("Cards", required: true)
-    </div>
-
-    <div id="tableView" class="d-none">
-        <div class="table-responsive d-flex justify-content-center">
-            @RenderSection("Table", required: true)
+    <div class="col-md-6" style="width: fit-content">
+        <div class="row flex-nowrap mb-4">
+            <div class="col-auto">
+                @await Html.PartialAsync("_SearchPartial")
+            </div>
+            <div class="col-auto d-flex justify-content-center align-items-center">
+                @await Html.PartialAsync("_SwitchPartial")
+            </div>
         </div>
     </div>
-
-    <div class="myfab-container">
-        @RenderSection("Fab", required: false)
-    </div>
-
-    @RenderSection("Body", required: false)
 </div>
 
+<div id="cardView" class="row d-none">
+    @RenderSection("Cards", required: true)
+</div>
+
+<div id="tableView" class="d-none">
+    <div class="table-responsive d-flex justify-content-center">
+        @RenderSection("Table", required: true)
+    </div>
+</div>
+
+<div class="myfab-container">
+    @RenderSection("Fab", required: false)
+</div>
+
+
+@RenderSection("Body", required: false)
+
+<div class="row justify-content-start align-items-end flex-grow-1">
+    @RenderSection("Paging", required: false)
+</div>
 
 @section Breadcrumb {
     @RenderSection("Breadcrumb", required: false)

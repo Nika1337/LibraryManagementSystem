@@ -7,7 +7,6 @@ using Nika1337.Library.Application.Abstractions;
 using Nika1337.Library.Application.DataTransferObjects.Reports;
 using Nika1337.Library.Presentation.Models.Reports;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Nika1337.Library.Presentation.Controllers;

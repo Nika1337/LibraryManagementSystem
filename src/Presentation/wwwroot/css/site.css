@@ -115,3 +115,20 @@ body {
     -webkit-animation-name: slideIn;
     animation-name: slideIn;
 }
+
+.btn-info {
+    color: white;
+}
+
+.btn-info:hover {
+    color: white;
+}
+
+.btn-info:focus {
+    color: white;
+}
+
+
+.pagination {
+    margin-top: 1rem;
+}
