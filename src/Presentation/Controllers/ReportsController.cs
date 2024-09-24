@@ -54,14 +54,14 @@ public class ReportsController : Controller
     [HttpGet("{subject}/{metric}/{year:int}")]
     public async Task<IActionResult> GetReport(string subject, string metric, int year)
     {
-        var request = new AnnualReportRequest
+        var request = new AnnualReportBySubjectAndMetricRequest
         {
             Subject = subject,
             Metric = metric,
             Year = year
         };
 
-        var response = await _reportService.GenerateAnnualReportAsync(request);
+        var response = await _reportService.GetAnnualReportTableAsync(request);
 
         var newModel = _mapper.Map<ReportViewModel>(response);
         newModel.Title = $"{subject} By {metric} in {year} Report";

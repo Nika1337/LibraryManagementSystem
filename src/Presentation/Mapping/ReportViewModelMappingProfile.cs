@@ -10,6 +10,6 @@ public class ReportViewModelMappingProfile : Profile
 {
     public ReportViewModelMappingProfile()
     {
-        CreateMap<ReportResponse, ReportViewModel>();
+        CreateMap<TableResponse, ReportViewModel>();
     }
 }
