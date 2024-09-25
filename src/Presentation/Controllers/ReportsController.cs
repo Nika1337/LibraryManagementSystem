@@ -87,7 +87,9 @@ public class ReportsController : Controller
 
         var pdf = report.Render("PDF");
 
-        return File(pdf, "application/pdf", $"Popularity_{year}.pdf");
+        MemoryStream ms = new(pdf);
+
+        return new FileStreamResult(ms, "application/pdf");
     }
 
     private async Task PopulatePopularityReportData(LocalReport report, int year)
