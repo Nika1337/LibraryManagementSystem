@@ -17,7 +17,6 @@ LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentD
 
 builder.Services.ConfigureServices(builder.Configuration);
 
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -43,6 +42,7 @@ var presentationAssembly = typeof(Nika1337.Library.Presentation.AssemblyReferenc
 
 builder.Services.AddControllersWithViews()
     .AddApplicationPart(presentationAssembly);
+
 
 builder.Services.AddAutoMapper(
     typeof(Nika1337.Library.Presentation.AssemblyReference).Assembly,

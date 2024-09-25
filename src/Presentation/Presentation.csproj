@@ -18,11 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Reports\DataSets\" />
     <Folder Include="wwwroot\css\Library\BookEditions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Reports\Datasets\PopularityReportDataSet.Designer.cs">
+    <Compile Update="Reports\DataSets\PopularityReportDataSet.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PopularityReportDataSet.xsd</DependentUpon>
@@ -30,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Reports\Datasets\PopularityReportDataSet.xsd">
+    <None Update="Reports\DataSets\PopularityReportDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>PopularityReportDataSet.Designer.cs</LastGenOutput>
     </None>

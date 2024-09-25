@@ -1,5 +1,4 @@
-﻿@model Nika1337.Library.Presentation.Models.Reports.GenerateReportViewModel
-
+﻿@model Nika1337.Library.Presentation.Models.Reports.GenerateReportViewModel;
 @{
     Layout = "_DetailLayout";
     ViewData["Title"] = "Generate Report";
@@ -18,66 +17,131 @@
     @await Html.PartialAsync("_BreadcrumbPartial", breadcrumbItems)
 }
 
-
-
-<form asp-action="GenerateReport" method="post" class="needs-validation" novalidate>
-    <div class="row justify-content-center">
-        <div class="col-xl-8">
-            <div class="card mb-4">
-                <h5 class="card-header">Generate Report</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <div class="form-group">
-                                <label asp-for="Subject" class="form-label"></label>
-                                <select asp-for="Subject" class="form-select" id="Subject"></select>
-                                <span asp-validation-for="Subject" class="text-danger"></span>
-                            </div>
+<div class="row justify-content-center">
+    <div class="col-xl-8">
+        <div class="card mb-4">
+            <h5 class="card-header">Report Actions</h5>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Generate New Report -->
+                    <div class="col-md-5">
+                        <h6 class="mb-3">Generate New Report</h6>
+                        <div class="mb-3">
+                            <label for="Subject" class="form-label">Subject</label>
+                            <select id="Subject" class="form-select" onchange="populateMetrics()">
+                                <option value="">Select a subject</option>
+                                @foreach (var subject in Model.SubjectsWithMetrics.Keys)
+                                {
+                                    <option value="@subject">@subject</option>
+                                }
+                            </select>
                         </div>
-
-                        <div class="col-md-12 mb-3">
-                            <div class="form-group">
-                                <label asp-for="Metric" class="form-label"></label>
-                                <select asp-for="Metric" class="form-select" id="Metric"></select>
-                                <span asp-validation-for="Metric" class="text-danger"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label for="Metric" class="form-label">Metric</label>
+                            <select id="Metric" class="form-select" disabled>
+                                <option value="">Select a subject first</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Year" class="form-label">Year</label>
+                            <select id="Year" class="form-select">
+                                @foreach (var year in Model.AvaliableYears)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-primary" onclick="navigateToReport()">Generate Report</button>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <div class="form-group">
-                                <label asp-for="Year" class="form-label"></label>
-                                <input asp-for="Year" class="form-control" type="number" />
-                                <span asp-validation-for="Year" class="text-danger"></span>
-                            </div>
+                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                        <div class="divider d-flex align-items-center my-4">
+                            <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-end justify-content-end myfab-container">
-                        <button type="button" class="btn btn-primary myfab" onclick="navigateToReport()">Generate Report</button>
+                    <!-- Download Named Report -->
+                    <div class="col-md-5">
+                        <h6 class="mb-3">Download Named Report</h6>
+                        <div class="mb-3">
+                            <label for="ReportName" class="form-label">Report Name</label>
+                            <select id="ReportName" class="form-select">
+                                @foreach (var reportName in Model.ReportNames)
+                                {
+                                    <option value="@reportName">@reportName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="DownloadYear" class="form-label">Year</label>
+                            <select id="DownloadYear" class="form-select">
+                                @foreach (var year in Model.AvaliableYears)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-secondary" onclick="downloadReport()">Download Report</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-    <!-- Include Choices JavaScript (latest) -->
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-    <script src="~/js/Reports/GenerateReport.js"></script>
-
     <script>
-        const subject = @Model.Subject;
-        const metric = @Model.Metric;
+        var subjectsWithMetrics = @Html.Raw(Json.Serialize(Model.SubjectsWithMetrics));
+
+        function populateMetrics() {
+            var subject = document.getElementById('Subject').value;
+            var metricSelect = document.getElementById('Metric');
+
+            // Clear the current options
+            metricSelect.innerHTML = '<option value="">Select a metric</option>';
+
+            if (subject && subjectsWithMetrics[subject]) {
+                // Enable the metric dropdown and populate options
+                metricSelect.disabled = false;
+                subjectsWithMetrics[subject].forEach(function (metric) {
+                    var option = document.createElement('option');
+                    option.value = metric;
+                    option.textContent = metric;
+                    metricSelect.appendChild(option);
+                });
+            } else {
+                // Disable the metric dropdown if no subject is selected
+                metricSelect.disabled = true;
+            }
+        }
+
+        function navigateToReport() {
+            var subject = document.getElementById('Subject').value;
+            var metric = document.getElementById('Metric').value;
+            var year = document.getElementById('Year').value;
+
+            if (subject && metric && year) {
+                window.location.href = `/Reports/${subject}/${metric}/${year}`;
+            } else {
+                alert('Please select a subject, metric, and year.');
+            }
+        }
+
+        function downloadReport() {
+            var reportName = document.getElementById('ReportName').value;
+            var year = document.getElementById('DownloadYear').value;
+
+            if (reportName && year) {
+                window.location.href = `/Reports/${reportName}/${year}`;
+            } else {
+                alert('Please select a report name and year.');
+            }
+        }
     </script>
-
-}
-
-@section Styles {
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 }
