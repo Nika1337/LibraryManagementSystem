@@ -119,12 +119,12 @@ public class ReportsController : Controller
         {
             new ReportParameter("popularityReportName", $"Popularity Report {year}"),
             new ReportParameter("companyName", "Library Management System"),
-            new ReportParameter("topBooksTitle", $"Top Books"),
-            new ReportParameter("topAuthorsTitle", $"Top Authors"),
-            new ReportParameter("topAccountsTitle", $"Top Accounts"),
-            new ReportParameter("topPublishersTitle", $"Top Publishers"),
-            new ReportParameter("topGenresTitle", $"Top Genres"),
-            new ReportParameter("topLanguagesTitle", $"Top Languages"),
+            new ReportParameter("topBooksTitle", $"Top books by popularity"),
+            new ReportParameter("topAuthorsTitle", $"Top authors by popularity"),
+            new ReportParameter("topAccountsTitle", $"Top accounts by copies taken"),
+            new ReportParameter("topPublishersTitle", $"Top publishers by popularity"),
+            new ReportParameter("topGenresTitle", $"Top genres by popularity"),
+            new ReportParameter("topLanguagesTitle", $"Top languages by popularity"),
         };
 
         report.SetParameters(parameters);
