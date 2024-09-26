@@ -16,11 +16,10 @@
                 window.location.href = afterFetchPath;
             },
             error: function () {
-                alert('An error occurred while trying to perform action.');
+                console.error('An error occurred while trying to perform action.');
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', textStatus, errorThrown);
-            alert('An error occurred while trying to perform action.');
         });
     };
 })();

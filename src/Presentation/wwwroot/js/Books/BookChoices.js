@@ -1,26 +1,25 @@
 
-
 $(function () {
     // Initialize Choices.js
     const languageChoices = new Choices('#OriginalLanguageId', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select a language',
+        placeholderValue: languagePlaceholder,
     });
 
     const genreChoices = new Choices('#GenreIds', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select genres',
+        placeholderValue: genresPlaceholder,
     });
 
     const authorChoices = new Choices('#AuthorIds', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select authors',
+        placeholderValue: authorsPlaceholder,
     });
 
     loadDropdownData('/Languages/GetActiveLanguages', languageChoices, [preselectedLanguage]);

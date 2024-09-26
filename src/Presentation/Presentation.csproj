@@ -10,6 +10,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
 	<PackageReference Include="AutoMapper" Version="13.0.1" />
+	<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.8" />
 	<PackageReference Include="ReportViewerCore.NETCore" Version="15.1.22" />
   </ItemGroup>
 
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\" />
     <Folder Include="Reports\DataSets\" />
     <Folder Include="wwwroot\css\Library\BookEditions\" />
   </ItemGroup>

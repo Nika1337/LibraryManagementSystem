@@ -1,4 +1,6 @@
-﻿<div class="input-group">
-    <input type="text" id="searchTerm" class="form-control" placeholder="Search...">
-    <button class="btn btn-outline-secondary" type="button" onclick="search()">Search</button>
+﻿@inject IViewLocalizer Localizer
+
+<div class="input-group">
+    <input type="text" id="searchTerm" class="form-control" placeholder=@Localizer["Search..."]">
+    <button class="btn btn-outline-secondary" type="button" onclick="search()">@Localizer["Search"]</button>
 </div>

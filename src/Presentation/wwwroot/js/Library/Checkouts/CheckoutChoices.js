@@ -1,22 +1,23 @@
+
 $(function () {
     // Initialize Choices.js
     const accountChoices = new Choices('#AccountId', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select an account',
+        placeholderValue: accountPlaceholder,
     });
     const bookChoices = new Choices('#BookId', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select a book',
+        placeholderValue: bookPlaceholder,
     });
     const bookEditionChoices = new Choices('#BookEditionId', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select a book edition',
+        placeholderValue: bookEditionPlaceholder,
     });
 
     // Load accounts and books

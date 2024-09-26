@@ -1,12 +1,13 @@
-﻿
+﻿@inject IViewLocalizer Localizer
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="filteringSidebar" aria-labelledby="filteringSidebarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="filteringSidebarLabel">Filters</h5>
+        <h5 class="offcanvas-title" id="filteringSidebarLabel">@Localizer["Filters"]</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <div id="filterOptions"></div>
-        <button class="btn btn-secondary w-100 mt-3" onclick="filter()">Filter</button>
+        <button class="btn btn-secondary w-100 mt-3" onclick="filter()">@Localizer["Filter"]</button>
     </div>
 </div>
 

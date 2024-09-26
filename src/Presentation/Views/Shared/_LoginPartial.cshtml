@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Mvc.Authorization
+@inject IViewLocalizer Localizer
 
 @if (Context?.User?.Identity?.IsAuthenticated == true)
 {
@@ -10,22 +11,22 @@
         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end dropdown-menu-lg-start">
             <li>
                 <a class="dropdown-item" href="/EmployeeAccount/Profile">
-                    Profile
+                    @Localizer["Profile"]
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="/EmployeeAccount/ChangePassword">
-                    Change Password
+                    @Localizer["Change Password"]
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="/EmployeeAccount/ChangeEmail">
-                    Change Email
+                    @Localizer["Change Email"]
                 </a>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-                <a href="/EmployeeAccount/SignOut" class="btn btn-link dropdown-item" style="color: red;">Sign Out</a>
+                <a href="/EmployeeAccount/SignOut" class="btn btn-link dropdown-item" style="color: red;">@Localizer["Sign Out"]</a>
             </li>
         </ul>
     </li>

@@ -4,21 +4,21 @@ $(function () {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select a language',
+        placeholderValue: languagePlaceholder,
     });
 
     const publisherChoices = new Choices('#PublisherId', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select publisher',
+        placeholderValue: publisherPlaceholder,
     });
 
     const roomChoices = new Choices('#RoomId', {
         removeItemButton: true,
         searchEnabled: true,
         placeholder: true,
-        placeholderValue: 'Select room',
+        placeholderValue: roomPlaceholder,
     });
 
     loadDropdownData('/Languages/GetActiveLanguages', languageChoices, [preselectedLanguage]);

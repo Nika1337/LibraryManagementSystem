@@ -180,11 +180,11 @@
             </div>
             <div class="modal-body">
                 <div class="form-group mb-3">
-                    <label for="newAvailableCopies" class="form-label">New Available Copies Count:</label>
+                    <label for="newAvailableCopies" class="form-label">New Available Copies Count *</label>
                     <input type="number" id="newAvailableCopies" class="form-control" min="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="changeReasonInput" class="form-label">Reason for Change:</label>
+                    <label for="changeReasonInput" class="form-label">Reason for Change *</label>
                     <textarea id="changeReasonInput" class="form-control" rows="3" required></textarea>
                 </div>
             </div>
@@ -229,6 +229,10 @@
         const preselectedLanguage = @Model.LanguageId;
         const preselectedPublisher = @Model.PublisherId;
         const preselectedRoom = @Model.RoomId;
+
+        const languagePlaceholder = 'Select a language';
+        const publisherPlaceholder = 'Select a publisher';
+        const roomPlaceholder = 'Select a room';
     </script>
 }
 

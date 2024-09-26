@@ -95,53 +95,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
+    <script src="~/js/Reports/GenerateReport.js"></script>
     <script>
-        var subjectsWithMetrics = @Html.Raw(Json.Serialize(Model.SubjectsWithMetrics));
+        const subjectsWithMetrics = @Html.Raw(Json.Serialize(Model.SubjectsWithMetrics));
 
-        function populateMetrics() {
-            var subject = document.getElementById('Subject').value;
-            var metricSelect = document.getElementById('Metric');
-
-            // Clear the current options
-            metricSelect.innerHTML = '<option value="">Select a metric</option>';
-
-            if (subject && subjectsWithMetrics[subject]) {
-                // Enable the metric dropdown and populate options
-                metricSelect.disabled = false;
-                subjectsWithMetrics[subject].forEach(function (metric) {
-                    var option = document.createElement('option');
-                    option.value = metric;
-                    option.textContent = metric;
-                    metricSelect.appendChild(option);
-                });
-            } else {
-                // Disable the metric dropdown if no subject is selected
-                metricSelect.disabled = true;
-            }
-        }
-
-        function navigateToReport() {
-            var subject = document.getElementById('Subject').value;
-            var metric = document.getElementById('Metric').value;
-            var year = document.getElementById('Year').value;
-
-            if (subject && metric && year) {
-                window.location.href = `/Reports/${subject}/${metric}/${year}`;
-            } else {
-                alert('Please select a subject, metric, and year.');
-            }
-        }
-
-        function downloadReport() {
-            var reportName = document.getElementById('ReportName').value;
-            var year = document.getElementById('DownloadYear').value;
-
-            if (reportName && year) {
-                window.location.href = `/Reports/${reportName}/${year}`;
-            } else {
-                alert('Please select a report name and year.');
-            }
-        }
+        const selectAMetricText = 'Select a metric';
     </script>
+}
+
+@section Styles {
+    <style>
+        .input-error {
+            border-color: red;
+        }
+    </style>
 }

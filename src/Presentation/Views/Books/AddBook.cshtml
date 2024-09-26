@@ -125,6 +125,11 @@
         const preselectedGenres = @Html.Raw(Json.Serialize(Model.GenreIds));
         const preselectedAuthors = @Html.Raw(Json.Serialize(Model.AuthorIds));
         const preselectedLanguage = @Model.OriginalLanguageId;
+
+
+        const languagePlaceholder = "Select a language";
+        const genresPlaceholder = "Select genres";
+        const authorsPlaceholder = "Select authors";
     </script>
 }
 

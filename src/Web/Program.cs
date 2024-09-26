@@ -41,6 +41,7 @@ builder.Services.AddAuthorizationBuilder()
 var presentationAssembly = typeof(Nika1337.Library.Presentation.AssemblyReference).Assembly;
 
 builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
     .AddApplicationPart(presentationAssembly);
 
 

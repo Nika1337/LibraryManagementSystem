@@ -1,15 +1,16 @@
 @model Nika1337.Library.Presentation.Models.Shared.ActionConfirmationModalViewModel
+@inject IViewLocalizer Localizer
 
 <!-- Action Confirmation Modal -->
 <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="actionModalLabel">Confirm @Model.UserActionName</h5>
+                <h5 class="modal-title" id="actionModalLabel">@Localizer["ConfirmAction", @Model.UserActionName]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to @Model.UserActionName this @Model.EntityName?
+                @Localizer["ConfirmActionText", @Model.UserActionName, @Model.EntityName]
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

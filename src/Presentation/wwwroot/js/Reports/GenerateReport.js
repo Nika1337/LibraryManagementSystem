@@ -1,58 +1,86 @@
-$(function () {
-    let subjectsWithMetrics = {};
 
-    // Initialize Choices.js for Subject and Metric dropdowns
-    const subjectChoices = new Choices('#Subject', {
-        removeItemButton: false,
-        searchEnabled: true,
-        placeholder: true,
-        placeholderValue: 'Select a subject',
-    });
+// Function to populate metrics dropdown
+function populateMetrics() {
+    var subject = document.getElementById('Subject').value;
+    var metricSelect = document.getElementById('Metric');
 
-    const metricChoices = new Choices('#Metric', {
-        removeItemButton: false,
-        searchEnabled: true,
-        placeholder: true,
-        placeholderValue: 'Select a metric',
-    });
+    // Clear the current options
+    metricSelect.innerHTML = `<option value="">${selectAMetricText}</option>`;
 
-    // Fetch subjects with metrics once and store them
-    $.get('/Reports/SubjectsWithMetrics', function (data) {
-        subjectsWithMetrics = data;
-
-        // Populate the Subject dropdown with subjects
-        Object.keys(subjectsWithMetrics).forEach(subject => {
-            subjectChoices.setChoices([{ value: subject, label: subject, selected: false, disabled: false }], 'value', 'label', false);
+    if (subject && subjectsWithMetrics[subject]) {
+        // Enable the metric dropdown and populate options
+        metricSelect.disabled = false;
+        subjectsWithMetrics[subject].forEach(function (metric) {
+            var option = document.createElement('option');
+            option.value = metric;
+            option.textContent = metric;
+            metricSelect.appendChild(option);
         });
-    });
+    } else {
+        // Disable the metric dropdown if no subject is selected
+        metricSelect.disabled = true;
+    }
+}
 
-    // Event listener for Subject selection change
-    $('#Subject').on('change', function () {
-        // Clear previous metrics
-        metricChoices.clearStore();
-
-        // Get the selected subject
-        const selectedSubject = $(this).val();
-
-        // Populate Metric dropdown with metrics corresponding to the selected subject
-        if (selectedSubject && subjectsWithMetrics[selectedSubject]) {
-            const metrics = subjectsWithMetrics[selectedSubject];
-            metrics.forEach(metric => {
-                metricChoices.setChoices([{ value: metric, label: metric, selected: false, disabled: false }], 'value', 'label', false);
-            });
-        }
-    });
-});
-
+// Function to navigate to the report
 function navigateToReport() {
-    // Get values from the dropdowns and input
-    const subject = document.getElementById('Subject').value;
-    const metric = document.getElementById('Metric').value;
-    const year = document.getElementById('Year').value;
+    var subject = document.getElementById('Subject');
+    var metric = document.getElementById('Metric');
+    var year = document.getElementById('Year');
 
-    // Construct the URL dynamically
-    const url = `/Reports/${subject}/${metric}/${year}`;
+    // Remove previous error classes
+    subject.classList.remove('input-error');
+    metric.classList.remove('input-error');
+    year.classList.remove('input-error');
 
-    // Redirect to the constructed URL
-    window.location.href = url;
+    let valid = true;
+
+    // Validate subject, metric, and year
+    if (!subject.value) {
+        subject.classList.add('input-error'); // Highlight subject if missing
+        valid = false;
+    }
+
+    if (!metric.value) {
+        metric.classList.add('input-error'); // Highlight metric if missing
+        valid = false;
+    }
+
+    if (!year.value) {
+        year.classList.add('input-error'); // Highlight year if missing
+        valid = false;
+    }
+
+    // If all fields are valid, proceed with navigation
+    if (valid) {
+        window.location.href = `/Reports/${subject.value}/${metric.value}/${year.value}`;
+    }
+}
+
+// Function to download report
+function downloadReport() {
+    var reportName = document.getElementById('ReportName');
+    var year = document.getElementById('DownloadYear');
+
+    // Remove previous error classes
+    reportName.classList.remove('input-error');
+    year.classList.remove('input-error');
+
+    let valid = true;
+
+    // Validate reportName and year
+    if (!reportName.value) {
+        reportName.classList.add('input-error'); // Highlight report name if missing
+        valid = false;
+    }
+
+    if (!year.value) {
+        year.classList.add('input-error'); // Highlight year if missing
+        valid = false;
+    }
+
+    // If all fields are valid, proceed with download
+    if (valid) {
+        window.location.href = `/Reports/${reportName.value}/${year.value}`;
+    }
 }

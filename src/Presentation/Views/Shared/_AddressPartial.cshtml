@@ -1,7 +1,8 @@
 ﻿@model Nika1337.Library.Presentation.Models.Shared.AddressViewModel
+@inject IViewLocalizer Localizer
 
 <div class="card mb-3 needs-validation">
-    <h5 class="card-header">Address</h5>
+    <h5 class="card-header">@Localizer["Address"]</h5>
     <div class="card-body">
         <div class="mb-3">
             <label asp-for="Country" class="form-label"></label>
