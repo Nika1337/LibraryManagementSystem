@@ -11,3 +11,7 @@
         .audit-list .list-group-item:hover {
             background-color: #f8f9fa;
         }
+
+.input-error {
+    border-color: red;
+}
